@@ -12,10 +12,11 @@
         .winner-box { display:none; background: #fff3cd; border: 2px solid #ffc107; padding: 15px; border-radius: 15px; margin-bottom: 15px; text-align: center; }
         .counter-box { background: #1877f2; color: white; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 15px; }
         .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
+        .mobile-img { width: 100%; max-width: 250px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .payment-badge { background: #fff5f5; padding: 15px; border-radius: 15px; border: 2px dashed #ff6b6b; margin: 15px 0; }
         input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
         button { width: 100%; padding: 16px; background: #1877f2; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .copy-btn { background: #ff6b6b; padding: 8px 15px; width: auto; font-size: 14px; margin-top: 5px; }
+        .copy-btn { background: #ff6b6b; padding: 8px 15px; width: auto; font-size: 14px; margin-top: 5px; border:none; border-radius:8px; color:white; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -35,6 +36,8 @@
             <h2 style="margin: 0; color: #1e293b;">Win Mobile For Just $1!</h2>
             <p style="color: #d63031; font-weight: bold; font-size: 14px; margin-top: 5px;">⚠️ Send Rs. 300 via NayaPay</p>
 
+            <img src="mobile.jpg" alt="Win Mobile" class="mobile-img">
+
             <div class="payment-badge">
                 <p style="color: #ff6b6b; font-weight: bold; margin: 0; font-size: 13px;">NAYAPAY ACCOUNT</p>
                 <p style="font-size: 26px; font-weight: bold; margin: 5px 0; color: #2d3436;">03116761010</p>
@@ -53,7 +56,6 @@
     </div>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBbV_Z_VxGN39qdR1AMngqdX0UYGANdcMM",
             authDomain: "dollar-game-de93b.firebaseapp.com",
@@ -65,12 +67,10 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Real-time Participant Count
         db.collection("dollar_entries").onSnapshot(snap => {
             document.getElementById("user-count").innerText = snap.size;
         });
 
-        // Real-time Winner Display
         db.collection("winners").doc("latest").onSnapshot((doc) => {
             if (doc.exists) {
                 document.getElementById("winner-box").style.display = "block";
@@ -80,7 +80,6 @@
             }
         });
 
-        // Form Submission
         document.getElementById('entryForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -96,10 +95,10 @@
                     paymentMethod: "NayaPay",
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                alert("Entry Successful! Payment sent to Muhammad Sarfraz will be verified.");
+                alert("Entry Successful! Verified by Muhammad Sarfraz.");
                 document.getElementById('entryForm').reset();
             } catch (err) {
-                alert("Error submitting entry. Please check your internet.");
+                alert("Error. Try again.");
             }
             btn.disabled = false;
             btn.innerText = "Submit My Entry";
@@ -107,3 +106,4 @@
     </script>
 </body>
 </html>
+
