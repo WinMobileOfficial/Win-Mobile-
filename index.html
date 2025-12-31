@@ -7,38 +7,50 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; text-align: center; }
         .container { background: white; max-width: 450px; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .mobile-img { width: 100%; max-width: 250px; border-radius: 10px; margin-bottom: 10px; }
         
-        /* Lucky Winner Section */
-        .winner-card { background: #fffde7; border: 2px solid #fbc02d; padding: 15px; border-radius: 10px; margin-bottom: 15px; animation: glow 2s infinite; }
-        @keyframes glow { 0% {box-shadow: 0 0 5px #fbc02d;} 50% {box-shadow: 0 0 20px #fbc02d;} 100% {box-shadow: 0 0 5px #fbc02d;} }
-        .winner-title { color: #f57f17; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        /* GM Agency Logo/Heading */
+        .agency-name { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 5px; }
         
+        /* Live Tadad Styling */
+        .live-count-badge { background: #e8f5e9; color: #2e7d32; padding: 8px; border-radius: 8px; margin-bottom: 15px; font-weight: bold; font-size: 14px; border: 1px solid #c8e6c9; display: inline-block; }
+        .dot { height: 8px; width: 8px; background-color: #27ae60; border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .mobile-img { width: 100%; max-width: 230px; border-radius: 10px; margin-bottom: 10px; }
+        .winner-card { background: #fffde7; border: 2px solid #fbc02d; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .winner-title { color: #f57f17; font-weight: bold; font-size: 13px; text-transform: uppercase; }
         .price-tag { background: #fff5f5; color: #ff6b6b; padding: 10px; border-radius: 8px; font-weight: bold; border: 1px dashed #ff6b6b; margin: 10px 0; }
+        
         input { width: 90%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 8px; }
         .btn-join { background: #ff6b6b; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
         
-        /* Admin Section */
         #adminArea { display: none; margin-top: 30px; padding: 15px; border-top: 2px solid #eee; background: #fafafa; }
-        .btn-spin { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 10px; }
-        .btn-reset { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
-        .admin-toggle { background: transparent; border: none; color: #ccc; font-size: 10px; margin-top: 40px; cursor: pointer; }
+        .btn-spin { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .admin-toggle { background: transparent; border: none; color: #eee; font-size: 8px; margin-top: 40px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <div class="agency-name">GM Agency</div>
+    <p style="color: #666; margin-top: 0;">Professional Team Registration</p>
+
+    <div class="live-count-badge">
+        <span class="dot"></span> 
+        Live: <span id="tadadValue">0</span> Members Joined
+    </div>
+
     <img src="mobile.jpg" class="mobile-img" alt="Prize Mobile">
 
     <div class="winner-card">
         <div class="winner-title">🎉 Latest Lucky Winner 🎉</div>
-        <div id="winnerName" style="font-size: 22px; font-weight: bold; color: #333;">Wait for Draw...</div>
-        <div id="winnerTid" style="color: #666; font-size: 14px;">TID: ********</div>
+        <div id="winnerName" style="font-size: 22px; font-weight: bold; color: #333;">Coming Soon</div>
+        <div id="winnerTid" style="color: #666; font-size: 13px;">TID: Pending</div>
     </div>
 
     <div class="price-tag">Registration Fee: Rs. 300</div>
     
-    <div style="margin-bottom: 15px; font-size: 14px;">
+    <div style="margin-bottom: 15px; font-size: 14px; background: #f8fafc; padding: 10px; border-radius: 8px;">
         <strong>NayaPay: 03186761010</strong><br>
         <small>Title: Muhammad Sarfraz</small>
     </div>
@@ -46,88 +58,70 @@
     <input type="text" id="u_name" placeholder="Full Name">
     <input type="number" id="u_phone" placeholder="WhatsApp Number">
     <input type="text" id="u_tid" placeholder="Transaction ID (TID)">
-    <button class="btn-join" onclick="submitForm()">JOIN LUCKY DRAW</button>
+    <button class="btn-join" onclick="submitForm()">JOIN NOW</button>
 
-    <button class="admin-toggle" onclick="accessAdmin()">Admin Access</button>
+    <button class="admin-toggle" onclick="accessAdmin()">.</button>
 
     <div id="adminArea">
-        <h3 style="color: #333;">Admin Dashboard</h3>
-        <button class="btn-spin" onclick="pickRandomWinner()">🎡 Spin for Winner</button>
-        <button class="btn-reset" onclick="resetSystem()">Reset Winner</button>
-        <p>Total Entries: <span id="entryCount">0</span></p>
+        <h3 style="margin-top:0;">Admin Control</h3>
+        <button class="btn-spin" onclick="pickRandomWinner()">🎡 Spin Winner</button>
+        <br>
+        <button onclick="localStorage.clear(); location.reload();" style="margin-top:10px; font-size:11px;">Reset Winner Display</button>
     </div>
 </div>
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwBPqWCldY2mLqY8SA62KJGM77POOibQcHPWfTGaiwrKbahwD2C8cmdP7Lf8_RQ7u3MDg/exec";
 
-    // 1. Page Load par Winner dikhana
     window.onload = function() {
+        updateData();
         const winName = localStorage.getItem("luckyName") || "Coming Soon";
         const winTid = localStorage.getItem("luckyTid") || "TID: Pending";
         document.getElementById("winnerName").innerText = winName;
         document.getElementById("winnerTid").innerText = winTid;
     };
 
-    // 2. Form Submission
+    async function updateData() {
+        try {
+            let res = await fetch(SCRIPT_URL);
+            let data = await res.json();
+            document.getElementById("tadadValue").innerText = data.length - 1;
+        } catch (e) { document.getElementById("tadadValue").innerText = "Checking..."; }
+    }
+
     function submitForm() {
         const n = document.getElementById("u_name").value;
         const p = document.getElementById("u_phone").value;
         const t = document.getElementById("u_tid").value;
         if(!n || !p || !t) { alert("Please fill all details!"); return; }
-        
+        const btn = document.querySelector(".btn-join");
+        btn.innerText = "Submitting...";
+        btn.disabled = true;
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name:n, phone:p, tid:t}) })
-        .then(() => { alert("Entry Successful!"); location.reload(); });
+        .then(() => { alert("Application Submitted!"); location.reload(); });
     }
 
-    // 3. Admin Login
     function accessAdmin() {
         const user = prompt("Admin Name:");
         const pass = prompt("Password:");
         if(user === "GM-Admin" && pass === "admin123") {
             document.getElementById("adminArea").style.display = "block";
-            updateCount();
-        } else { alert("Wrong Credentials!"); }
+        }
     }
 
-    // 4. Random Winner Picker (Auto Clicker Logic)
     async function pickRandomWinner() {
         document.getElementById("winnerName").innerText = "Spinning...";
-        try {
-            let res = await fetch(SCRIPT_URL);
-            let data = await res.json();
-            let participants = data.slice(1); // Header chor kar
-            
-            if(participants.length > 0) {
-                // Random Index choose karna
-                let randomIndex = Math.floor(Math.random() * participants.length);
-                let winner = participants[randomIndex];
-                
-                // Save and Display
-                localStorage.setItem("luckyName", winner[0]);
-                localStorage.setItem("luckyTid", "TID: " + winner[2]);
-                
-                setTimeout(() => {
-                    document.getElementById("winnerName").innerText = winner[0];
-                    document.getElementById("winnerTid").innerText = "TID: " + winner[2];
-                    alert("Congratulations to " + winner[0] + "!");
-                }, 2000);
-            } else { alert("No participants found!"); }
-        } catch (e) { alert("Error fetching data!"); }
-    }
-
-    function resetSystem() {
-        localStorage.clear();
-        location.reload();
-    }
-
-    async function updateCount() {
         let res = await fetch(SCRIPT_URL);
         let data = await res.json();
-        document.getElementById("entryCount").innerText = data.length - 1;
+        let participants = data.slice(1);
+        if(participants.length > 0) {
+            let win = participants[Math.floor(Math.random() * participants.length)];
+            localStorage.setItem("luckyName", win[0]);
+            localStorage.setItem("luckyTid", "TID: " + win[2]);
+            setTimeout(() => { location.reload(); }, 1500);
+        }
     }
 </script>
-
 </body>
 </html>
 
