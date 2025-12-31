@@ -51,6 +51,14 @@
 </div>
 
 <script>
+    // --- SECURITY LOCK WITH NEW PASSWORD 0770 ---
+    const pass = prompt("Admin Password Darj Karein:");
+    if (pass !== "0770") {
+        alert("Access Denied!");
+        window.location.href = "index.html";
+    }
+    // --- SECURITY LOCK END ---
+
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjdAw-99efgueq46jFU3ZCiotXBs69TwQcq3jJdS4jNgF5y8OCclvE4pzc2K4T_ydYcw/exec";
 
     async function loadData() {
@@ -89,7 +97,6 @@
         let data = await res.json();
         let participants = data.length > 1 ? data.slice(1) : [];
         
-        // NAYA LOGIC: Sirf Approved log filter honge
         let approvedParticipants = participants.filter(row => row[4] === "Approved");
 
         if(approvedParticipants.length > 0) {
@@ -99,18 +106,17 @@
             alert("Winner Picked (Approved Only): " + win[0]);
             window.location.href = "index.html";
         } else {
-            alert("Koi bhi 'Approved' participant nahi mila! Pehle Approve karein.");
+            alert("Pehle kisi participant ko Approve karein!");
         }
     }
 
     function resetWinner() {
         localStorage.removeItem("luckyName");
         localStorage.removeItem("luckyTid");
-        alert("Winner display reset!");
+        alert("Winner Display Reset!");
         window.location.href = "index.html";
     }
 
-    // Auto load data every 10 seconds
     loadData();
     setInterval(loadData, 10000);
 </script>
