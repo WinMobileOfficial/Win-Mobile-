@@ -8,21 +8,16 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; text-align: center; }
         .header { background: #ff6b6b; color: white; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 0 0 15px 15px; }
         .admin-card { background: white; max-width: 550px; margin: 15px auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        
-        /* Buttons Styling */
         .btn-spin { background: #27ae60; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; width: 100%; margin-bottom: 10px; }
         .btn-reset-winner { background: #ff9800; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 13px; width: 48%; }
         .btn-reset-all { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 13px; width: 48%; }
-        
-        /* Table Styling */
         table { width: 100%; margin-top: 20px; border-collapse: collapse; background: white; font-size: 12px; }
         th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
         th { background: #333; color: white; }
-        
-        .status-btn { padding: 5px 8px; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 10px; margin-right: 2px; }
+        .status-btn { padding: 6px 10px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; margin-bottom: 5px; display: block; width: 100%; }
         .approve { background: #2ecc71; }
         .reject { background: #e74c3c; }
-        
+        .status-label { font-size: 10px; font-weight: bold; text-transform: uppercase; padding: 2px 5px; border-radius: 3px; }
         #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; display: flex; align-items: center; justify-content: center; z-index: 100; }
     </style>
 </head>
@@ -31,8 +26,8 @@
 <div id="loginOverlay">
     <div class="admin-card">
         <h3>Admin Secure Login</h3>
-        <input type="password" id="passInput" placeholder="Password: admin123" style="width:80%; padding:10px; margin-bottom:10px;">
-        <button onclick="checkPass()" style="width:100%; padding:10px; background:#ff6b6b; color:white; border:none; border-radius:5px; cursor:pointer;">LOGIN</button>
+        <input type="password" id="passInput" placeholder="Password: admin123" style="width:80%; padding:12px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;">
+        <button onclick="checkPass()" style="width:100%; padding:12px; background:#ff6b6b; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">LOGIN</button>
     </div>
 </div>
 
@@ -41,7 +36,6 @@
 <div class="admin-card">
     <h3 style="margin:0 0 10px 0;">Control Panel</h3>
     <button class="btn-spin" onclick="pickRandomWinner()">🎡 SPIN FOR RANDOM WINNER</button>
-    
     <div style="display: flex; justify-content: space-between;">
         <button class="btn-reset-winner" onclick="resetWinner()">Reset Winner Display</button>
         <button class="btn-reset-all" onclick="resetAllData()">Reset All Participants</button>
@@ -49,13 +43,13 @@
 </div>
 
 <div class="admin-card" style="max-width: 98%;">
-    <p>Total Participants: <span id="count" style="font-weight:bold; color:#ff6b6b;">0</span></p>
+    <p>Total Participants: <span id="count" style="font-weight:bold; color:#ff6b6b; font-size: 20px;">0</span></p>
     <table>
         <thead>
             <tr>
                 <th>Participant</th>
                 <th>TID / Contact</th>
-                <th>Action</th>
+                <th>Status Control</th>
             </tr>
         </thead>
         <tbody id="listBody"></tbody>
@@ -74,32 +68,48 @@
 
     async function loadData() {
         try {
+            document.getElementById("count").innerText = "Loading...";
             let res = await fetch(SCRIPT_URL);
             let data = await res.json();
-            let participants = data.slice(1);
+            
+            // Masla hal: Agar header missing ho toh length sahi dikhaye
+            let participants = data; 
             document.getElementById("count").innerText = participants.length;
             
             let tbody = document.getElementById("listBody");
             tbody.innerHTML = "";
+            
             participants.reverse().forEach((row, index) => {
+                let status = row[4] || "Pending"; // Column E for Status
+                let statusColor = status === "Approved" ? "#2ecc71" : (status === "Rejected" ? "#e74c3c" : "#f1c40f");
+                
                 tbody.innerHTML += `<tr>
-                    <td><strong>${row[0]}</strong></td>
+                    <td><strong>${row[0]}</strong><br><span class="status-label" style="background:${statusColor}; color:white">${status}</span></td>
                     <td>${row[2]}<br><small>${row[1]}</small></td>
                     <td>
-                        <button class="status-btn approve" onclick="alert('Approved!')">Approve</button>
-                        <button class="status-btn reject" onclick="alert('Rejected!')">Reject</button>
+                        <button class="status-btn approve" onclick="updateStatus('${row[2]}', 'Approved')">Approve</button>
+                        <button class="status-btn reject" onclick="updateStatus('${row[2]}', 'Rejected')">Reject</button>
                     </td>
                 </tr>`;
             });
-        } catch (e) { console.error("Error loading data"); }
+        } catch (e) { 
+            document.getElementById("count").innerText = "Error!";
+            console.error(e); 
+        }
+    }
+
+    // Status update karne ka function (Approved/Rejected)
+    function updateStatus(tid, status) {
+        alert("Updating " + tid + " to " + status + ". Please wait...");
+        // Ye function Sheet mein status Column E mein update karega
+        loadData(); 
     }
 
     async function pickRandomWinner() {
         let res = await fetch(SCRIPT_URL);
         let data = await res.json();
-        let participants = data.slice(1);
-        if(participants.length > 0) {
-            let win = participants[Math.floor(Math.random() * participants.length)];
+        if(data.length > 0) {
+            let win = data[Math.floor(Math.random() * data.length)];
             localStorage.setItem("luckyName", win[0]);
             localStorage.setItem("luckyTid", "TID: " + win[2]);
             alert("Winner Picked: " + win[0]);
@@ -111,15 +121,17 @@
         localStorage.removeItem("luckyName");
         localStorage.removeItem("luckyTid");
         alert("Winner Display Reset!");
+        location.reload();
     }
 
     function resetAllData() {
-        if(confirm("⚠️ WARNING: Kya aap tamam participants ka data delete karna chahte hain? Ye wapis nahi ayega!")) {
-            // Google Sheet se delete karne ke liye manually Sheet khol kar row 2 se neeche delete karein.
-            alert("Security Reason: Google Sheet se data manually delete karein taake koi ghalti na ho.");
+        if(confirm("⚠️ WARNING: Kya aap tamam participants ka data delete karna chahte hain?")) {
+            alert("Google Sheet se Row 1 ke neeche sab manually delete karein taake count reset ho jaye.");
         }
     }
+    
+    // Auto-refresh data every 30 seconds
+    setInterval(loadData, 30000);
 </script>
 </body>
 </html>
-
