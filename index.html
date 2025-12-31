@@ -3,36 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM Agency - Registration</title>
+    <title>GM Agency - Join Us</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
-        .container { background: white; max-width: 400px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: #333; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
-        .btn-join { background: #ff6b6b; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        .btn-join:disabled { background: #ccc; }
-        .footer-info { margin-top: 20px; font-size: 12px; color: #666; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 15px; text-align: center; }
+        .container { background: white; max-width: 450px; margin: auto; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .logo { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .price-tag { background: #fff5f5; color: #ff6b6b; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 20px; margin: 15px 0; border: 1px dashed #ff6b6b; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .btn-join { background: #ff6b6b; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.3s; }
+        .btn-join:active { transform: scale(0.98); }
+        .info-text { font-size: 13px; color: #666; margin: 15px 0; line-height: 1.5; }
+        .payment-methods { font-size: 12px; color: #888; border-top: 1px solid #eee; pt: 15px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>GM Agency</h2>
+    <div class="logo">GM Agency</div>
     <p>Enter details to join the team</p>
     
+    <div class="price-tag">Registration Fee: $1.00</div>
+
+    <p class="info-text">Please pay the fee to the provided account and enter your Transaction ID (TID) below to verify your payment.</p>
+
     <input type="text" id="name" placeholder="Full Name" required>
     <input type="number" id="phone" placeholder="WhatsApp Number" required>
     <input type="text" id="tid" placeholder="Transaction ID (TID)" required>
     
     <button class="btn-join" onclick="submitForm()">JOIN NOW</button>
     
-    <div class="footer-info">
-        Data will be automatically synced with our database.
+    <div class="payment-methods">
+        <p>Accepted: JazzCash / EasyPaisa / Binanace</p>
+        <small>Data will be automatically synced with our database.</small>
     </div>
 </div>
 
 <script>
-    // Aapka Google Script URL jo maine yahan fit kar diya hai
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwBPqWCldY2mLqY8SA62KJGM77POOibQcHPWfTGaiwrKbahwD2C8cmdP7Lf8_RQ7u3MDg/exec";
 
     function submitForm() {
@@ -49,19 +55,14 @@
         btn.innerText = "Submitting...";
         btn.disabled = true;
 
-        // Data ko Google Sheet mein bhejna
         fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                name: name, 
-                phone: phone, 
-                tid: tid
-            })
+            body: JSON.stringify({ name: name, phone: phone, tid: tid })
         }).then(() => {
-            alert("Success! Your data is saved.");
-            window.location.href = "data.html"; // Redirect to Admin Panel
+            alert("Application Submitted! Checking payment status...");
+            window.location.href = "data.html"; 
         }).catch(err => {
             alert("Error: " + err);
             btn.innerText = "JOIN NOW";
