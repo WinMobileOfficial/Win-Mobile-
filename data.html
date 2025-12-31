@@ -17,6 +17,7 @@
         .status-badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .approved { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
         .pending { background: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .rejected { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
     </style>
 </head>
 <body>
@@ -24,9 +25,9 @@
 <div class="admin-card">
     <div class="header-banner">GM Agency Master Admin</div>
     <button class="btn-spin" onclick="pickRandomWinner()">🎡 SPIN FOR RANDOM WINNER</button>
-    <button onclick="resetWinner()" style="background:#f39c12; color:white; border:none; padding:8px; border-radius:5px; cursor:pointer;">Reset Winner Display</button>
+    <button onclick="resetWinner()" style="background:#f39c12; color:white; border:none; padding:8px; border-radius:5px; cursor:pointer; font-weight:bold;">Reset Winner Display</button>
     
-    <h3>Total Participants: <span id="totalCount" style="color:#ff5252;">0</span></h3>
+    <h3>Total Participants: <span id="totalCount" style="color:#ff5252;">Loading...</span></h3>
 
     <table id="participantTable">
         <thead>
@@ -41,50 +42,70 @@
 </div>
 
 <script>
-    // PASSWORD SET TO 0770
+    // 1. PASSWORD LOCK
     const pass = prompt("Admin Password Darj Karein:");
     if (pass !== "0770") {
         alert("Access Denied!");
         window.location.href = "index.html";
     }
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjdEFHye4YdM9uhnXp_kaxFb4ZKCRUAsA0MK5CVoFreR_ajLnft7ilLEOsMs7CKeG7IQ/exec";
+    // 2. UPDATED SCRIPT URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzndEFHye4YdM9uhnXp_kaxFb4ZKCRUAsA0MK5CVoFreR_ajLnft7ilLEOsMs7CKeG7IQ/exec";
 
     async function loadData() {
         try {
+            console.log("Fetching data from:", SCRIPT_URL);
             let res = await fetch(SCRIPT_URL);
+            if (!res.ok) throw new Error("HTTP Error: " + res.status);
+            
             let data = await res.json();
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
-            document.getElementById("totalCount").innerText = data.length - 1;
-
-            data.slice(1).forEach((row, index) => {
-                let statusClass = row[4] === "Approved" ? "approved" : "pending";
-                tableBody.innerHTML += `
-                    <tr>
-                        <td><b>${row[0]}</b><br><span class="status-badge ${statusClass}">${row[4]}</span></td>
-                        <td>TID: ${row[2]}<br>Ph: ${row[1]}</td>
-                        <td>
-                            <button class="btn-approve" onclick="updateStatus(${index + 2}, 'Approved')">Approve</button>
-                            <button class="btn-reject" onclick="updateStatus(${index + 2}, 'Rejected')">Reject</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        } catch (e) { console.log("Load Error"); }
+            
+            if (data && data.length > 1) {
+                document.getElementById("totalCount").innerText = data.length - 1;
+                data.slice(1).forEach((row, index) => {
+                    let currentStatus = row[4] || "Pending";
+                    let statusClass = currentStatus.toLowerCase() === "approved" ? "approved" : 
+                                     (currentStatus.toLowerCase() === "rejected" ? "rejected" : "pending");
+                    
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td><b>${row[0]}</b><br><span class="status-badge ${statusClass}">${currentStatus}</span></td>
+                            <td>TID: ${row[2]}<br>Ph: ${row[1]}</td>
+                            <td>
+                                <button class="btn-approve" onclick="updateStatus(${index + 2}, 'Approved')">Approve</button>
+                                <button class="btn-reject" onclick="updateStatus(${index + 2}, 'Rejected')">Reject</button>
+                            </td>
+                        </tr>`;
+                });
+            } else {
+                document.getElementById("totalCount").innerText = "0";
+                tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No entries found in sheet.</td></tr>";
+            }
+        } catch (e) { 
+            console.error("Load Error:", e);
+            document.getElementById("totalCount").innerText = "Error Loading Data";
+        }
     }
 
     async function updateStatus(rowId, status) {
-        if(!confirm("Sure to " + status + "?")) return;
-        await fetch(SCRIPT_URL + "?row=" + rowId + "&status=" + status);
-        alert("Status Updated!");
-        loadData();
+        if(!confirm("Are you sure to " + status + " this user?")) return;
+        try {
+            let res = await fetch(SCRIPT_URL + "?row=" + rowId + "&status=" + status);
+            alert("Status Updated to: " + status);
+            loadData();
+        } catch (e) {
+            alert("Update Failed!");
+        }
     }
 
     async function pickRandomWinner() {
         let res = await fetch(SCRIPT_URL);
         let data = await res.json();
         let participants = data.length > 1 ? data.slice(1) : [];
+        
+        // Winner logic: Only picks 'Approved'
         let approvedParticipants = participants.filter(row => row[4] === "Approved");
 
         if(approvedParticipants.length > 0) {
@@ -94,17 +115,18 @@
             alert("Winner Picked: " + win[0]);
             window.location.href = "index.html";
         } else {
-            alert("Pehle kisi ko Approve karein!");
+            alert("Pehle kisi participant ko Approve karein!");
         }
     }
 
     function resetWinner() {
         localStorage.removeItem("luckyName");
         localStorage.removeItem("luckyTid");
-        alert("Winner Reset!");
+        alert("Winner Display Reset!");
         window.location.href = "index.html";
     }
 
+    // Initial load and auto-refresh every 10 seconds
     loadData();
     setInterval(loadData, 10000);
 </script>
