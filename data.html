@@ -3,107 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control - GM Agency</title>
+    <title>GM Agency - Admin Panel</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; text-align: center; }
-        .header { background-color: #ff6b6b; color: white; padding: 15px; font-weight: bold; }
-        .admin-controls { background: white; padding: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid #ddd; }
-        table { width: 100%; border-collapse: collapse; background: white; font-size: 13px; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #333; color: white; }
-        .btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; font-size: 11px; }
-        .btn-winner { background-color: #f1c40f; color: black; }
-        .btn-reset-top { background-color: #3498db; }
-        .btn-reset-all { background-color: #2c3e50; }
-        .btn-approve { background-color: #2ecc71; }
-        .btn-reject { background-color: #e74c3c; }
-        .btn-single-reset { background-color: #95a5a6; }
-        .winner-row { background-color: #f1c40f !important; font-weight: bold; }
-        .action-cell { display: flex; flex-direction: column; gap: 4px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 50px; text-align: center; }
+        .header { background: #ff6b6b; color: white; padding: 20px; font-size: 22px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .stats { background: white; margin: 15px auto; padding: 15px; width: 90%; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .loading-text { color: #888; font-style: italic; margin: 20px; }
+        table { width: 95%; margin: 10px auto; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+        th, td { border: 1px solid #eee; padding: 12px; font-size: 14px; text-align: left; }
+        th { background: #333; color: white; text-transform: uppercase; }
+        .btn-status { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; color: white; margin: 2px; }
+        .btn-approve { background: #27ae60; }
+        .btn-reject { background: #e74c3c; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .tid-text { color: #666; font-size: 11px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    Admin Control (NayaPay Only)<br>
-    <small>Account Holder: Muhammad Sarfraz</small>
+<div class="header">GM Agency Admin Control</div>
+
+<div class="stats">
+    <strong>Total Participants: </strong> <span id="count">0</span>
 </div>
 
-<div class="admin-controls">
-    <button class="btn btn-winner" onclick="pickWinner()">🎁 PICK WINNER</button>
-    <button class="btn btn-reset-top" onclick="resetWinner()">🔄 RESET RECENT WINNER</button>
-    <button class="btn btn-reset-all" onclick="resetAll()">🗑️ RESET ALL DATA</button>
-</div>
+<div id="loading" class="loading-text">Fetching latest data from Google Sheets...</div>
 
 <table>
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>TID</th>
+            <th>Participant Name</th>
+            <th>Contact & TID</th>
             <th>Action</th>
         </tr>
     </thead>
-    <tbody id="participantTable">
-        <tr id="row1">
-            <td>Mummad Sohail</td>
-            <td>03272299656</td>
-            <td>Easypaisa account (Galt)</td>
-            <td class="action-cell">
-                <button class="btn btn-approve" onclick="approveEntry('row1')">Approve</button>
-                <button class="btn btn-reject" onclick="rejectEntry('row1')">Reject</button>
-                <button class="btn btn-single-reset" onclick="resetSingle('row1')">Reset</button>
-            </td>
-        </tr>
-    </tbody>
+    <tbody id="participantTable"></tbody>
 </table>
 
 <script>
-    // 1. Random Winner Picker
-    function pickWinner() {
-        const rows = document.querySelectorAll("#participantTable tr");
-        if (rows.length === 0) return alert("Koi data nahi hai!");
-        rows.forEach(r => r.classList.remove("winner-row"));
-        const randomIndex = Math.floor(Math.random() * rows.length);
-        rows[randomIndex].classList.add("winner-row");
-        alert("Winner Picked: " + rows[randomIndex].cells[0].innerText);
-    }
+    // Aapka Google Script URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwBPqWCldY2mLqY8SA62KJGM77POOibQcHPWfTGaiwrKbahwD2C8cmdP7Lf8_RQ7u3MDg/exec";
 
-    // 2. Reset Recent Winner (Yellow Highlight hatane ke liye)
-    function resetWinner() {
-        document.querySelectorAll(".winner-row").forEach(r => r.classList.remove("winner-row"));
-        alert("Recent winner status reset!");
-    }
+    async function fetchFromSheet() {
+        try {
+            let response = await fetch(SCRIPT_URL);
+            let data = await response.json();
+            let table = document.getElementById("participantTable");
+            let countSpan = document.getElementById("count");
+            
+            document.getElementById("loading").style.display = "none";
+            table.innerHTML = "";
+            
+            // Row 2 se data lena (headings chor kar) aur ulta dikhana (Newest first)
+            let participants = data.slice(1).reverse();
+            countSpan.innerText = participants.length;
 
-    // 3. Reset All Data (Sari list khatam karne ke liye)
-    function resetAll() {
-        if(confirm("Kya aap saare participants ka data delete karna chahte hain?")) {
-            document.getElementById("participantTable").innerHTML = "";
-            alert("All participants deleted!");
+            participants.forEach((row) => {
+                if(row[0]) { 
+                    table.innerHTML += `<tr>
+                        <td><strong>${row[0]}</strong></td>
+                        <td>${row[1]} <br> <span class="tid-text">TID: ${row[2]}</span></td>
+                        <td>
+                            <button class="btn-status btn-approve">Approve</button>
+                            <button class="btn-status btn-reject">Reject</button>
+                        </td>
+                    </tr>`;
+                }
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            document.getElementById("loading").innerText = "Failed to load data. Please refresh.";
         }
     }
 
-    // 4. Approve Entry (Green karne ke liye)
-    function approveEntry(rowId) {
-        document.getElementById(rowId).style.backgroundColor = "#d4edda";
-        alert("Entry Approved!");
-    }
+    // Pehli baar load karne ke liye
+    window.onload = fetchFromSheet;
 
-    // 5. Reject Entry (List se nikalne ke liye)
-    function rejectEntry(rowId) {
-        if(confirm("Ye galat entry hai, delete kar dein?")) {
-            document.getElementById(rowId).remove();
-            alert("Entry Deleted!");
-        }
-    }
-
-    // 6. Single Reset (Sirf 1 bande ka status normal karne ke liye)
-    function resetSingle(rowId) {
-        const row = document.getElementById(rowId);
-        row.style.backgroundColor = "white";
-        row.classList.remove("winner-row");
-        alert("Is entry ka status wapis normal ho gaya!");
-    }
+    // Har 10 second baad auto-refresh karne ke liye
+    setInterval(fetchFromSheet, 10000);
 </script>
 
 </body>
