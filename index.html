@@ -5,110 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GM Agency - Official Earning Portal</title>
     <style>
-        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; line-height: 1.6; }
-        .container { max-width: 480px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        
-        /* AdSense Placeholder */
-        .ad-space { background: #f9f9f9; border: 1px dashed #ccc; padding: 10px; margin: 15px 0; font-size: 10px; color: #aaa; text-transform: uppercase; }
-
-        /* Welcome Box */
-        .welcome-box { background: linear-gradient(135deg, var(--secondary), #444); color: var(--gold); padding: 25px; border-radius: 15px; margin-bottom: 20px; border: 2px solid var(--gold); }
-        .welcome-box h2 { margin: 0; font-size: 24px; }
-        
-        .live-badge { background: #e8f5e9; color: #2e7d32; padding: 8px 18px; border-radius: 25px; font-size: 13px; font-weight: bold; margin-bottom: 15px; display: inline-block; border: 1px solid #c8e6c9; }
-        
-        /* Leaderboard */
-        .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: left; }
-        .top-user { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ffcc80; font-weight: bold; }
-        
-        .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 18px; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; box-shadow: 0 5px 15px rgba(255,160,0,0.3); }
-
-        /* Wheel */
-        #wheel { width: 170px; height: 170px; border: 8px solid var(--secondary); border-radius: 50%; margin: 20px auto; transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--gold) 0% 25%, var(--primary) 25% 50%, #ffffff 50% 75%, var(--secondary) 75% 100%); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-        #spinTimer { color: var(--primary); font-weight: bold; padding: 10px; display: none; }
-
-        /* Payment */
-        .pay-card { border: 2px solid var(--primary); background: #fff5f5; padding: 25px; border-radius: 15px; margin-bottom: 20px; }
-        .account-num { font-size: 32px; color: var(--primary); font-weight: 900; letter-spacing: 1px; }
-
-        .card { padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; background: #fff; }
-        input { width: 90%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; outline: none; }
-        .btn-red { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 17px; transition: 0.3s; }
-        
-        footer { background: var(--secondary); color: white; padding: 30px 20px; font-size: 12px; margin-top: 40px; }
-        footer a { color: var(--gold); text-decoration: none; margin: 0 10px; font-weight: bold; }
+        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --success: #4caf50; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; }
+        .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .ad-space { background: #eee; padding: 10px; margin: 10px 0; font-size: 10px; color: #999; border: 1px dashed #ccc; }
+        .welcome-box { background: linear-gradient(135deg, var(--secondary), #444); color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
+        .live-badge { background: #e8f5e9; color: #2e7d32; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; border: 1px solid #c8e6c9; }
+        .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left; }
+        .top-user { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #ffcc80; font-size: 13px; font-weight: bold; }
+        #wheel { width: 160px; height: 160px; border: 8px solid var(--secondary); border-radius: 50%; margin: 15px auto; transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--gold) 0% 25%, var(--primary) 25% 50%, #fff 50% 75%, var(--secondary) 75% 100%); }
+        #spinTimer { color: var(--primary); font-weight: bold; font-size: 13px; display: none; margin-top: 10px; }
+        .withdraw-card { background: #f1f8e9; border: 2px solid var(--success); padding: 15px; border-radius: 15px; margin-bottom: 15px; }
+        .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        .btn-red { background: var(--primary); color: white; }
+        .btn-green { background: var(--success); color: white; }
+        footer { background: var(--secondary); color: white; padding: 25px; font-size: 11px; margin-top: 20px; }
+        footer a { color: var(--gold); text-decoration: none; margin: 0 5px; }
     </style>
 </head>
 <body>
 
-<div class="ad-space">Google AdSense - Top Banner</div>
+<div class="ad-space">GOOGLE ADSENSE - TOP BANNER</div>
 
 <div class="container">
     <div class="welcome-box">
-        <h2>GM Agency Official</h2>
-        <p>Verified Earning & Prize Platform</p>
+        <h2 style="margin:0;">GM Agency Official</h2>
+        <p style="margin:5px 0 0; font-size:12px;">Verified Earning & Prize Platform</p>
     </div>
 
     <div class="live-badge">● Live Participants: <span id="realJoinCount">0</span></div>
 
     <div class="leaderboard">
-        <h4 style="margin:0 0 10px 0; color:#e65100; text-align:center;">🏆 Global Leaderboard</h4>
-        <div id="leaderboardContent">Syncing database...</div>
+        <h4 style="margin:0 0 10px 0; text-align:center; color:#e65100;">🏆 Global Leaderboard</h4>
+        <div id="leaderboardContent">Syncing with Sheet...</div>
     </div>
 
     <div class="coin-box">
         <span>🪙 Available Balance:</span>
-        <span id="userCoins" style="font-size: 28px;">0</span>
+        <span id="userCoins" style="font-size: 26px;">0</span>
     </div>
 
     <div class="card">
         <h4 style="margin:0;">🎡 Daily Reward Spin</h4>
         <div id="wheel"></div>
-        <button id="spinBtn" class="btn-red" onclick="spinWheel()" style="width: auto; padding: 10px 40px;">SPIN NOW</button>
-        <div id="spinTimer">Next spin available in: <span id="timerText">00:00:00</span></div>
+        <button id="spinBtn" class="btn btn-red" onclick="spinWheel()" style="width:auto; padding: 10px 30px;">SPIN NOW</button>
+        <div id="spinTimer">Next spin in: <span id="timerText">00:00:00</span></div>
     </div>
 
-    <div class="card" style="background:#fffde7; border:2px dashed #fbc02d;">
-        <h4 style="margin:0; color:#f57f17;">🔗 Referral Program</h4>
-        <p style="font-size:12px;">Share your link and earn 2 coins for every join!</p>
-        <div id="refLinkDisplay" style="background:#eee; padding:12px; border-radius:8px; font-size:11px; margin:10px 0; word-break:break-all;">Generate link below</div>
-        <button onclick="copyRefLink()" style="background:#fbc02d; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; width: 100%;">Copy Link</button>
+    <div class="withdraw-card">
+        <h4 style="margin:0; color:#2e7d32;">💸 Withdraw Earnings</h4>
+        <p style="font-size:11px; margin:5px 0;">Minimum threshold: <b>2000 Coins</b></p>
+        <button onclick="handleWithdraw()" class="btn btn-green">Request Withdrawal</button>
+    </div>
+
+    <div class="card" style="background:#fffde7; border:2px dashed var(--gold);">
+        <h4 style="margin:0; color:#f57f17;">🔗 Refer & Earn (2 Coins)</h4>
+        <div id="refLinkDisplay" style="background:#eee; padding:10px; border-radius:5px; font-size:10px; margin:10px 0; word-break:break-all;">Enter number in Status box to generate link</div>
+        <button onclick="copyRefLink()" class="btn" style="background:var(--gold);">Copy My Referral Link</button>
     </div>
 
     <div class="card" style="background:#e3f2fd;">
         <input type="number" id="checkPhone" placeholder="Enter WhatsApp Number" oninput="generateRefLink()">
-        <button onclick="checkStatus()" class="btn-red" style="background:#2196f3;">Check Account Status</button>
-        <div id="statusResult" style="display:none; margin-top:10px; padding:15px; border-radius:10px; font-weight:bold;"></div>
+        <button onclick="checkStatus()" class="btn" style="background:#2196f3; color:white;">Check Account Status</button>
+        <div id="statusResult" style="display:none; margin-top:10px; padding:10px; border-radius:8px; font-weight:bold; font-size:13px;"></div>
     </div>
 
-    <div class="pay-card">
-        <span style="color:var(--primary); font-weight:900;">NayaPay Official Payment</span>
-        <p style="font-size: 14px; margin: 10px 0;">Deposit Registration Fee <b>Rs. 300</b></p>
-        <div class="account-num">03186761010</div>
-        <div style="font-weight:bold; color:#333;">Title: Muhammad Sarfraz</div>
+    <div class="card" style="border: 2px solid var(--primary);">
+        <p style="font-size:12px; color:var(--primary); font-weight:bold;">NayaPay Fee: Rs. 300 to 03186761010</p>
+        <form id="regForm">
+            <input type="hidden" id="referrerId" value="Direct">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="number" id="phone" placeholder="WhatsApp Number" required>
+            <input type="text" id="tid" placeholder="Transaction ID (TID)" required>
+            <button type="submit" id="submitBtn" class="btn btn-red">CONFIRM REGISTRATION</button>
+        </form>
     </div>
-
-    <form id="regForm">
-        <input type="hidden" id="referrerId" value="Direct">
-        <input type="text" id="name" placeholder="Full Name" required>
-        <input type="number" id="phone" placeholder="WhatsApp Number" required>
-        <input type="text" id="tid" placeholder="Transaction ID (TID)" required>
-        <button type="submit" class="btn-red" id="submitBtn">CONFIRM REGISTRATION</button>
-    </form>
 </div>
 
-<div class="ad-space">Google AdSense - Bottom Banner</div>
+<div class="ad-space">GOOGLE ADSENSE - BOTTOM BANNER</div>
 
 <footer>
     <p>&copy; 2026 GM Agency Platform. All Rights Reserved.</p>
-    <div style="margin-top: 15px;">
-        <a href="about.html">About Us</a> | 
-        <a href="contact.html">Contact Us</a> | 
-        <a href="privacy.html">Privacy Policy</a> | 
-        <a href="terms.html">Terms & Conditions</a>
+    <div>
+        <a href="about.html">About</a> | <a href="contact.html">Contact</a> | 
+        <a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a>
     </div>
-    <p style="font-size: 10px; margin-top: 20px; opacity: 0.6;">Disclaimer: This platform is for rewards and digital agency services. Users must be 18+ to participate.</p>
 </footer>
 
 <script>
@@ -119,15 +103,14 @@
     function updateTimer() {
         const lastSpin = localStorage.getItem("last_spin_time");
         if (!lastSpin) return;
-        const now = new Date().getTime();
-        const diff = (parseInt(lastSpin) + (24 * 60 * 60 * 1000)) - now;
+        const diff = (parseInt(lastSpin) + (24 * 60 * 60 * 1000)) - new Date().getTime();
         if (diff > 0) {
             document.getElementById("spinBtn").style.display = "none";
             document.getElementById("spinTimer").style.display = "block";
             const h = Math.floor(diff / 3600000);
             const m = Math.floor((diff % 3600000) / 60000);
             const s = Math.floor((diff % 60000) / 1000);
-            document.getElementById("timerText").innerText = `${h}h ${m}s ${s}s`;
+            document.getElementById("timerText").innerText = `${h}h ${m}m ${s}s`;
             setTimeout(updateTimer, 1000);
         } else {
             document.getElementById("spinBtn").style.display = "inline-block";
@@ -139,65 +122,74 @@
         const wheel = document.getElementById("wheel");
         const deg = Math.floor(Math.random() * 360) + 1800;
         wheel.style.transform = `rotate(${deg}deg)`;
+        document.getElementById("spinBtn").disabled = true;
         setTimeout(() => {
             myCoins += 2;
             localStorage.setItem("gm_coins", myCoins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("Success! 2 Coins added to your wallet.");
+            alert("Congrats! 2 Coins added.");
             location.reload();
         }, 3100);
     }
 
-    async function fetchRealData() {
+    async function fetchLeaderboard() {
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
             document.getElementById("realJoinCount").innerText = data.length - 1;
-            let sorted = data.slice(1).sort((a, b) => (parseInt(b[5]) || 0) - (parseInt(a[5]) || 0)).slice(0, 5);
+            let sorted = data.slice(1).sort((a,b) => (parseInt(b[5]) || 0) - (parseInt(a[5]) || 0)).slice(0,5);
             let html = "";
-            sorted.forEach((u, i) => { html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[5] || 0} Coins</span></div>`; });
+            sorted.forEach((u,i) => { html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[5] || 0} Coins</span></div>`; });
             document.getElementById("leaderboardContent").innerHTML = html;
-        } catch (e) { }
+        } catch(e) {}
+    }
+
+    function handleWithdraw() {
+        const phone = document.getElementById("checkPhone").value;
+        if(!phone) { alert("Please enter your registered number in the Status box first!"); return; }
+        if(myCoins < 2000) { alert("Aapko withdraw ke liye 2000 coins chahiye. Zyada referrals karein!"); return; }
+        
+        const msg = `Withdrawal Request:\nPhone: ${phone}\nTotal Coins: ${myCoins}`;
+        window.open(`https://wa.me/923186761010?text=${encodeURIComponent(msg)}`);
     }
 
     function generateRefLink() {
-        const phone = document.getElementById("checkPhone").value;
-        if(phone.length > 9) document.getElementById("refLinkDisplay").innerText = window.location.origin + window.location.pathname + "?ref=" + phone;
+        const p = document.getElementById("checkPhone").value;
+        if(p.length > 9) document.getElementById("refLinkDisplay").innerText = window.location.origin + window.location.pathname + "?ref=" + p;
     }
 
     function copyRefLink() {
         const link = document.getElementById("refLinkDisplay").innerText;
-        if(link.includes("?ref=")) { navigator.clipboard.writeText(link); alert("Referral Link Copied!"); }
+        if(link.includes("?ref=")) { navigator.clipboard.writeText(link); alert("Link Copied!"); }
         else alert("Enter number first!");
     }
 
     async function checkStatus() {
-        const phone = document.getElementById("checkPhone").value.trim();
+        const p = document.getElementById("checkPhone").value.trim();
         const resDiv = document.getElementById("statusResult");
-        if(!phone) return;
-        resDiv.style.display = "block"; resDiv.innerHTML = "🔍 Verifying Account...";
+        if(!p) return;
+        resDiv.style.display = "block"; resDiv.innerHTML = "Checking database...";
         try {
             let res = await fetch(SCRIPT_URL + "?t=" + Date.now());
             let data = await res.json();
-            let user = data.find(r => r[1].toString().includes(phone.slice(-10)));
-            if(user) { 
-                let status = user[4] || 'Pending';
-                resDiv.innerHTML = `Hi ${user[0]}! Your current status is: ${status}`; 
-                resDiv.style.background = (status === "Approved") ? "#c8e6c9" : (status === "Rejected") ? "#ffcdd2" : "#fff9c4";
-            } else resDiv.innerHTML = "Number not registered.";
-        } catch(e) { }
+            let user = data.find(r => r[1].toString().includes(p.slice(-10)));
+            if(user) {
+                resDiv.innerHTML = `Name: ${user[0]} | Status: ${user[4] || 'Pending'}`;
+                resDiv.style.background = (user[4] === "Approved") ? "#c8e6c9" : "#fff9c4";
+            } else resDiv.innerHTML = "Not found in records.";
+        } catch(e) {}
     }
 
-    window.onload = function() {
-        fetchRealData(); updateTimer();
-        const params = new URLSearchParams(window.location.search);
-        if(params.has('ref')) document.getElementById("referrerId").value = params.get('ref');
+    window.onload = () => {
+        fetchLeaderboard(); updateTimer();
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('ref')) document.getElementById("referrerId").value = urlParams.get('ref');
     };
 
     document.getElementById("regForm").onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById("submitBtn");
-        btn.innerText = "Processing..."; btn.disabled = true;
+        btn.innerText = "Submitting..."; btn.disabled = true;
         const payload = {
             name: document.getElementById("name").value,
             phone: document.getElementById("phone").value,
@@ -205,7 +197,7 @@
             referrer: document.getElementById("referrerId").value
         };
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-        alert("Registration Submitted Successfully!");
+        alert("Registration Submitted!");
         location.reload();
     };
 </script>
