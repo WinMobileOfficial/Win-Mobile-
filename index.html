@@ -6,7 +6,7 @@
     <title>GM Agency - Official Earning Portal</title>
     <style>
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --success: #4caf50; }
-        /* Security: Block Copy/Selection */
+        /* Anti-Copy Security */
         body { 
             font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
@@ -21,20 +21,21 @@
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px; }
         .btn-red { background: var(--primary); color: white; }
-        /* Bada Font for Payment */
-        .promo-text { font-size: 22px; font-weight: 800; color: var(--primary); margin: 10px 0; display: block; line-height: 1.4; }
+        .promo-text { font-size: 22px; font-weight: 800; color: var(--primary); margin: 10px 0; display: block; }
         footer { background: var(--secondary); color: white; padding: 25px; font-size: 11px; margin-top: 20px; }
         footer a { color: var(--gold); text-decoration: none; margin: 0 5px; }
         #timerDisplay { font-weight: bold; color: var(--primary); margin-top: 10px; display: none; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="container">
+<body oncontextmenu="return false;">
+
+<div class="container">
     <div class="welcome-box">
         <h2 style="margin:0;">GM Agency Official</h2>
     </div>
 
     <div class="leaderboard">
-        <h4 style="margin:0 0 10px 0; text-align:center; color:#e65100;">🏆 Global Leaderboard (Approved)</h4>
+        <h4 style="margin:0 0 10px 0; text-align:center;">🏆 Global Leaderboard (Approved)</h4>
         <div id="leaderboardContent">Syncing with database...</div>
     </div>
 
@@ -46,28 +47,20 @@
     <div class="card">
         <h4 style="margin:0;">🎡 Daily Reward Spin</h4>
         <div id="wheel"></div>
-        <p id="lockMsg" style="color:red; font-size:12px; margin-top:10px;">⚠️ Enter WhatsApp number below to unlock!</p>
-        <button id="spinBtn" class="btn btn-red" onclick="spinWheel()" style="display:none; width:auto; padding: 10px 30px;">SPIN NOW</button>
-        <div id="timerDisplay">Next spin in: <span id="timeRemaining"></span></div>
+        <button id="spinBtn" class="btn btn-red" onclick="spinWheel()" style="width:auto; padding: 10px 30px; margin-top: 10px;">SPIN NOW</button>
+        <div id="timerDisplay">Next spin in: <span id="timeRemaining" style="font-size: 18px;"></span></div>
     </div>
 
     <div class="card" style="background:#e3f2fd;">
-        <input type="number" id="checkPhone" placeholder="Enter WhatsApp Number" oninput="handleSecurity()">
+        <input type="number" id="checkPhone" placeholder="Enter WhatsApp Number">
         <button onclick="checkStatus()" class="btn" style="background:#2196f3; color:white;">Check Account Status</button>
         <div id="statusResult" style="display:none; margin-top:10px; font-weight:bold;"></div>
-    </div>
-
-    <div class="card" style="background:#fffde7; border:2px dashed var(--gold);">
-        <h4 style="margin:0;">🔗 Private Referral Link</h4>
-        <p id="refLinkDisplay" style="font-size:10px; word-break:break-all; color:#666;">Enter number above to generate link</p>
-        <button onclick="copyRefLink()" class="btn" style="background:var(--gold);">Copy Link</button>
     </div>
 
     <div class="card" style="border: 3px solid var(--primary); background: #fff5f5;">
         <span class="promo-text">NayaPay: Rs. 300 to 03186761010</span>
         <p style="font-weight:bold; font-size:14px;">(Registration + Mobile Win Lucky Draw)</p>
         <form id="regForm">
-            <input type="hidden" id="refBy" value="Direct">
             <input type="text" id="name" placeholder="Full Name" required>
             <input type="number" id="phone" placeholder="WhatsApp Number" required>
             <input type="text" id="tid" placeholder="Transaction ID (TID)" required>
@@ -77,10 +70,9 @@
 </div>
 
 <footer>
-    <p>&copy; 2026 GM Agency Platform. All Rights Reserved.</p>
+    <p>&copy; 2026 GM Agency Platform</p>
     <div>
-        <a href="how-to.html">How it Works</a> | <a href="about.html">About</a> | 
-        <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms</a>
+        <a href="how-to.html">How it Works</a> | <a href="about.html">About</a> | <a href="privacy.html">Privacy</a>
     </div>
 </footer>
 
@@ -89,42 +81,31 @@
     let myCoins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = myCoins;
 
-    // Security: Block F12, Ctrl+U
-    document.onkeydown = (e) => {
-        if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) return false;
-    };
+    // Security Shortcuts
+    document.onkeydown = (e) => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
 
-    function handleSecurity() {
-        const p = document.getElementById("checkPhone").value;
+    function checkSpinAvailability() {
         const lastSpin = localStorage.getItem("last_spin_time");
         const now = new Date().getTime();
         const cooldown = 24 * 60 * 60 * 1000;
 
-        // Masking logic
-        if(p.length > 9) {
-            document.getElementById("refLinkDisplay").innerText = window.location.origin + window.location.pathname + "?ref=" + btoa(p);
-            
-            if (!lastSpin || (now - lastSpin >= cooldown)) {
-                document.getElementById("spinBtn").style.display = "inline-block";
-                document.getElementById("lockMsg").style.display = "none";
-                document.getElementById("timerDisplay").style.display = "none";
-            } else {
-                startTimer(lastSpin, cooldown);
-            }
+        if (lastSpin && (now - lastSpin < cooldown)) {
+            document.getElementById("spinBtn").style.display = "none";
+            document.getElementById("timerDisplay").style.display = "block";
+            startTimer(lastSpin, cooldown);
+        } else {
+            document.getElementById("spinBtn").style.display = "inline-block";
+            document.getElementById("timerDisplay").style.display = "none";
         }
     }
 
     function startTimer(lastSpin, cooldown) {
-        document.getElementById("spinBtn").style.display = "none";
-        document.getElementById("lockMsg").style.display = "none";
-        document.getElementById("timerDisplay").style.display = "block";
-        
         const timerInterval = setInterval(() => {
             const now = new Date().getTime();
             const distance = (parseInt(lastSpin) + cooldown) - now;
             if (distance < 0) {
                 clearInterval(timerInterval);
-                handleSecurity();
+                checkSpinAvailability();
                 return;
             }
             const h = Math.floor(distance / 3600000);
@@ -143,7 +124,7 @@
             myCoins += 2;
             localStorage.setItem("gm_coins", myCoins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("2 Coins added! Spin again in 24 hours.");
+            alert("2 Coins added!");
             location.reload();
         }, 3100);
     }
@@ -152,42 +133,16 @@
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
-            // Approved only logic
             let approved = data.slice(1).filter(r => r[4] === "Approved").sort((a,b) => b[5]-a[5]).slice(0,5);
             let html = "";
             approved.forEach((u,i) => {
                 html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[5] || 0} Coins</span></div>`;
             });
             document.getElementById("leaderboardContent").innerHTML = html;
-        } catch(e) { document.getElementById("leaderboardContent").innerText = "Database offline."; }
+        } catch(e) {}
     }
 
-    function copyRefLink() {
-        const link = document.getElementById("refLinkDisplay").innerText;
-        if(link.includes("?ref=")) { navigator.clipboard.writeText(link); alert("Private Link Copied!"); }
-    }
-
-    async function checkStatus() {
-        const p = document.getElementById("checkPhone").value;
-        const resDiv = document.getElementById("statusResult");
-        resDiv.style.display = "block"; resDiv.innerHTML = "Searching...";
-        try {
-            const res = await fetch(SCRIPT_URL);
-            const data = await res.json();
-            const user = data.find(r => r[1].toString().includes(p));
-            if(user) {
-                resDiv.innerHTML = "Status: " + user[4];
-                resDiv.style.color = (user[4] === "Approved") ? "green" : "orange";
-            } else { resDiv.innerHTML = "Number not found."; }
-        } catch(e) { resDiv.innerHTML = "Error checking status."; }
-    }
-
-    window.onload = () => {
-        fetchLeaderboard();
-        const params = new URLSearchParams(window.location.search);
-        if(params.has('ref')) document.getElementById("refBy").value = atob(params.get('ref'));
-        handleSecurity();
-    };
+    window.onload = () => { fetchLeaderboard(); checkSpinAvailability(); };
 </script>
 </body>
 </html>
