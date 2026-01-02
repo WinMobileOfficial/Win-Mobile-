@@ -6,7 +6,7 @@
     <title>GM Agency - Official Earning Portal</title>
     <style>
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --success: #4caf50; }
-        /* Anti-Copy & Text Selection Block */
+        /* Security: Text Selection Block */
         body { 
             font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
@@ -30,9 +30,7 @@
         footer a { color: var(--gold); text-decoration: none; margin: 0 5px; }
     </style>
 </head>
-<body oncontextmenu="return false;">
-
-<div class="ad-space">GOOGLE ADSENSE - TOP BANNER</div>
+<body oncontextmenu="return false;"> <div class="ad-space">GOOGLE ADSENSE - TOP BANNER</div>
 
 <div class="container">
     <div class="welcome-box">
@@ -46,7 +44,7 @@
     </div>
 
     <div class="coin-box">
-        <span>🪙 My Balance:</span>
+        <span>🪙 Total Coins:</span>
         <span id="userCoins" style="font-size: 26px;">0</span>
     </div>
 
@@ -91,13 +89,15 @@
 <footer>
     <p>&copy; 2026 GM Agency Platform. All Rights Reserved.</p>
     <div>
-        <a href="about.html">About</a> | <a href="contact.html">Contact</a> | 
-        <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms</a>
+        <a href="how-to.html">How it Works</a> | 
+        <a href="privacy.html">Privacy Policy</a> | 
+        <a href="terms.html">Terms</a> | 
+        <a href="about.html">About</a>
     </div>
 </footer>
 
 <script>
-    // Security Script: Block Inspect & Shortcuts
+    // Security: Block F12 aur Ctrl+U
     document.onkeydown = function(e) {
         if(event.keyCode == 123) return false;
         if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
@@ -137,7 +137,7 @@
     function copyRefLink() {
         const link = document.getElementById("refLinkDisplay").innerText;
         if(link.includes("?ref=")) { navigator.clipboard.writeText(link); alert("Private Link Copied!"); }
-        else alert("Enter number in Status box first!");
+        else alert("Enter number first!");
     }
 
     function spinWheel() {
@@ -149,7 +149,7 @@
             myCoins += 2;
             localStorage.setItem("gm_coins", myCoins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("2 Coins added! Spin again in 24h.");
+            alert("Congrats! 2 Coins added.");
             location.reload();
         }, 3100);
     }
@@ -174,7 +174,7 @@
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
-            // Sort by coins (column F/index 5)
+            // Sort karke sirf top 5 approved users dikhaye ga
             let sorted = data.slice(1).sort((a,b) => (parseInt(b[5]) || 0) - (parseInt(a[5]) || 0)).slice(0,5);
             let html = "";
             sorted.forEach((u,i) => { html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[5] || 0} Coins</span></div>`; });
@@ -183,7 +183,7 @@
     }
 
     function handleWithdraw() {
-        alert("Withdrawal Feature: COMING SOON! 🚀\n\nHum system ko mazeed secure bana rahe hain. Tab tak aap zyada se zyada coins jama karein!");
+        alert("Withdrawal Feature: COMING SOON! 🚀");
     }
 
     async function checkStatus() {
@@ -219,7 +219,7 @@
             referrer: document.getElementById("referrerId").value
         };
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-        alert("Registration Submitted Successfully!");
+        alert("Registration Submitted!");
         location.reload();
     };
 </script>
