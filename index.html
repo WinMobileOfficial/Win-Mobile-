@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GM Agency - Official Earning Portal</title>
     <style>
-        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --success: #4caf50; }
-        /* Security Layer */
+        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; }
         body { 
             font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333;
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            -webkit-user-select: none; user-select: none;
         }
         .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .welcome-box { background: linear-gradient(135deg, var(--secondary), #444); color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left; }
-        .top-user { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #ffcc80; font-size: 13px; font-weight: bold; }
+        .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left; min-height: 50px; }
+        .top-user { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ffcc80; font-size: 14px; font-weight: bold; }
         #wheel { width: 160px; height: 160px; border: 8px solid var(--secondary); border-radius: 50%; margin: 15px auto; transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--gold) 0% 25%, var(--primary) 25% 50%, #fff 50% 75%, var(--secondary) 75% 100%); }
         .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; }
         .btn-red { background: var(--primary); color: white; }
-        /* Payment Highlight */
-        .promo-text { font-size: 24px; font-weight: 800; color: var(--primary); margin: 10px 0; display: block; line-height: 1.2; }
+        .promo-text { font-size: 24px; font-weight: 800; color: var(--primary); margin: 10px 0; display: block; }
         footer { background: var(--secondary); color: white; padding: 25px; font-size: 11px; margin-top: 20px; }
         footer a { color: var(--gold); text-decoration: none; margin: 0 5px; }
         #timerDisplay { font-weight: bold; color: var(--primary); margin-top: 10px; display: none; font-size: 18px; }
@@ -37,7 +35,7 @@
 
     <div class="leaderboard">
         <h4 style="margin:0 0 10px 0; text-align:center; color:#e65100;">🏆 Approved Leaderboard</h4>
-        <div id="leaderboardContent">Loading Data...</div>
+        <div id="leaderboardContent">Fetching entries...</div>
     </div>
 
     <div class="coin-box">
@@ -78,33 +76,51 @@
 </footer>
 
 <script>
+    // Paste your Google Script Web App URL here
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxn29PGGfYfIpzCX1rwYeqjm2fmqVUFp0LFNDw3usNatZHa2Kl3Za3qwTaG050xb1yv_A/exec";
+
     let myCoins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = myCoins;
 
-    // Hardcore Security
-    document.onkeydown = (e) => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) return false; };
+    // Fetch Leaderboard (Approved Only)
+    async function fetchLeaderboard() {
+        try {
+            // Added ?t= for fresh data fetching
+            const res = await fetch(SCRIPT_URL + "?t=" + new Date().getTime());
+            const data = await res.json();
+            
+            // Filters data where Status (Column E/Index 4) is "Approved"
+            let approved = data.slice(1).filter(r => r[4] === "Approved");
+            
+            if (approved.length === 0) {
+                document.getElementById("leaderboardContent").innerHTML = "<center>No approved entries yet.</center>";
+                return;
+            }
+
+            let html = "";
+            approved.sort((a,b) => (b[5]||0) - (a[5]||0)).slice(0,5).forEach((u,i) => {
+                html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[5] || 0} Coins</span></div>`;
+            });
+            document.getElementById("leaderboardContent").innerHTML = html;
+        } catch(e) {
+            document.getElementById("leaderboardContent").innerHTML = "<center>Check connection.</center>";
+        }
+    }
 
     function checkSpinStatus() {
         const lastSpin = localStorage.getItem("last_spin_time");
-        const now = new Date().getTime();
         const cooldown = 24 * 60 * 60 * 1000;
-
-        if (lastSpin && (now - lastSpin < cooldown)) {
+        if (lastSpin && (new Date().getTime() - lastSpin < cooldown)) {
             document.getElementById("spinBtn").style.display = "none";
             document.getElementById("timerDisplay").style.display = "block";
             updateTimer(lastSpin, cooldown);
-        } else {
-            document.getElementById("spinBtn").style.display = "inline-block";
-            document.getElementById("timerDisplay").style.display = "none";
         }
     }
 
     function updateTimer(lastSpin, cooldown) {
-        const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = (parseInt(lastSpin) + cooldown) - now;
-            if (distance < 0) { clearInterval(timer); checkSpinStatus(); return; }
+        setInterval(() => {
+            const distance = (parseInt(lastSpin) + cooldown) - new Date().getTime();
+            if (distance < 0) { location.reload(); return; }
             const h = Math.floor(distance / 3600000);
             const m = Math.floor((distance % 3600000) / 60000);
             const s = Math.floor((distance % 60000) / 1000);
@@ -121,36 +137,12 @@
             myCoins += 2;
             localStorage.setItem("gm_coins", myCoins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("2 Coins added! Next spin in 24 hours.");
+            alert("2 Coins added!");
             location.reload();
         }, 3100);
     }
 
-    async function fetchLeaderboard() {
-        try {
-            const res = await fetch(SCRIPT_URL);
-            const data = await res.json();
-            let approved = data.slice(1).filter(r => r[4] === "Approved").sort((a,b) => b[5]-a[5]).slice(0,5);
-            let html = "";
-            approved.forEach((u,i) => { html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[5] || 0} Coins</span></div>`; });
-            document.getElementById("leaderboardContent").innerHTML = html;
-        } catch(e) { document.getElementById("leaderboardContent").innerText = "Database Offline."; }
-    }
-
-    async function checkStatus() {
-        const p = document.getElementById("checkPhone").value;
-        const resDiv = document.getElementById("statusResult");
-        resDiv.style.display = "block"; resDiv.innerHTML = "Checking...";
-        try {
-            const res = await fetch(SCRIPT_URL);
-            const data = await res.json();
-            const user = data.find(r => r[1].toString().includes(p));
-            if(user) {
-                resDiv.innerHTML = "Status: " + user[4];
-                resDiv.style.color = (user[4] === "Approved") ? "green" : "orange";
-            } else { resDiv.innerHTML = "Not Registered."; }
-        } catch(e) {}
-    }
-
     window.onload = () => { fetchLeaderboard(); checkSpinStatus(); };
-    
+</script>
+</body>
+</html>
