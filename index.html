@@ -6,7 +6,6 @@
     <title>GM Agency - Official Earning Portal</title>
     <style>
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; }
-        /* Security Layer */
         body { 
             font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333;
             -webkit-user-select: none; user-select: none;
@@ -15,6 +14,7 @@
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left; }
+        .total-counter { text-align:center; font-weight:bold; color:var(--primary); margin-bottom:10px; font-size:16px; border-bottom: 2px dashed #ffcc80; padding-bottom: 8px; }
         .top-user { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ffcc80; font-size: 14px; font-weight: bold; }
         #wheel { width: 160px; height: 160px; border: 8px solid #333; border-radius: 50%; margin: 15px auto; transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--gold) 0% 25%, var(--primary) 25% 50%, #fff 50% 75%, #333 75% 100%); }
         .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
@@ -33,6 +33,7 @@
     <div class="welcome-box"><h2 style="margin:0;">GM Agency Official</h2></div>
 
     <div class="leaderboard">
+        <div id="totalJoined" class="total-counter">👥 Total Participants: Loading...</div>
         <h4 style="margin:0 0 10px 0; text-align:center; color:#e65100;">🏆 Approved Leaderboard</h4>
         <div id="leaderboardContent">Syncing Live Entries...</div>
     </div>
@@ -80,17 +81,21 @@
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = coins;
 
-    // Fresh Leaderboard Logic
+    // Fresh Sync for Total Participants & Leaderboard
     async function fetchLeaderboard() {
         try {
             const res = await fetch(SCRIPT_URL + "?nocache=" + new Date().getTime());
             const data = await res.json();
             
-            // Filter: Column E (index 4) must be 'Approved'
+            // 1. Show Total Participants (all rows except header)
+            let total = data.length - 1;
+            document.getElementById("totalJoined").innerText = "👥 Total Participants: " + (total > 0 ? total : 0);
+            
+            // 2. Filter: Column E (index 4) for 'Approved'
             let approved = data.slice(1).filter(r => r[4] === "Approved");
             
             if (approved.length === 0) {
-                document.getElementById("leaderboardContent").innerHTML = "<center>Waiting for approvals...</center>";
+                document.getElementById("leaderboardContent").innerHTML = "<center>No entries approved yet.</center>";
                 return;
             }
 
@@ -106,7 +111,7 @@
         } catch(e) { document.getElementById("leaderboardContent").innerText = "Syncing Error..."; }
     }
 
-    // Spin & 24h Timer Logic
+    // Spin & Timer logic
     function checkSpin() {
         const last = localStorage.getItem("last_spin_time");
         const cooldown = 24 * 60 * 60 * 1000;
