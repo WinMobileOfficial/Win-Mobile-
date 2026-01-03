@@ -12,26 +12,26 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left; }
         
-        /* Stylish Wheel & Pointer */
+        /* Wheel Pointer */
         .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
 
-        /* Registration & Footer */
         .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .btn-red { background: var(--primary); color: white; }
-        footer { background: #333; color: white; padding: 25px; font-size: 11px; margin-top: 20px; margin-bottom: 80px; }
-        footer a { color: #fff; text-decoration: none; margin: 0 5px; }
         
-        /* WhatsApp Floating Bot Icon */
+        /* Fixed Footer & Service Tags */
+        footer { background: #222; color: white; padding: 30px 10px; font-size: 13px; margin-top: 20px; border-radius: 20px 20px 0 0; }
+        .service-tags { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .tag { background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 11px; }
+        
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index:9999; display:flex; align-items:center; justify-content:center; text-decoration:none; }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
 <div class="container">
     <a href="services.html" class="poppo-banner">
@@ -43,14 +43,15 @@
 
     <div class="card" style="background: #f0fdf4; border: 2px solid #22c55e;">
         <h4 style="margin:0; color: #166534;">🎁 Redeem Your Reward</h4>
-        <p style="font-size: 12px;">100 Coins poore karein aur Poppo Gift hasil karein!</p>
+        <p style="font-size: 12px; margin: 5px 0;">100 Coins poore karein aur Poppo Gift hasil karein!</p>
         <button id="redeemBtn" onclick="redeemCoins()" class="btn" style="background: #22c55e; color: white;">CLAIM GIFT (100 COINS)</button>
     </div>
 
-    <div class="leaderboard">
-        <div id="totalJoined" style="text-align:center; font-weight:bold; color:var(--primary);">👥 Total Participants: Loading...</div>
-        <h4 style="text-align:center; color:#e65100;">🏆 Approved Leaderboard</h4>
-        <div id="leaderboardContent">Syncing Live Entries...</div>
+    <div id="leaderboard" class="card" style="background: #fff3e0;">
+        <div id="totalJoined" style="font-weight:bold; color:var(--primary);">👥 Total Participants: 2</div>
+        <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
+        <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #ffcc80;"><span>#1 Ghulam Mujtaba</span> <span>10 Coins</span></div>
+        <div style="display:flex; justify-content:space-between; padding:5px 0;"><span>#2 Saeed Umar</span> <span>0 Coins</span></div>
     </div>
 
     <div class="coin-box">
@@ -66,16 +67,12 @@
                 <g transform="rotate(-90 100 100)">
                     <path d="M100 100 L200 100 A100 100 0 0 1 130.9 195.1 Z" fill="#ffd700"/>
                     <text x="145" y="145" fill="#333" font-weight="bold" font-size="16" transform="rotate(36 145 145)">2</text>
-                    
                     <path d="M100 100 L130.9 195.1 A100 100 0 0 1 19.1 158.8 Z" fill="#ff5252"/>
                     <text x="85" y="165" fill="white" font-weight="bold" font-size="16" transform="rotate(108 85 165)">3</text>
-                    
                     <path d="M100 100 L19.1 158.8 A100 100 0 0 1 19.1 41.2 Z" fill="#ffffff" stroke="#eee"/>
                     <text x="45" y="105" fill="#333" font-weight="bold" font-size="16" transform="rotate(180 45 105)">4</text>
-                    
                     <path d="M100 100 L19.1 41.2 A100 100 0 0 1 130.9 4.9 Z" fill="#333333"/>
                     <text x="85" y="45" fill="white" font-weight="bold" font-size="16" transform="rotate(252 85 45)">X</text>
-                    
                     <path d="M100 100 L130.9 4.9 A100 100 0 0 1 200 100 Z" fill="#ff007f"/>
                     <text x="145" y="65" fill="white" font-weight="bold" font-size="16" transform="rotate(324 145 65)">1</text>
                 </g>
@@ -102,7 +99,16 @@
 <footer>
     <p>&copy; 2026 GM Agency Official</p>
     <p>📧 Email: Poppoliveofficial123@gmail.com</p>
-    <div><a href="how-to.html">How it Works</a> | <a href="about.html">About</a> | <a href="terms.html">Terms</a></div>
+    <div style="margin: 15px 0;">
+        <a href="how-to.html" style="color:white;">How it Works</a> | 
+        <a href="about.html" style="color:white;">About Us</a> | 
+        <a href="terms.html" style="color:white;">Terms</a>
+    </div>
+    <div class="service-tags">
+        <a href="services.html" class="tag">Poppo Recharge</a>
+        <a href="services.html" class="tag">Lucky Draw</a>
+        <a href="services.html" class="tag">Daily Rewards</a>
+    </div>
 </footer>
 
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">
@@ -110,9 +116,23 @@
 </a>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxn29PGGfYfIpzCX1rwYeqjm2fmqVUFp0LFNDw3usNatZHa2Kl3Za3qwTaG050xb1yv_A/exec";
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = coins;
+
+    function redeemCoins() {
+        if (coins < 100) { 
+            alert("Aapko gift claim karne ke liye 100 coins chahiye. Aapke paas abhi " + coins + " coins hain."); 
+        } else {
+            if (confirm("Kya aap 100 coins redeem karke gift hasil karna chahte hain?")) {
+                coins -= 100;
+                localStorage.setItem("gm_coins", coins);
+                document.getElementById("userCoins").innerText = coins;
+                const msg = "GM Agency! Maine 100 coins poore kar liye hain. Mera gift send kar dein.";
+                window.open("https://wa.me/923023313131?text=" + encodeURIComponent(msg), "_blank");
+                location.reload();
+            }
+        }
+    }
 
     function spinWheel() {
         const wheel = document.getElementById("wheel");
@@ -120,25 +140,12 @@
         wheel.style.transform = `rotate(${randomDeg}deg)`;
         document.getElementById("spinBtn").disabled = true;
         setTimeout(() => {
-            coins += 2; // Always 2 coins fixed payout
+            coins += 2;
             localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("🎉 Congratulations! You won 2 Coins!");
+            alert("🎉 Mubarak! Aapne 2 Coins jeet liye hain.");
             location.reload();
         }, 4100);
-    }
-
-    async function fetchLeaderboard() {
-        try {
-            const res = await fetch(SCRIPT_URL + "?nocache=" + new Date().getTime());
-            const data = await res.json();
-            document.getElementById("totalJoined").innerText = "👥 Total Participants: " + (data.length - 1);
-            let approved = data.slice(1).filter(r => r[4] === "Approved");
-            approved.sort((a, b) => (parseInt(b[6]) || 0) - (parseInt(a[6]) || 0));
-            let html = "";
-            approved.slice(0, 5).forEach((u, i) => { html += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee;"><span>#${i+1} ${u[0]}</span> <span>${u[6] || 0} Coins</span></div>`; });
-            document.getElementById("leaderboardContent").innerHTML = html || "No entries approved yet.";
-        } catch(e) {}
     }
 
     function checkSpin() {
@@ -153,13 +160,7 @@
             }, 1000);
         }
     }
-
-    window.onload = () => { fetchLeaderboard(); checkSpin(); };
-    document.getElementById("regForm").onsubmit = async (e) => {
-        e.preventDefault(); document.getElementById("subBtn").innerText = "Submitting...";
-        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ name: document.getElementById("name").value, phone: document.getElementById("phone").value, tid: document.getElementById("tid").value }) });
-        alert("Submitted!"); location.reload();
-    };
+    window.onload = checkSpin;
 </script>
 </body>
 </html>
