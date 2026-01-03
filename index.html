@@ -3,122 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM Agency - Official Premium Portal</title>
+    <title>GM Agency - Official Earning Portal</title>
     <style>
-        :root { --primary: #ff5252; --dark: #1a1a1a; --gold: #ffb400; --bg: #f0f2f5; --success: #28a745; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; }
+        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; scroll-behavior: smooth; }
+        .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+        .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: pulse 2s infinite; text-decoration: none; display: block; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
+        .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         
-        .container { max-width: 450px; margin: 10px auto; background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); padding-bottom: 20px; }
-        
-        .header { background: var(--dark); color: var(--gold); padding: 25px 10px; border-bottom: 4px solid var(--gold); }
-        .header h2 { margin: 0; letter-spacing: 1px; text-transform: uppercase; font-size: 20px; }
+        .redeem-card { background: #fff; padding: 10px; border-radius: 15px; border: 2px dashed #ccc; margin-bottom: 15px; }
+        .btn-redeem { width: 100%; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: not-allowed; background: #e0e0e0; color: #888; transition: 0.3s; font-size: 14px; }
+        .btn-redeem.active { background: linear-gradient(45deg, #ffd700, #ffa000); color: #000; cursor: pointer; border: 1px solid #b8860b; box-shadow: 0 4px 10px rgba(255,215,0,0.3); }
 
-        .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 12px; border-radius: 12px; margin: 15px; font-weight: bold; border: 1px solid var(--gold); cursor: pointer; text-decoration: none; display: block; font-size: 14px; }
-        
-        .coin-box { background: linear-gradient(135deg, #222, #444); color: var(--gold); margin: 0 15px 15px; padding: 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--gold); }
-        
-        .btn-redeem { width: 92%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; background: #e0e0e0; color: #888; transition: 0.3s; font-size: 14px; margin-bottom: 15px; }
-        .btn-redeem.active { background: linear-gradient(45deg, var(--gold), #ff8c00); color: #000; cursor: pointer; }
-
-        .card { background: white; margin: 0 15px 15px; padding: 18px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eee; }
-        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
-        .btn-action { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: var(--dark); color: white; }
-
-        /* Wheel Section */
-        .wheel-container { position: relative; width: 180px; height: 180px; margin: 10px auto; }
-        #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.1, 0, 0.1, 1); }
-        .pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 20px solid var(--dark); z-index: 10; }
-
-        /* Footer & Tags Styles */
-        footer { background: var(--dark); color: #fff; padding: 30px 10px; font-size: 13px; border-radius: 25px 25px 0 0; }
-        .footer-links { margin: 15px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .footer-links a { color: #aaa; text-decoration: none; border-bottom: 1px solid #444; padding-bottom: 2px; }
-        
-        .service-tags { display: flex; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-        .tag { background: var(--gold); color: #000; padding: 8px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 11px; text-transform: uppercase; }
-
-        .wa-float { position:fixed; width:55px; height:55px; bottom:20px; right:20px; background:#25d336; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index:100; font-weight:bold; font-size: 18px; }
+        .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
+        #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
+        .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-red { background: var(--primary); color: white; }
+        footer { background: #1a1a1a; color: white; padding: 30px 10px; font-size: 14px; margin-top: 20px; border-radius: 25px 25px 0 0; }
+        .footer-links a { color: white; text-decoration: underline; margin: 0 8px; font-size: 13px; }
+        .service-tags { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .tag { background: var(--gold); color: #000; padding: 8px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 12px; cursor: pointer; }
+        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:18px; font-weight:bold; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index:9999; display:flex; align-items:center; justify-content:center; text-decoration:none; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
 <div class="container">
-    <div class="header">
-        <h2>GM Agency Official</h2>
+    <a href="services.html" class="poppo-banner">🔥 POPPO LIVE SPECIAL OFFER 🔥<br><span style="font-size: 12px;">Cheapest Coins Recharge - Click Here!</span></a>
+    <div class="welcome-box"><h2>GM Agency Official</h2></div>
+
+    <div id="leaderboard" class="card" style="background: #fff3e0;">
+        <div style="font-weight:bold; color:var(--primary);">👥 Total Participants: 2</div>
+        <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
+        <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;"><span>#1 Ghulam Mujtaba</span> <span>10 Coins</span></div>
+        <div style="display:flex; justify-content:space-between; padding:5px 0;"><span>#2 Saeed Umar</span> <span>0 Coins</span></div>
     </div>
 
-    <a href="services.html" class="poppo-banner">🌟 POPPO LIVE COINS RECHARGE 🌟<br>Click for Cheapest Rates</a>
+    <div class="coin-box"><span>🪙 My Coins:</span><span id="userCoins" style="font-size: 26px;">0</span></div>
 
-    <div class="coin-box">
-        <div style="text-align: left;"><small style="color: #888;">Balance</small><br><span style="font-size: 26px; font-weight: 800;">🪙 <span id="userCoins">0</span></span></div>
-        <div style="font-size: 11px; opacity: 0.7;">GM COINS</div>
+    <div class="redeem-card">
+        <button id="redeemBtn" onclick="redeemCoins()" class="btn-redeem">Redeem (Minimum 200 Coins Required)</button>
     </div>
 
-    <button id="redeemBtn" onclick="redeemCoins()" class="btn-redeem">Redeem (Min 200 Required)</button>
-
-    <div class="card">
-        <h4>🔍 Check Your Status</h4>
+    <div class="card" style="border: 2px solid #333; background: #f9f9f9;">
+        <h4 style="margin:0; color: #333;">🔍 Check Your Status</h4>
         <input type="number" id="checkPhone" placeholder="WhatsApp Number">
-        <button onclick="checkUserStatus()" class="btn-action" style="background: var(--dark); color: white;">CHECK STATUS</button>
-        <div id="statusResult" style="margin-top: 12px; font-weight: bold;"></div>
+        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white; padding: 10px; height: auto;">CHECK STATUS</button>
+        <div id="statusResult" style="margin-top: 10px; font-weight: bold;"></div>
     </div>
 
-    <div class="card" id="daily-rewards">
-        <h4>🎡 Daily Reward Spin</h4>
+    <div class="card" id="spin-section">
+        <h4 style="margin:0;">🎡 Daily Reward Spin</h4>
         <div class="wheel-container">
-            <div class="pointer"></div>
+            <div class="wheel-pointer"></div>
             <svg id="wheel" viewBox="0 0 200 200">
                 <g transform="rotate(-90 100 100)">
-                    <path d="M100 100 L200 100 A100 100 0 0 1 130.9 195.1 Z" fill="#ffb400"/><text x="145" y="145" font-size="14" transform="rotate(36 145 145)">2</text>
-                    <path d="M100 100 L130.9 195.1 A100 100 0 0 1 19.1 158.8 Z" fill="#ff5252"/><text x="85" y="165" fill="white" font-size="14" transform="rotate(108 85 165)">3</text>
-                    <path d="M100 100 L19.1 158.8 A100 100 0 0 1 19.1 41.2 Z" fill="#222"/><text x="45" y="105" fill="white" font-size="14" transform="rotate(180 45 105)">4</text>
-                    <path d="M100 100 L19.1 41.2 A100 100 0 0 1 130.9 4.9 Z" fill="#555"/><text x="85" y="45" fill="white" font-size="14" transform="rotate(252 85 45)">X</text>
-                    <path d="M100 100 L130.9 4.9 A100 100 0 0 1 200 100 Z" fill="#ff007f"/><text x="145" y="65" fill="white" font-size="14" transform="rotate(324 145 65)">1</text>
+                    <path d="M100 100 L200 100 A100 100 0 0 1 130.9 195.1 Z" fill="#ffd700"/><text x="145" y="145" font-size="16" transform="rotate(36 145 145)">2</text>
+                    <path d="M100 100 L130.9 195.1 A100 100 0 0 1 19.1 158.8 Z" fill="#ff5252"/><text x="85" y="165" fill="white" font-size="16" transform="rotate(108 85 165)">3</text>
+                    <path d="M100 100 L19.1 158.8 A100 100 0 0 1 19.1 41.2 Z" fill="#ffffff" stroke="#eee"/><text x="45" y="105" font-size="16" transform="rotate(180 45 105)">4</text>
+                    <path d="M100 100 L19.1 41.2 A100 100 0 0 1 130.9 4.9 Z" fill="#333333"/><text x="85" y="45" fill="white" font-size="16" transform="rotate(252 85 45)">X</text>
+                    <path d="M100 100 L130.9 4.9 A100 100 0 0 1 200 100 Z" fill="#ff007f"/><text x="145" y="65" fill="white" font-size="16" transform="rotate(324 145 65)">1</text>
                 </g>
+                <circle cx="100" cy="100" r="15" fill="white" stroke="#333" stroke-width="2"/>
             </svg>
         </div>
-        <button id="spinBtn" class="btn-action" onclick="spinWheel()" style="width:auto; padding: 10px 40px; background: var(--primary);">SPIN NOW</button>
-        <div id="timerDisplay" style="display:none; color:var(--primary); margin-top:10px; font-size: 13px; font-weight: bold;">Next Spin: <span id="timeRemaining"></span></div>
+        <button id="spinBtn" class="btn btn-red" onclick="spinWheel()" style="width:auto; padding: 10px 30px;">SPIN NOW</button>
+        <div id="timerDisplay" style="display:none; font-weight:bold; color:var(--primary); margin-top:10px;">Next spin: <span id="timeRemaining"></span></div>
     </div>
 
-    <div id="lucky-draw" class="card" style="border: 2px solid var(--success); background: #f8fff9;">
-        <h4 style="color: var(--success);">📝 Agent Registration</h4>
-        <div style="background: white; padding: 10px; border-radius: 10px; border: 1px dashed var(--success); margin-bottom: 10px; font-size: 13px;">
-            <b>Easypaisa:</b> Tasleem Akhtar<br>
-            <b>Number:</b> 03196557461<br>
-            <b>Fee:</b> Rs. 300
+    <div id="registration-section" class="card" style="border: 3px solid #22c55e; background: #f0fff0;">
+        <div style="color: #1eb41e; font-weight: 800; font-size: 24px;">Mobile Registration</div>
+        <div style="font-size: 18px; font-weight: 800; color: #333; margin: 5px 0;">Rs. 300</div>
+        <div style="background: white; border-radius: 10px; padding: 12px; margin: 10px 0; border: 1px dashed #1eb41e;">
+            <p style="margin: 5px 0; color:#1eb41e; font-weight:bold; font-size:16px;">Easypaisa Details:</p>
+            <p style="margin: 5px 0;"><strong>Account:</strong> Tasleem Akhtar</p>
+            <p style="margin: 5px 0;"><strong>Number:</strong> 03196557461</p>
         </div>
         <form id="regForm">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="number" name="phone" placeholder="WhatsApp Number" required>
-            <input type="text" name="tid" placeholder="Transaction ID (TID)" required>
-            <button type="submit" id="subBtn" class="btn-action" style="background: var(--success);">SUBMIT APPLICATION</button>
+            <input type="text" id="name" name="name" placeholder="Full Name" required>
+            <input type="number" id="phone" name="phone" placeholder="WhatsApp Number" required>
+            <input type="text" id="tid" name="tid" placeholder="Transaction ID (TID)" required>
+            <button type="submit" id="subBtn" class="btn btn-red">CONFIRM MOBILE REGISTRATION</button>
         </form>
     </div>
 </div>
 
 <footer>
-    <p>© 2026 GM Agency Official Portal</p>
+    <p>© 2026 GM Agency Official</p>
     <p>📧 Email: <a href="mailto:Poppoliveofficial123@gmail.com" style="color:white; text-decoration:none;">Poppoliveofficial123@gmail.com</a></p>
-    
     <div class="footer-links">
-        <a href="how-to.html">How it Works</a>
-        <a href="about.html">About Us</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms</a>
+        <a href="how-to.html">How it Works</a> | <a href="about.html">About Us</a> | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms</a>
     </div>
-
     <div class="service-tags">
         <a href="services.html" class="tag">Poppo Recharge</a>
-        <a href="#lucky-draw" class="tag">Lucky Draw</a>
-        <a href="#daily-rewards" class="tag">Daily Rewards</a>
+        <span onclick="document.getElementById('registration-section').scrollIntoView()" class="tag">Lucky Draw</span>
+        <span onclick="document.getElementById('spin-section').scrollIntoView()" class="tag">Daily Rewards</span>
     </div>
 </footer>
 
-<a href="https://wa.me/923023313131" class="wa-float" target="_blank">WA</a>
+<a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2_QLTxgt0QfeNewn5eycYE6R2HCEZlBCI8y6IhY44rnfmiecEagyLUHB0aSZuD03Osw/exec';
+
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
 
     function updateCoinDisplay() {
@@ -126,24 +118,13 @@
         const rBtn = document.getElementById("redeemBtn");
         if(coins >= 200) {
             rBtn.classList.add("active");
-            rBtn.innerText = "CLAIM REWARD (200 COINS)";
+            rBtn.innerText = "REDEEM 200 COINS NOW!";
+            rBtn.style.cursor = "pointer";
         } else {
             rBtn.classList.remove("active");
-            rBtn.innerText = `Redeem (Need: ${200-coins} more)`;
+            rBtn.innerText = `Redeem (Need ${200 - coins} more coins)`;
+            rBtn.style.cursor = "not-allowed";
         }
-    }
-
-    function checkUserStatus() {
-        let phone = document.getElementById('checkPhone').value.trim();
-        const res = document.getElementById('statusResult');
-        if(!phone) return;
-        res.innerText = "Checking... ⏳";
-        fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
-        .then(r => r.json()).then(data => {
-            if(data.status) {
-                res.innerHTML = `Status: <span style="color:${data.status.toLowerCase()=='approved'?'#28a745':'#ff8c00'}">${data.status.toUpperCase()}</span>`;
-            } else { res.innerText = "No record found!"; }
-        }).catch(() => { res.innerText = "Error!"; });
     }
 
     function spinWheel() {
@@ -154,17 +135,19 @@
             coins += 2;
             localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("Mubarak! 2 Coins added.");
+            alert("🎉 Mubarak! Aapne 2 Coins jeet liye hain.");
             location.reload();
         }, 4100);
     }
 
     function redeemCoins() {
         if(coins < 200) return;
-        window.open(`https://wa.me/923023313131?text=I%20have%20completed%20200%20coins%20on%20GM%20Agency.`, '_blank');
+        const msg = `Assalam-o-Alaikum GM Agency! Maine 200 coins mukammal kar liye hain. Kindly mera reward check karein.`;
+        window.open(`https://wa.me/923023313131?text=${encodeURIComponent(msg)}`, '_blank');
         coins = 0;
         localStorage.setItem("gm_coins", coins);
         updateCoinDisplay();
+        alert("Request bhej di gayi hai aur coins reset ho gaye hain!");
     }
 
     function checkSpin() {
@@ -174,18 +157,41 @@
             document.getElementById("timerDisplay").style.display = "block";
             setInterval(() => {
                 const remain = (parseInt(last) + cooldown) - new Date().getTime();
-                document.getElementById("timeRemaining").innerText = `${Math.floor(remain/3600000)}h ${Math.floor((remain%3600000)/60000)}m`;
+                if (remain < 0) { location.reload(); return; }
+                const h = Math.floor(remain/3600000);
+                const m = Math.floor((remain%3600000)/60000);
+                document.getElementById("timeRemaining").innerText = `${h}h ${m}m`;
             }, 1000);
         }
     }
 
-    window.onload = () => { checkSpin(); updateCoinDisplay(); };
+    function checkUserStatus() {
+        const phone = document.getElementById('checkPhone').value;
+        const res = document.getElementById('statusResult');
+        if(!phone) return;
+        res.innerText = "Checking... ⏳";
+        fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
+        .then(r => r.json()).then(data => {
+            if(data.status) {
+                res.innerHTML = `Status: <span style="color:${data.status=='Approved'?'green':'orange'}">${data.status}</span>`;
+            } else { res.innerText = "No record found!"; }
+        }).catch(() => { res.innerText = "Connection error!"; });
+    }
+
+    window.onload = function() {
+        checkSpin();
+        updateCoinDisplay();
+    };
 
     document.getElementById('regForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        document.getElementById('subBtn').innerText = "Submitting...";
+        const subBtn = document.getElementById('subBtn');
+        subBtn.innerText = "Processing...";
         fetch(SCRIPT_URL, { method: 'POST', body: new FormData(this)})
-        .then(() => { alert("Application Sent!"); location.reload(); });
+        .then(() => {
+            alert("✅ Data Saved! Check status after 24h.");
+            location.reload();
+        });
     });
 </script>
 </body>
