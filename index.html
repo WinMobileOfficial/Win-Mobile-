@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GM Agency - Official Earning Portal</title>
     <style>
-        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; }
+        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; }
         .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        /* Poppo Special Banner Style */
         .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: pulse 2s infinite; text-decoration: none; display: block; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .leaderboard { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left; }
@@ -23,11 +20,11 @@
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; }
         .btn-red { background: var(--primary); color: white; }
-        .promo-text { font-size: 24px; font-weight: 800; color: var(--primary); margin: 10px 0; display: block; }
         footer { background: #333; color: white; padding: 25px; font-size: 11px; margin-top: 20px; margin-bottom: 80px; }
         footer a { color: #fff; text-decoration: none; margin: 0 5px; }
-        #timerDisplay { font-weight: bold; color: var(--primary); margin-top: 10px; font-size: 18px; }
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index:100; display:flex; align-items:center; justify-content:center; text-decoration:none; }
+        .ep-box { border: 3px solid var(--easypaisa); background: #f0fff0; padding: 15px; border-radius: 15px; margin-top: 10px; }
+        .ep-header { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--easypaisa); font-weight: 800; font-size: 20px; margin-bottom: 10px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -35,10 +32,16 @@
 <div class="container">
     <a href="services.html" class="poppo-banner">
         🔥 POPPO LIVE SPECIAL OFFER 🔥<br>
-        <span style="font-size: 12px;">Get cheapest Coins Recharge - Click Here!</span>
+        <span style="font-size: 12px;">Cheapest Coins Recharge - Click Here!</span>
     </a>
 
     <div class="welcome-box"><h2 style="margin:0;">GM Agency Official</h2></div>
+
+    <div class="card" style="background: #f0fdf4; border: 2px solid #22c55e;">
+        <h4 style="margin:0; color: #166534;">🎁 Redeem Your Reward</h4>
+        <p style="font-size: 12px; color: #166534; margin: 5px 0;">100 Coins poore karein aur Poppo Gift hasil karein!</p>
+        <button id="redeemBtn" onclick="redeemCoins()" class="btn" style="background: #22c55e; color: white;">CLAIM GIFT (100 COINS)</button>
+    </div>
 
     <div class="leaderboard">
         <div id="totalJoined" class="total-counter">👥 Total Participants: Loading...</div>
@@ -55,18 +58,20 @@
         <h4 style="margin:0;">🎡 Daily Reward Spin</h4>
         <div id="wheel"></div>
         <button id="spinBtn" class="btn btn-red" onclick="spinWheel()" style="width:auto; padding: 10px 30px; margin-top:10px;">SPIN NOW</button>
-        <div id="timerDisplay" style="display:none;">Next spin in: <span id="timeRemaining"></span></div>
+        <div id="timerDisplay" style="display:none; font-weight:bold; color:var(--primary); margin-top:10px; font-size:18px;">Next spin in: <span id="timeRemaining"></span></div>
     </div>
 
-    <div class="card" style="background:#e3f2fd;">
-        <input type="number" id="checkPhone" placeholder="Enter WhatsApp Number">
-        <button onclick="checkStatus()" class="btn" style="background:#2196f3; color:white;">Check Account Status</button>
-        <div id="statusResult" style="display:none; margin-top:10px; font-weight:bold;"></div>
-    </div>
-
-    <div class="card" style="border: 3px solid var(--primary); background: #fff5f5;">
-        <span class="promo-text">NayaPay: Rs. 300 to 03186761010</span>
-        <p style="font-weight:bold; font-size:14px; margin-bottom:15px;">(Registration + Mobile Win Lucky Draw)</p>
+    <div class="ep-box">
+        <div class="ep-header">
+            <span style="background: var(--easypaisa); color: white; padding: 2px 8px; border-radius: 5px; font-size: 14px;">Easypaisa</span>
+            Registration Fee
+        </div>
+        <div style="font-size: 18px; font-weight: 800; color: #333;">Rs. 300</div>
+        <div style="margin: 10px 0; font-weight: bold; color: #555;">
+            Account: <span style="color: var(--easypaisa);">Tasleem Akhtar</span><br>
+            Number: <span style="color: var(--easypaisa); font-size: 20px;">03196557461</span>
+        </div>
+        <p style="font-size: 11px; color: #666; font-weight: bold;">(Registration + Mobile Win Lucky Draw)</p>
         <form id="regForm">
             <input type="text" id="name" placeholder="Full Name" required>
             <input type="number" id="phone" placeholder="WhatsApp Number" required>
@@ -78,6 +83,7 @@
 
 <footer>
     <p>&copy; 2026 GM Agency Platform</p>
+    <p style="margin-bottom: 10px; font-weight: bold;">📧 Email: Poppoliveofficial123@gmail.com</p>
     <div>
         <a href="how-to.html">How it Works</a> | 
         <a href="services.html" style="color: var(--gold); font-weight: bold;">Our Services</a> | 
@@ -87,71 +93,60 @@
     </div>
 </footer>
 
-<a href="https://wa.me/923023313131?text=Assalam-o-Alaikum!%20Mujhe%20Poppo%20Live%20Coins%20khareedne%20hain." class="wa-btn" target="_blank">
-    <svg viewBox="0 0 32 32" style="width:35px; height:35px; fill:white;">
-        <path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.733 5.479 2.015 7.79l-2.015 7.21 7.391-1.939c2.201 1.144 4.708 1.792 7.371 1.792 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.231c-2.379 0-4.61-0.612-6.558-1.681l-0.471-0.258-4.364 1.144 1.164-4.168-0.285-0.453c-1.163-1.851-1.782-4.008-1.782-6.315 0-6.471 5.26-11.731 11.731-11.731s11.731 5.26 11.731 11.731c0 6.471-5.26 11.731-11.731 11.731zM21.921 17.51c-0.325-0.163-1.921-0.948-2.22-1.058s-0.518-0.163-0.736 0.163c-0.218 0.325-0.844 1.058-1.034 1.275s-0.381 0.245-0.706 0.082c-0.325-0.163-1.374-0.506-2.617-1.615-0.967-0.863-1.621-1.929-1.811-2.254s-0.020-0.501 0.143-0.663c0.147-0.146 0.325-0.381 0.488-0.571s0.218-0.325 0.325-0.544 0.054-0.408-0.027-0.571c-0.082-0.163-0.736-1.771-1.008-2.427s-0.531-0.544-0.736-0.554c-0.191-0.010-0.408-0.012-0.626-0.012s-0.571 0.082-0.871 0.408c-0.299 0.325-1.143 1.116-1.143 2.72s1.17 3.153 1.334 3.371c0.163 0.218 2.302 3.515 5.576 4.93 0.779 0.336 1.387 0.537 1.861 0.688 0.783 0.248 1.496 0.213 2.059 0.129 0.628-0.094 1.921-0.785 2.193-1.545s0.272-1.414 0.191-1.545c-0.083-0.134-0.301-0.215-0.626-0.378z"></path>
-    </svg>
+<a href="https://wa.me/923023313131?text=Assalam-o-Alaikum!%20Mujhe%20GM%20Agency%20ke%20bare%20mein%20puchna%20hai." class="wa-btn" target="_blank">
+    <svg viewBox="0 0 32 32" style="width:35px; height:35px; fill:white;"><path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.733 5.479 2.015 7.79l-2.015 7.21 7.391-1.939c2.201 1.144 4.708 1.792 7.371 1.792 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.231c-2.379 0-4.61-0.612-6.558-1.681l-0.471-0.258-4.364 1.144 1.164-4.168-0.285-0.453c-1.163-1.851-1.782-4.008-1.782-6.315 0-6.471 5.26-11.731 11.731-11.731s11.731 5.26 11.731 11.731c0 6.471-5.26 11.731-11.731 11.731zM21.921 17.51c-0.325-0.163-1.921-0.948-2.22-1.058s-0.518-0.163-0.736 0.163c-0.218 0.325-0.844 1.058-1.034 1.275s-0.381 0.245-0.706 0.082c-0.325-0.163-1.374-0.506-2.617-1.615-0.967-0.863-1.621-1.929-1.811-2.254s-0.020-0.501 0.143-0.663c0.147-0.146 0.325-0.381 0.488-0.571s0.218-0.325 0.325-0.544 0.054-0.408-0.027-0.571c-0.082-0.163-0.736-1.771-1.008-2.427s-0.531-0.544-0.736-0.554c-0.191-0.010-0.408-0.012-0.626-0.012s-0.571 0.082-0.871 0.408c-0.299 0.325-1.143 1.116-1.143 2.72s1.17 3.153 1.334 3.371c0.163 0.218 2.302 3.515 5.576 4.93 0.779 0.336 1.387 0.537 1.861 0.688 0.783 0.248 1.496 0.213 2.059 0.129 0.628-0.094 1.921-0.785 2.193-1.545s0.272-1.414 0.191-1.545c-0.083-0.134-0.301-0.215-0.626-0.378z"></path></svg>
 </a>
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxn29PGGfYfIpzCX1rwYeqjm2fmqVUFp0LFNDw3usNatZHa2Kl3Za3qwTaG050xb1yv_A/exec";
-    
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = coins;
+
+    function redeemCoins() {
+        if (coins < 100) { alert("Aapko 100 coins chahiye. Abhi: " + coins); }
+        else {
+            if (confirm("Claim 100 Coins Gift?")) {
+                coins -= 100; localStorage.setItem("gm_coins", coins);
+                window.open("https://wa.me/923023313131?text=" + encodeURIComponent("100 Coins poore! Gift send kar dein."), "_blank");
+                location.reload();
+            }
+        }
+    }
 
     async function fetchLeaderboard() {
         try {
             const res = await fetch(SCRIPT_URL + "?nocache=" + new Date().getTime());
             const data = await res.json();
-            let total = data.length - 1;
-            document.getElementById("totalJoined").innerText = "👥 Total Participants: " + (total > 0 ? total : 0);
+            document.getElementById("totalJoined").innerText = "👥 Total Participants: " + (data.length - 1);
             let approved = data.slice(1).filter(r => r[4] === "Approved");
-            if (approved.length === 0) {
-                document.getElementById("leaderboardContent").innerHTML = "<center>No entries approved yet.</center>";
-                return;
-            }
             approved.sort((a, b) => (parseInt(b[6]) || 0) - (parseInt(a[6]) || 0));
             let html = "";
-            approved.slice(0, 5).forEach((u, i) => {
-                let val = u[6] !== undefined ? u[6] : 0;
-                html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${val} Coins</span></div>`;
-            });
-            document.getElementById("leaderboardContent").innerHTML = html;
-        } catch(e) { document.getElementById("leaderboardContent").innerText = "Syncing Error..."; }
+            approved.slice(0, 5).forEach((u, i) => { html += `<div class="top-user"><span>#${i+1} ${u[0]}</span> <span>${u[6] || 0} Coins</span></div>`; });
+            document.getElementById("leaderboardContent").innerHTML = html || "No entries approved yet.";
+        } catch(e) {}
     }
 
     function checkSpin() {
-        const last = localStorage.getItem("last_spin_time");
-        const cooldown = 24 * 60 * 60 * 1000;
+        const last = localStorage.getItem("last_spin_time"), cooldown = 86400000;
         if (last && (new Date().getTime() - last < cooldown)) {
             document.getElementById("spinBtn").style.display = "none";
             document.getElementById("timerDisplay").style.display = "block";
-            updateTimer(last, cooldown);
+            setInterval(() => {
+                const remain = (parseInt(last) + cooldown) - new Date().getTime();
+                if (remain < 0) { location.reload(); return; }
+                document.getElementById("timeRemaining").innerText = `${Math.floor(remain/3600000)}h ${Math.floor((remain%3600000)/60000)}m ${Math.floor((remain%60000)/1000)}s`;
+            }, 1000);
         }
     }
 
-    function updateTimer(last, cooldown) {
-        setInterval(() => {
-            const remain = (parseInt(last) + cooldown) - new Date().getTime();
-            if (remain < 0) { location.reload(); return; }
-            const h = Math.floor(remain / 3600000);
-            const m = Math.floor((remain % 3600000) / 60000);
-            const s = Math.floor((remain % 60000) / 1000);
-            document.getElementById("timeRemaining").innerText = `${h}h ${m}m ${s}s`;
-        }, 1000);
-    }
-
     function spinWheel() {
-        const wheel = document.getElementById("wheel");
-        const deg = Math.floor(Math.random() * 360) + 1800;
+        const wheel = document.getElementById("wheel"), deg = Math.floor(Math.random() * 360) + 1800;
         wheel.style.transform = `rotate(${deg}deg)`;
         document.getElementById("spinBtn").disabled = true;
         setTimeout(() => {
-            coins += 2;
-            localStorage.setItem("gm_coins", coins);
+            coins += 2; localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("2 Coins added!");
-            location.reload();
+            alert("2 Coins added!"); location.reload();
         }, 3100);
     }
 
@@ -163,21 +158,16 @@
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
             const user = data.find(r => r[1].toString().includes(p));
-            if(user) {
-                resDiv.innerText = "Status: " + user[4];
-                resDiv.style.color = (user[4] === "Approved") ? "green" : "orange";
-            } else { resDiv.innerText = "Number not found."; }
+            if(user) { resDiv.innerText = "Status: " + user[4]; resDiv.style.color = (user[4] === "Approved") ? "green" : "orange"; }
+            else { resDiv.innerText = "Not found."; }
         } catch(e) {}
     }
 
     window.onload = () => { fetchLeaderboard(); checkSpin(); };
-
     document.getElementById("regForm").onsubmit = async (e) => {
-        e.preventDefault();
-        document.getElementById("subBtn").innerText = "Submitting...";
-        const p = { name: document.getElementById("name").value, phone: document.getElementById("phone").value, tid: document.getElementById("tid").value };
-        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(p) });
-        alert("Registration Submitted!"); location.reload();
+        e.preventDefault(); document.getElementById("subBtn").innerText = "Submitting...";
+        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ name: document.getElementById("name").value, phone: document.getElementById("phone").value, tid: document.getElementById("tid").value }) });
+        alert("Submitted!"); location.reload();
     };
 </script>
 </body>
