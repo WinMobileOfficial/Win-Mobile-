@@ -41,6 +41,14 @@
 
     <div class="coin-box"><span>🪙 My Coins:</span><span id="userCoins" style="font-size: 26px;">0</span></div>
 
+    <div class="card" style="border: 2px solid #333; background: #f9f9f9;">
+        <h4 style="margin:0; color: #333;">🔍 Check Your Status</h4>
+        <p style="font-size: 12px; margin: 5px 0;">Apna WhatsApp number likh kar check karein.</p>
+        <input type="number" id="checkPhone" placeholder="03XXXXXXXXX">
+        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white; padding: 10px; height: auto;">CHECK STATUS</button>
+        <div id="statusResult" style="margin-top: 10px; font-weight: bold; font-size: 16px;"></div>
+    </div>
+
     <div class="card" id="spin-section">
         <h4 style="margin:0;">🎡 Daily Reward Spin</h4>
         <div class="wheel-container">
@@ -95,6 +103,8 @@
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodXHkAGa3hlXggJBH7dLpKFcGgnNA426otZn_SEl6XjbzRC5jHEKUOcMycNv3BEEglQ/exec';
+
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = coins;
 
@@ -126,13 +136,39 @@
     }
     window.onload = checkSpin;
 
+    // Status Check Function
+    function checkUserStatus() {
+        const phone = document.getElementById('checkPhone').value;
+        const resultDiv = document.getElementById('statusResult');
+        if(!phone) { alert("Pehle Number likhein!"); return; }
+        
+        resultDiv.style.color = "blue";
+        resultDiv.innerText = "Checking... ⏳";
+
+        fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.status) {
+                let color = data.status == "Approved" ? "green" : "orange";
+                resultDiv.innerHTML = `Status: <span style="color:${color};">${data.status}</span>`;
+            } else {
+                resultDiv.style.color = "red";
+                resultDiv.innerText = "Koi record nahi mila!";
+            }
+        })
+        .catch(() => {
+            resultDiv.style.color = "red";
+            resultDiv.innerText = "Error! Net check karein.";
+        });
+    }
+
+    // Form Submit
     document.getElementById('regForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const subBtn = document.getElementById('subBtn');
         subBtn.innerText = "Processing...";
         subBtn.disabled = true;
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyodXHkAGa3hlXggJBH7dLpKFcGgnNA426otZn_SEl6XjbzRC5jHEKUOcMycNv3BEEglQ/exec';
-        fetch(scriptURL, { method: 'POST', body: new FormData(this)})
+        fetch(SCRIPT_URL, { method: 'POST', body: new FormData(this)})
         .then(() => {
             alert("✅ Registration Successful! Checked in 24h.");
             subBtn.innerText = "CONFIRM MOBILE REGISTRATION";
@@ -140,9 +176,8 @@
             this.reset();
         })
         .catch(() => {
-            alert("Success! Check your Sheet.");
+            alert("Check your Sheet!");
             subBtn.disabled = false;
-            this.reset();
         });
     });
 </script>
