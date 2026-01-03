@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM Agency - Official Portal</title>
+    <title>GM Agency - Official Earning Portal</title>
     
+    <meta name="keywords" content="Poppo Live Agency Pakistan, Cheapest Poppo Coins Recharge, Trusted Poppo Host Agency, Online Earning, Mobile Registration">
+    <meta name="description" content="GM Agency Pakistan: Your trusted Poppo Live Agency for daily rewards and lucky draw.">
+
     <style>
-        :root { --primary: #ff5252; --gold: #ffd700; --bg: #f4f7f6; --easypaisa: #1eb41e; }
+        :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; scroll-behavior: smooth; }
         .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
+        /* Poppo Offer Banner */
         .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); text-decoration: none; display: block; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
-        .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         
+        /* Spin Portal Professional Layout */
         .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
         .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
+
+        .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         
-        .registration-card { border: 3px solid var(--easypaisa); background: #f0fff0; }
+        /* Mobile Registration Card */
+        .registration-card { border: 3px solid var(--easypaisa); background: #f0fff0; transition: 0.3s; }
+        .registration-card:target { transform: scale(1.03); box-shadow: 0 0 20px rgba(30, 180, 30, 0.4); }
+        
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: white; }
         .btn-red { background: var(--primary); }
         .btn-green { background: var(--easypaisa); }
 
         footer { background: #222; color: white; padding: 30px 10px; font-size: 13px; margin-top: 20px; border-radius: 20px 20px 0 0; }
-        .tag { background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 11px; margin: 5px; display: inline-block; }
-        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:30px; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:99; }
+        .service-tags { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .tag { background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 11px; }
+        
+        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:30px; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:99; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;">
 
 <div class="container">
     <a href="#" class="poppo-banner">🔥 POPPO LIVE SPECIAL OFFER 🔥</a>
@@ -40,17 +52,20 @@
     <div class="card" id="wheel-section">
         <h4 style="margin:0; color: var(--primary);">🎡 Daily Reward Spin Portal</h4>
         <div class="wheel-container">
+            <div class="wheel-pointer"></div>
             <svg id="wheel" viewBox="0 0 200 200">
                 <g transform="rotate(-90 100 100)">
-                    <path d="M100 100 L200 100 A100 100 0 0 1 130.9 195.1 Z" fill="#ffd700"/><text x="145" y="145" fill="#333" font-weight="bold">2</text>
-                    <path d="M100 100 L130.9 195.1 A100 100 0 0 1 19.1 158.8 Z" fill="#ff5252"/><text x="85" y="165" fill="white" font-weight="bold">3</text>
-                    <path d="M100 100 L19.1 158.8 A100 100 0 0 1 19.1 41.2 Z" fill="#fff"/><text x="45" y="105" fill="#333" font-weight="bold">4</text>
-                    <path d="M100 100 L19.1 41.2 A100 100 0 0 1 130.9 4.9 Z" fill="#333"/><text x="85" y="45" fill="white" font-weight="bold">X</text>
-                    <path d="M100 100 L130.9 4.9 A100 100 0 0 1 200 100 Z" fill="#ff007f"/><text x="145" y="65" fill="white" font-weight="bold">1</text>
+                    <path d="M100 100 L200 100 A100 100 0 0 1 130.9 195.1 Z" fill="#ffd700"/><text x="145" y="145" fill="#333" font-weight="bold" font-size="14">2</text>
+                    <path d="M100 100 L130.9 195.1 A100 100 0 0 1 19.1 158.8 Z" fill="#ff5252"/><text x="85" y="165" fill="white" font-weight="bold" font-size="14">3</text>
+                    <path d="M100 100 L19.1 158.8 A100 100 0 0 1 19.1 41.2 Z" fill="#ffffff"/><text x="45" y="105" fill="#333" font-weight="bold" font-size="14">4</text>
+                    <path d="M100 100 L19.1 41.2 A100 100 0 0 1 130.9 4.9 Z" fill="#333333"/><text x="85" y="45" fill="white" font-weight="bold" font-size="14">X</text>
+                    <path d="M100 100 L130.9 4.9 A100 100 0 0 1 200 100 Z" fill="#ff007f"/><text x="145" y="65" fill="white" font-weight="bold" font-size="14">1</text>
                 </g>
+                <circle cx="100" cy="100" r="10" fill="white" stroke="#333"/>
             </svg>
         </div>
         <button id="spinBtn" class="btn btn-red" style="width:auto; padding: 10px 30px;" onclick="spinWheel()">SPIN NOW</button>
+        <div id="timerDisplay" style="display:none; font-weight:bold; color:var(--primary); margin-top:10px;">Next spin in: <span id="timeRemaining"></span></div>
     </div>
 
     <div class="coin-box">
@@ -78,17 +93,18 @@
 </div>
 
 <footer>
+    <p>&copy; 2026 GM Agency Official</p>
     <div class="service-tags">
         <a href="#" class="tag">Poppo Recharge</a>
         <a href="#lucky-draw-portal" class="tag" onclick="alert('Opening Lucky Draw Portal...')">Lucky Draw</a>
         <a href="#wheel-section" class="tag">Daily Rewards</a>
     </div>
-    <p>&copy; 2026 GM Agency Official</p>
 </footer>
 
-<a href="https://wa.me/923023313131" class="wa-btn">WA</a>
+<a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
+    // Security & Logic
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     document.getElementById("userCoins").innerText = coins;
 
@@ -98,28 +114,29 @@
         wheel.style.transform = `rotate(${deg}deg)`;
         document.getElementById("spinBtn").disabled = true;
         setTimeout(() => {
-            alert("Mubarak! You won 2 coins.");
+            alert("🎉 Mubarak! Aapne 2 Coins jeet liye hain.");
             coins += 2;
             localStorage.setItem("gm_coins", coins);
+            localStorage.setItem("last_spin_time", new Date().getTime());
             location.reload();
         }, 4000);
     }
 
-    // Google Sheet & Email Connection Logic
+    // Google Sheets & Email Submission
     document.getElementById('regForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('subBtn');
         btn.innerText = "Processing...";
         btn.disabled = true;
 
-        const scriptURL = 'YAHAN_APNA_URL_DALEIN'; // Google App Script URL
+        const scriptURL = 'YOUR_GOOGLE_SCRIPT_URL'; 
         fetch(scriptURL, { method: 'POST', body: new FormData(this)})
-            .then(response => {
-                alert("✅ Registration Successful! Data saved to Sheet & Email sent.");
+            .then(() => {
+                alert("✅ Registration Done! Data sent to Sheet & Email.");
                 location.reload();
             })
-            .catch(error => {
-                alert("Data Submitted Successfully!");
+            .catch(() => {
+                alert("Registration Successful!");
                 location.reload();
             });
     });
