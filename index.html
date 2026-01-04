@@ -8,26 +8,40 @@
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; scroll-behavior: smooth; }
         .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+        
+        /* Poppo Banner */
         .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: pulse 2s infinite; text-decoration: none; display: block; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
+        
+        /* Leaderboard Section */
+        .leaderboard-card { background: #fff3e0; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #fedcba; }
+        
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         
+        /* Redeem Button */
         .redeem-card { background: #fff; padding: 10px; border-radius: 15px; border: 2px dashed #ccc; margin-bottom: 15px; }
         .btn-redeem { width: 100%; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: not-allowed; background: #e0e0e0; color: #888; transition: 0.3s; font-size: 14px; }
-        .btn-redeem.active { background: linear-gradient(45deg, #ffd700, #ffa000); color: #000; cursor: pointer; border: 1px solid #b8860b; box-shadow: 0 4px 10px rgba(255,215,0,0.3); }
+        .btn-redeem.active { background: linear-gradient(45deg, #1eb41e, #149014); color: white; cursor: pointer; box-shadow: 0 4px 10px rgba(30,180,30,0.3); }
 
+        /* Wheel Section */
         .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
+        
         .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .btn-red { background: var(--primary); color: white; }
+        
+        /* Footer & Service Tags */
         footer { background: #1a1a1a; color: white; padding: 30px 10px; font-size: 14px; margin-top: 20px; border-radius: 25px 25px 0 0; }
+        .footer-links { margin: 10px 0; }
         .footer-links a { color: white; text-decoration: underline; margin: 0 8px; font-size: 13px; }
         .service-tags { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
         .tag { background: var(--gold); color: #000; padding: 8px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 12px; cursor: pointer; }
+        
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:18px; font-weight:bold; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index:9999; display:flex; align-items:center; justify-content:center; text-decoration:none; }
     </style>
 </head>
@@ -35,9 +49,10 @@
 
 <div class="container">
     <a href="services.html" class="poppo-banner">🔥 POPPO LIVE SPECIAL OFFER 🔥<br><span style="font-size: 12px;">Cheapest Coins Recharge - Click Here!</span></a>
+    
     <div class="welcome-box"><h2>GM Agency Official</h2></div>
 
-    <div id="leaderboard" class="card" style="background: #fff3e0;">
+    <div id="leaderboard" class="leaderboard-card">
         <div style="font-weight:bold; color:var(--primary);">👥 Total Participants: 2</div>
         <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
         <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;"><span>#1 Ghulam Mujtaba</span> <span>10 Coins</span></div>
@@ -47,13 +62,13 @@
     <div class="coin-box"><span>🪙 My Coins:</span><span id="userCoins" style="font-size: 26px;">0</span></div>
 
     <div class="redeem-card">
-        <button id="redeemBtn" onclick="redeemCoins()" class="btn-redeem">Redeem (Minimum 200 Coins Required)</button>
+        <button id="redeemBtn" onclick="redeemCoins()" class="btn-redeem">Redeem (Need 200 Coins)</button>
     </div>
 
     <div class="card" style="border: 2px solid #333; background: #f9f9f9;">
         <h4 style="margin:0; color: #333;">🔍 Check Your Status</h4>
         <input type="number" id="checkPhone" placeholder="WhatsApp Number">
-        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white; padding: 10px; height: auto;">CHECK STATUS</button>
+        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white; height: auto;">CHECK STATUS</button>
         <div id="statusResult" style="margin-top: 10px; font-weight: bold;"></div>
     </div>
 
@@ -109,6 +124,7 @@
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
+    // Aapka v8 Script Link
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2_QLTxgt0QfeNewn5eycYE6R2HCEZlBCI8y6IhY44rnfmiecEagyLUHB0aSZuD03Osw/exec';
 
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
@@ -118,11 +134,11 @@
         const rBtn = document.getElementById("redeemBtn");
         if(coins >= 200) {
             rBtn.classList.add("active");
-            rBtn.innerText = "REDEEM 200 COINS NOW!";
+            rBtn.innerText = "CLAIM REWARD (200 COINS)";
             rBtn.style.cursor = "pointer";
         } else {
             rBtn.classList.remove("active");
-            rBtn.innerText = `Redeem (Need ${200 - coins} more coins)`;
+            rBtn.innerText = `Redeem (Need ${200 - coins} more)`;
             rBtn.style.cursor = "not-allowed";
         }
     }
@@ -142,12 +158,10 @@
 
     function redeemCoins() {
         if(coins < 200) return;
-        const msg = `Assalam-o-Alaikum GM Agency! Maine 200 coins mukammal kar liye hain. Kindly mera reward check karein.`;
-        window.open(`https://wa.me/923023313131?text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://wa.me/923023313131?text=I%20have%20completed%20200%20coins%20on%20GM%20Agency.%20Kindly%20verify.`, '_blank');
         coins = 0;
         localStorage.setItem("gm_coins", coins);
         updateCoinDisplay();
-        alert("Request bhej di gayi hai aur coins reset ho gaye hain!");
     }
 
     function checkSpin() {
@@ -173,7 +187,7 @@
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
         .then(r => r.json()).then(data => {
             if(data.status) {
-                res.innerHTML = `Status: <span style="color:${data.status=='Approved'?'green':'orange'}">${data.status}</span>`;
+                res.innerHTML = `Status: <span style="color:${data.status.toLowerCase()=='approved'?'#28a745':'#ff8c00'}">${data.status.toUpperCase()}</span>`;
             } else { res.innerText = "No record found!"; }
         }).catch(() => { res.innerText = "Connection error!"; });
     }
@@ -186,10 +200,10 @@
     document.getElementById('regForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const subBtn = document.getElementById('subBtn');
-        subBtn.innerText = "Processing...";
+        subBtn.innerText = "Submitting...";
         fetch(SCRIPT_URL, { method: 'POST', body: new FormData(this)})
         .then(() => {
-            alert("✅ Data Saved! Check status after 24h.");
+            alert("✅ Registration Details Submitted! Check status after 24h.");
             location.reload();
         });
     });
