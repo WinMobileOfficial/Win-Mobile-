@@ -46,7 +46,7 @@
     <div class="welcome-box"><h2>GM Agency Official</h2></div>
 
     <div id="leaderboard" class="leaderboard-card">
-        <div style="font-weight:bold; color:var(--primary);">👥 Total Participants: <span id="totalDisplay">Loading...</span></div>
+        <div style="font-weight:bold; color:var(--primary);">👥 Approved Participants: <span id="totalDisplay">Loading...</span></div>
         <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
         <div id="topEarnersList">Loading leaderboard...</div>
     </div>
@@ -118,7 +118,8 @@
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbQtyRAkNf41w5gdv4F83PQCshIIsNp2SWOd0msPzxNreEQCpuAD-9aNB1uhkRhI3-8Q/exec';
+    // Updated with your provided deployment URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXRSO9zw0QTfF1i1v0aSHlgboCKgynizhLi1ZYDLiTmv4aiL-_mAE3xm65tkCxl2IE5A/exec';
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
@@ -135,15 +136,22 @@
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS`)
         .then(r => r.json())
         .then(data => {
+            // Sirf Approved ka count dikhayega
             document.getElementById('totalDisplay').innerText = data.total;
             const list = document.getElementById('topEarnersList');
             list.innerHTML = "";
-            // Pehle 3 approved users dikhayein (Example logic)
-            data.records.filter(u => u.status === "Approved").slice(0, 3).forEach((user, index) => {
-                list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
-                    <span>#${index+1} ${user.name}</span> <span>Verified ✅</span>
-                </div>`;
-            });
+            
+            // Sirf approved users ko leaderboard mein dikhayega
+            const approvedOnes = data.records.filter(u => u.status === "Approved");
+            if(approvedOnes.length > 0) {
+                approvedOnes.slice(0, 5).forEach((user, index) => {
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
+                        <span>#${index+1} ${user.name}</span> <span style="color:#28a745; font-weight:bold;">Verified ✅</span>
+                    </div>`;
+                });
+            } else {
+                list.innerHTML = "<p style='font-size:12px; color:#888;'>No verified participants yet.</p>";
+            }
         });
     }
 
@@ -186,7 +194,6 @@
         });
     }
 
-    // Spin & Coins Logic
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     function updateCoinDisplay() { document.getElementById("userCoins").innerText = coins; }
     function spinWheel() {
