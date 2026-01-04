@@ -12,6 +12,9 @@
         .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: pulse 2s infinite; text-decoration: none; display: block; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         
+        /* Winner Box Styling */
+        #winnerBox { background: linear-gradient(45deg, #ffd700, #ff8c00); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 2px solid white; color: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
         .leaderboard-card { background: #fff3e0; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #fedcba; }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
@@ -47,6 +50,12 @@
     <a href="services.html" class="poppo-banner">🔥 POPPO LIVE SPECIAL OFFER 🔥<br><span style="font-size: 12px;">Cheapest Coins Recharge - Click Here!</span></a>
     
     <div class="welcome-box"><h2>GM Agency Official</h2></div>
+
+    <div id="winnerBox" style="display:none;">
+        <h3 style="margin:0;">🎉 LATEST WINNER 🎉</h3>
+        <div id="winnerName" style="font-size: 22px; font-weight: 900; margin: 5px 0;">Loading...</div>
+        <div id="winnerID" style="font-size: 14px; font-weight: bold; opacity: 0.8;">ID: --</div>
+    </div>
 
     <div id="leaderboard" class="leaderboard-card">
         <div style="font-weight:bold; color:var(--primary);">👥 Approved Participants: <span id="totalDisplay">0</span></div>
@@ -132,8 +141,8 @@
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
-    // Updated SCRIPT_URL (Ye link aapke naye Backend se connected hai)
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyz1n-JOh2V4-oQmwjPDEHqDCjvxmdHbe9Af4CFW8aaYA6CjCcNX8Retas2e7hYvrl0Gg/exec';
+    // NEW Updated SCRIPT_URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvNhPw9XhnNQIbMBGLZ-C2PKZDzDlWk8POh869waNrGCNYdWuKnOB5XgG_cF5rtCDx9w/exec';
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
@@ -148,6 +157,13 @@
     function loadLeaderboard() {
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS&source=leaderboard`)
         .then(r => r.json()).then(data => {
+            // Update Winner Box if data exists
+            if(data.latestWinner) {
+                document.getElementById('winnerBox').style.display = "block";
+                document.getElementById('winnerName').innerText = data.latestWinner.name;
+                document.getElementById('winnerID').innerText = "ID: " + data.latestWinner.id;
+            }
+
             const list = document.getElementById('topEarnersList');
             if(data && data.records) {
                 const approvedOnes = data.records.filter(u => u.status === "Approved");
