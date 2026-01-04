@@ -11,7 +11,6 @@
         .header-btn { background: var(--primary); color: white; padding: 15px; border-radius: 12px; margin: 20px auto; width: 90%; max-width: 400px; font-weight: bold; font-size: 18px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; }
         .spin-btn { background: var(--success); color: white; padding: 15px; border-radius: 12px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
         
-        /* Clear Data Button Style */
         .clear-btn { background: #333; color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: 1px solid red; margin-bottom: 15px; cursor: pointer; }
         
         .refresh-btn { background: #f39c12; color: white; padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
@@ -73,8 +72,8 @@
 
 <script>
     const PASSCODE = "0770";
-    // Updated with your NEW Script URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0wTrxyNcE9ztIqPDFVconTJv1Hn9QTDMNHijCFbXyh4ac9TdyNWroNjCFIN_RkPuEpA/exec';
+    // Naya Script URL jo aapne diya tha
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyz1n-JOh2V4-oQmwjPDEHqDCjvxmdHbe9Af4CFW8aaYA6CjCcNX8Retas2e7hYvrl0Gg/exec';
 
     let approvedUsers = [];
 
@@ -90,17 +89,19 @@
     })();
 
     function loadData() {
-        document.getElementById('participantList').innerHTML = "<p>Refreshing...</p>";
+        const list = document.getElementById('participantList');
+        const total = document.getElementById('totalCount');
+        list.innerHTML = "<p>Refreshing...</p>";
+        
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS&pin=${PASSCODE}`)
         .then(r => r.json())
         .then(data => {
-            const list = document.getElementById('participantList');
-            const total = document.getElementById('totalCount');
             list.innerHTML = "";
             approvedUsers = []; 
             
-            if(data && data.records) {
-                data.records.reverse().forEach(user => {
+            if(data && data.records && data.records.length > 0) {
+                // Reverse isliye taake naye log upar dikhein
+                [...data.records].reverse().forEach(user => {
                     const status = user.status || "PENDING";
                     if(status === "Approved") approvedUsers.push(user);
                     
@@ -125,11 +126,11 @@
                 });
                 total.innerText = approvedUsers.length;
             } else {
-                list.innerHTML = "<p>No data found in sheet.</p>";
+                list.innerHTML = "<p style='padding:20px;'>No records found in database.</p>";
                 total.innerText = "0";
             }
         }).catch(err => {
-            document.getElementById('participantList').innerHTML = "<p style='color:red'>Server Error!</p>";
+            list.innerHTML = "<p style='color:red; padding:20px;'>Server Connection Error!</p>";
         });
     }
 
@@ -144,17 +145,24 @@
         params.append('pin', PASSCODE);
 
         fetch(SCRIPT_URL, { method: 'POST', body: params })
-        .then(() => {
-            setTimeout(() => {
-                document.getElementById('loading-overlay').style.display = 'none';
+        .then(r => r.json())
+        .then(res => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            if(res.result === "Success") {
                 loadData(); 
-            }, 1500);
+            } else {
+                alert("Error: " + (res.error || "Update failed"));
+            }
+        }).catch(() => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            alert("Status Updated (Page will refresh)");
+            loadData();
         });
     }
 
-    // New function to clear all records from the sheet
     function clearDatabase() {
-        if(!confirm("⚠️ ATTENTION: Are you sure you want to DELETE ALL records from the database? This cannot be undone.")) return;
+        if(!confirm("⚠️ DANGER: This will delete ALL users from your Google Sheet. Continue?")) return;
+        if(prompt("Type 'DELETE' to confirm:") !== "DELETE") return;
         
         document.getElementById('loading-overlay').style.display = 'flex';
         const params = new URLSearchParams();
@@ -162,26 +170,32 @@
         params.append('pin', PASSCODE);
 
         fetch(SCRIPT_URL, { method: 'POST', body: params })
-        .then(() => {
-            setTimeout(() => {
-                document.getElementById('loading-overlay').style.display = 'none';
+        .then(r => r.json())
+        .then(res => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            if(res.result === "Success") {
+                alert("Database wiped clean!");
                 loadData();
-                alert("Database Cleared!");
-            }, 1500);
+            } else {
+                alert("Error: " + res.error);
+            }
+        }).catch(() => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            loadData();
         });
     }
 
     function pickRandomWinner() {
         if(approvedUsers.length === 0) {
-            alert("No approved participants to choose from!");
+            alert("Please approve some participants first!");
             return;
         }
-        alert("Choosing a random winner from " + approvedUsers.length + " approved members...");
+        alert("Choosing a winner from " + approvedUsers.length + " approved members...");
+        
         setTimeout(() => {
-            const randomIndex = Math.floor(Math.random() * approvedUsers.length);
-            const winner = approvedUsers[randomIndex];
-            alert("🎉 WINNER FOUND! 🎉\n\nName: " + winner.name + "\nPhone: " + winner.phone + "\nID: " + winner.myID);
-        }, 1000);
+            const winner = approvedUsers[Math.floor(Math.random() * approvedUsers.length)];
+            alert("🎊 THE WINNER IS: 🎊\n\nName: " + winner.name + "\nPhone: " + winner.phone + "\nID: " + winner.myID);
+        }, 800);
     }
 </script>
 
