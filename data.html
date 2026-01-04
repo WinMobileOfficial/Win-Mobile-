@@ -47,10 +47,10 @@
 
 <div class="container">
     <button class="header-btn">GM Agency Master Admin</button>
-    <button class="spin-btn" onclick="alert('Spin feature active for participants!')">🎡 SPIN FOR RANDOM WINNER</button><br>
+    <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK RANDOM WINNER</button><br>
     <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
 
-    <div class="stats">Total Participants: <span id="totalCount">0</span></div>
+    <div class="stats">Approved Participants: <span id="totalCount">0</span></div>
 
     <div class="list-header">
         <div style="flex:2.5">Participant & IDs</div>
@@ -64,9 +64,13 @@
 </div>
 
 <script>
-    // Config - Updated with your NEW Script URL
+    // Config
     const PASSCODE = "0770";
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbQtyRAkNf41w5gdv4F83PQCshIIsNp2SWOd0msPzxNreEQCpuAD-9aNB1uhkRhI3-8Q/exec';
+    // Aapka Final Script URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwyr7G1LE5R8i9nlhtZWCl6foiRTjTBRGVokuvTRRcZ27wplmj17K1JhQ5r3NRx58YdQA/exec';
+
+    // Global variable to store approved users for random selection
+    let approvedUsers = [];
 
     // 1. Security Check
     (function checkSecurity() {
@@ -80,20 +84,24 @@
         }
     })();
 
-    // 2. Load Data (v11 Support)
+    // 2. Load Data from Sheet
     function loadData() {
         document.getElementById('participantList').innerHTML = "<p>Refreshing...</p>";
-        fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS`)
+        // Hum PIN bhej rahe hain taake backend poora data dikhaye
+        fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS&pin=${PASSCODE}`)
         .then(r => r.json())
         .then(data => {
             const list = document.getElementById('participantList');
             const total = document.getElementById('totalCount');
             list.innerHTML = "";
+            approvedUsers = []; // Reset list
             
             if(data && data.records) {
-                total.innerText = data.total; // Correct Count from Script
+                total.innerText = data.total; 
                 data.records.reverse().forEach(user => {
                     const status = user.status || "PENDING";
+                    if(status === "Approved") approvedUsers.push(user);
+                    
                     list.innerHTML += `
                         <div class="list-item">
                             <div class="col-info">
@@ -121,7 +129,7 @@
         });
     }
 
-    // 3. Update Status
+    // 3. Update Status (Approve/Reject)
     function updateStatus(phone, newStatus) {
         if(!confirm(`Mark this participant as ${newStatus}?`)) return;
         
@@ -131,20 +139,45 @@
         params.append('action', 'updateUserStatus');
         params.append('phone', phone);
         params.append('status', newStatus);
+        params.append('pin', PASSCODE); // PIN security
 
         fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
             body: params
-        }).then(() => {
+        }).then(r => r.json()).then(data => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            if(data.result === "Success") {
+                loadData(); 
+            } else {
+                alert("Error: " + data.error);
+            }
+        }).catch(() => {
+            // Since mode is no-cors often, reload anyway after delay
             setTimeout(() => {
                 document.getElementById('loading-overlay').style.display = 'none';
-                loadData(); 
+                loadData();
             }, 2000);
         });
+    }
+
+    // 4. Random Winner Logic
+    function pickRandomWinner() {
+        if(approvedUsers.length === 0) {
+            alert("No approved participants to choose from!");
+            return;
+        }
+        
+        alert("Choosing a random winner from " + approvedUsers.length + " approved members...");
+        
+        // Simulating a spin/calculation
+        setTimeout(() => {
+            const randomIndex = Math.floor(Math.random() * approvedUsers.length);
+            const winner = approvedUsers[randomIndex];
+            
+            alert("🎉 WINNER FOUND! 🎉\n\nName: " + winner.name + "\nPhone: " + winner.phone + "\nID: " + winner.myID);
+        }, 1500);
     }
 </script>
 
 </body>
 </html>
-
