@@ -10,6 +10,10 @@
         
         .header-btn { background: var(--primary); color: white; padding: 15px; border-radius: 12px; margin: 20px auto; width: 90%; max-width: 400px; font-weight: bold; font-size: 18px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; }
         .spin-btn { background: var(--success); color: white; padding: 15px; border-radius: 12px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
+        
+        /* Clear Data Button Style */
+        .clear-btn { background: #333; color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: 1px solid red; margin-bottom: 15px; cursor: pointer; }
+        
         .refresh-btn { background: #f39c12; color: white; padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
 
         .stats { font-size: 20px; font-weight: bold; margin-bottom: 20px; }
@@ -42,12 +46,16 @@
 
 <div id="loading-overlay">
     <div style="font-size: 40px;">⏳</div>
-    <div>Syncing Live Data...</div>
+    <div>Processing...</div>
 </div>
 
 <div class="container">
     <button class="header-btn">GM Agency Master Admin</button>
+    
     <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK RANDOM WINNER</button><br>
+    
+    <button class="clear-btn" onclick="clearDatabase()">🗑️ CLEAR ALL DATABASE</button><br>
+    
     <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
 
     <div class="stats">Approved Participants: <span id="totalCount">0</span></div>
@@ -64,15 +72,12 @@
 </div>
 
 <script>
-    // Config
     const PASSCODE = "0770";
-    // Aapka Final Script URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwyr7G1LE5R8i9nlhtZWCl6foiRTjTBRGVokuvTRRcZ27wplmj17K1JhQ5r3NRx58YdQA/exec';
+    // Updated with your NEW Script URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0wTrxyNcE9ztIqPDFVconTJv1Hn9QTDMNHijCFbXyh4ac9TdyNWroNjCFIN_RkPuEpA/exec';
 
-    // Global variable to store approved users for random selection
     let approvedUsers = [];
 
-    // 1. Security Check
     (function checkSecurity() {
         let access = prompt("Enter Master Admin Code:");
         if (access === PASSCODE) {
@@ -84,20 +89,17 @@
         }
     })();
 
-    // 2. Load Data from Sheet
     function loadData() {
         document.getElementById('participantList').innerHTML = "<p>Refreshing...</p>";
-        // Hum PIN bhej rahe hain taake backend poora data dikhaye
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS&pin=${PASSCODE}`)
         .then(r => r.json())
         .then(data => {
             const list = document.getElementById('participantList');
             const total = document.getElementById('totalCount');
             list.innerHTML = "";
-            approvedUsers = []; // Reset list
+            approvedUsers = []; 
             
             if(data && data.records) {
-                total.innerText = data.total; 
                 data.records.reverse().forEach(user => {
                     const status = user.status || "PENDING";
                     if(status === "Approved") approvedUsers.push(user);
@@ -121,61 +123,65 @@
                         </div>
                     `;
                 });
+                total.innerText = approvedUsers.length;
             } else {
                 list.innerHTML = "<p>No data found in sheet.</p>";
+                total.innerText = "0";
             }
         }).catch(err => {
             document.getElementById('participantList').innerHTML = "<p style='color:red'>Server Error!</p>";
         });
     }
 
-    // 3. Update Status (Approve/Reject)
     function updateStatus(phone, newStatus) {
         if(!confirm(`Mark this participant as ${newStatus}?`)) return;
-        
         document.getElementById('loading-overlay').style.display = 'flex';
         
         const params = new URLSearchParams();
         params.append('action', 'updateUserStatus');
         params.append('phone', phone);
         params.append('status', newStatus);
-        params.append('pin', PASSCODE); // PIN security
+        params.append('pin', PASSCODE);
 
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: params
-        }).then(r => r.json()).then(data => {
-            document.getElementById('loading-overlay').style.display = 'none';
-            if(data.result === "Success") {
-                loadData(); 
-            } else {
-                alert("Error: " + data.error);
-            }
-        }).catch(() => {
-            // Since mode is no-cors often, reload anyway after delay
+        fetch(SCRIPT_URL, { method: 'POST', body: params })
+        .then(() => {
             setTimeout(() => {
                 document.getElementById('loading-overlay').style.display = 'none';
-                loadData();
-            }, 2000);
+                loadData(); 
+            }, 1500);
         });
     }
 
-    // 4. Random Winner Logic
+    // New function to clear all records from the sheet
+    function clearDatabase() {
+        if(!confirm("⚠️ ATTENTION: Are you sure you want to DELETE ALL records from the database? This cannot be undone.")) return;
+        
+        document.getElementById('loading-overlay').style.display = 'flex';
+        const params = new URLSearchParams();
+        params.append('action', 'clearAllData');
+        params.append('pin', PASSCODE);
+
+        fetch(SCRIPT_URL, { method: 'POST', body: params })
+        .then(() => {
+            setTimeout(() => {
+                document.getElementById('loading-overlay').style.display = 'none';
+                loadData();
+                alert("Database Cleared!");
+            }, 1500);
+        });
+    }
+
     function pickRandomWinner() {
         if(approvedUsers.length === 0) {
             alert("No approved participants to choose from!");
             return;
         }
-        
         alert("Choosing a random winner from " + approvedUsers.length + " approved members...");
-        
-        // Simulating a spin/calculation
         setTimeout(() => {
             const randomIndex = Math.floor(Math.random() * approvedUsers.length);
             const winner = approvedUsers[randomIndex];
-            
             alert("🎉 WINNER FOUND! 🎉\n\nName: " + winner.name + "\nPhone: " + winner.phone + "\nID: " + winner.myID);
-        }, 1500);
+        }, 1000);
     }
 </script>
 
