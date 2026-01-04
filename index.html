@@ -16,17 +16,8 @@
         .leaderboard-card { background: #fff3e0; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #fedcba; }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         
-        /* Referral Box Styling */
         .refer-card { background: #e3f2fd; border: 2px solid #2196f3; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: none; }
         .ref-link-box { background: white; padding: 10px; border-radius: 8px; font-size: 12px; word-break: break-all; margin: 10px 0; border: 1px solid #bbdefb; }
-        
-        .redeem-card { background: #fff; padding: 10px; border-radius: 15px; border: 2px dashed #ccc; margin-bottom: 15px; }
-        .btn-redeem { width: 100%; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: not-allowed; background: #e0e0e0; color: #888; transition: 0.3s; font-size: 14px; }
-        .btn-redeem.active { background: linear-gradient(45deg, #1eb41e, #149014); color: white; cursor: pointer; box-shadow: 0 4px 10px rgba(30,180,30,0.3); }
-
-        .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
-        #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
-        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
         
         .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
@@ -34,30 +25,44 @@
         .btn-red { background: var(--primary); color: white; }
         .btn-blue { background: #2196f3; color: white; margin-top: 5px; }
         
+        /* Wheel CSS */
+        .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
+        #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
+
         footer { background: #1a1a1a; color: white; padding: 30px 10px; font-size: 14px; margin-top: 20px; border-radius: 25px 25px 0 0; }
+        .footer-links { margin: 10px 0; }
+        .footer-links a { color: white; text-decoration: underline; margin: 0 8px; font-size: 13px; }
+        .service-tags { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .tag { background: var(--gold); color: #000; padding: 8px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; font-size: 12px; cursor: pointer; }
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; font-size:18px; font-weight:bold; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index:9999; display:flex; align-items:center; justify-content:center; text-decoration:none; }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
 <div class="container">
     <a href="services.html" class="poppo-banner">🔥 POPPO LIVE SPECIAL OFFER 🔥<br><span style="font-size: 12px;">Cheapest Coins Recharge - Click Here!</span></a>
     
     <div class="welcome-box"><h2>GM Agency Official</h2></div>
 
-    <div id="referralCard" class="refer-card">
-        <h4 style="margin:0; color:#1976d2;">📢 Invite & Earn</h4>
-        <p style="font-size:13px; margin:5px 0;">Share your link and earn 10 coins per referral!</p>
-        <div class="ref-link-box" id="refLinkText">Generating link...</div>
-        <button onclick="copyRefLink()" class="btn btn-blue" style="padding:8px; font-size:12px;">COPY LINK</button>
+    <div id="leaderboard" class="leaderboard-card">
+        <div style="font-weight:bold; color:var(--primary);">👥 Total Participants: <span id="totalDisplay">Loading...</span></div>
+        <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
+        <div id="topEarnersList">Loading leaderboard...</div>
     </div>
 
     <div class="coin-box"><span>🪙 My Coins:</span><span id="userCoins" style="font-size: 26px;">0</span></div>
 
+    <div id="referralCard" class="refer-card">
+        <h4 style="margin:0; color:#1976d2;">📢 Invite & Earn</h4>
+        <div class="ref-link-box" id="refLinkText">Generating link...</div>
+        <button onclick="copyRefLink()" class="btn btn-blue" style="padding:8px; font-size:12px;">COPY LINK</button>
+    </div>
+
     <div class="card" style="border: 2px solid #333; background: #f9f9f9;">
         <h4 style="margin:0; color: #333;">🔍 Check Your Status</h4>
         <input type="number" id="checkPhone" placeholder="WhatsApp Number">
-        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white; height: auto;">CHECK STATUS</button>
+        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white;">CHECK STATUS</button>
         <div id="statusResult" style="margin-top: 10px; font-weight: bold;"></div>
     </div>
 
@@ -84,8 +89,7 @@
         <div style="color: #1eb41e; font-weight: 800; font-size: 24px;">Mobile Registration</div>
         <div style="font-size: 18px; font-weight: 800; color: #333; margin: 5px 0;">Rs. 300</div>
         <div style="background: white; border-radius: 10px; padding: 12px; margin: 10px 0; border: 1px dashed #1eb41e;">
-            <p style="margin: 5px 0; color:#1eb41e; font-weight:bold; font-size:16px;">Easypaisa Details:</p>
-            <p style="margin: 5px 0;"><strong>Account:</strong> Tasleem Akhtar</p>
+            <p style="margin: 5px 0; color:#1eb41e; font-weight:bold;">Easypaisa: Tasleem Akhtar</p>
             <p style="margin: 5px 0;"><strong>Number:</strong> 03196557461</p>
         </div>
         <form id="regForm">
@@ -98,93 +102,101 @@
     </div>
 </div>
 
+<footer>
+    <p>© 2026 GM Agency Official</p>
+    <p>📧 Email: <a href="mailto:Poppoliveofficial123@gmail.com" style="color:white; text-decoration:none;">Poppoliveofficial123@gmail.com</a></p>
+    <div class="footer-links">
+        <a href="how-to.html">How it Works</a> | <a href="about.html">About Us</a> | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms</a>
+    </div>
+    <div class="service-tags">
+        <a href="services.html" class="tag">Poppo Recharge</a>
+        <span onclick="document.getElementById('registration-section').scrollIntoView()" class="tag">Lucky Draw</span>
+        <span onclick="document.getElementById('spin-section').scrollIntoView()" class="tag">Daily Rewards</span>
+    </div>
+</footer>
+
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbQtyRAkNf41w5gdv4F83PQCshIIsNp2SWOd0msPzxNreEQCpuAD-9aNB1uhkRhI3-8Q/exec';
 
-    // 1. Referral Logic: Check URL for ?ref=GM-123456
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
         const ref = params.get('ref');
-        if(ref) {
-            document.getElementById('referrer_id').value = ref;
-            console.log("Referred by: " + ref);
-        }
+        if(ref) document.getElementById('referrer_id').value = ref;
+        
+        loadLeaderboard();
         showReferralLink();
         updateCoinDisplay();
         checkSpin();
     };
 
+    function loadLeaderboard() {
+        fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('totalDisplay').innerText = data.total;
+            const list = document.getElementById('topEarnersList');
+            list.innerHTML = "";
+            // Pehle 3 approved users dikhayein (Example logic)
+            data.records.filter(u => u.status === "Approved").slice(0, 3).forEach((user, index) => {
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
+                    <span>#${index+1} ${user.name}</span> <span>Verified ✅</span>
+                </div>`;
+            });
+        });
+    }
+
     function showReferralLink() {
         const myID = localStorage.getItem("gm_user_id");
         if(myID && myID !== "N/A") {
-            const card = document.getElementById('referralCard');
-            const linkText = document.getElementById('refLinkText');
-            card.style.display = "block";
-            linkText.innerText = window.location.origin + window.location.pathname + "?ref=" + myID;
+            document.getElementById('referralCard').style.display = "block";
+            document.getElementById('refLinkText').innerText = window.location.origin + window.location.pathname + "?ref=" + myID;
         }
     }
 
     function copyRefLink() {
-        const text = document.getElementById('refLinkText').innerText;
-        navigator.clipboard.writeText(text);
+        navigator.clipboard.writeText(document.getElementById('refLinkText').innerText);
         alert("Referral link copied!");
     }
 
-    // 2. Form Submission
     document.getElementById('regForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const subBtn = document.getElementById('subBtn');
-        subBtn.innerText = "Processing...";
-        
+        document.getElementById('subBtn').innerText = "Submitting...";
         fetch(SCRIPT_URL, { method: 'POST', body: new FormData(this)})
         .then(r => r.json())
         .then(data => {
-            if(data.result === "Success") {
-                localStorage.setItem("gm_user_id", data.myID);
-                alert("✅ Registration Successful! Your ID: " + data.myID);
-                location.reload();
-            }
-        }).catch(() => {
-            alert("Submission sent! Check status after some time.");
+            localStorage.setItem("gm_user_id", data.myID);
+            alert("✅ Submitted! ID: " + data.myID);
             location.reload();
-        });
+        }).catch(() => { alert("Registration Sent!"); location.reload(); });
     });
 
-    // 3. Status Check
     function checkUserStatus() {
         const phone = document.getElementById('checkPhone').value;
         const res = document.getElementById('statusResult');
-        if(!phone) return;
-        res.innerText = "Checking... ⏳";
+        res.innerText = "Checking...";
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
         .then(r => r.json()).then(data => {
             if(data.status) {
                 if(data.myID) localStorage.setItem("gm_user_id", data.myID);
-                res.innerHTML = `Status: <span style="color:${data.status.toLowerCase()=='approved'?'#28a745':'#ff8c00'}">${data.status.toUpperCase()}</span>`;
+                res.innerHTML = `Status: ${data.status.toUpperCase()}`;
                 showReferralLink();
             } else { res.innerText = "No record found!"; }
         });
     }
 
-    // 4. Spin Wheel & Coins
+    // Spin & Coins Logic
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     function updateCoinDisplay() { document.getElementById("userCoins").innerText = coins; }
-
     function spinWheel() {
-        const wheel = document.getElementById("wheel");
-        wheel.style.transform = `rotate(1836deg)`; 
-        document.getElementById("spinBtn").disabled = true;
+        document.getElementById("wheel").style.transform = `rotate(1836deg)`; 
         setTimeout(() => {
-            coins += 2;
-            localStorage.setItem("gm_coins", coins);
+            coins += 2; localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", new Date().getTime());
-            alert("🎉 You won 2 Coins!");
             location.reload();
         }, 4100);
     }
-
     function checkSpin() {
         const last = localStorage.getItem("last_spin_time"), cooldown = 86400000;
         if (last && (new Date().getTime() - last < cooldown)) {
@@ -192,9 +204,7 @@
             document.getElementById("timerDisplay").style.display = "block";
             setInterval(() => {
                 const remain = (parseInt(last) + cooldown) - new Date().getTime();
-                if (remain < 0) { location.reload(); return; }
-                const h = Math.floor(remain/3600000);
-                const m = Math.floor((remain%3600000)/60000);
+                const h = Math.floor(remain/3600000); const m = Math.floor((remain%3600000)/60000);
                 document.getElementById("timeRemaining").innerText = `${h}h ${m}m`;
             }, 1000);
         }
