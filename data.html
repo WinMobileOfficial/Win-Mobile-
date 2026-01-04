@@ -3,106 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM Agency - Live Leaderboard</title>
+    <title>GM Agency - Master Admin Panel</title>
     <style>
-        :root { --primary: #ff5252; --gold: #ffd700; --dark: #1a1a1a; --bg: #f8f9fa; --success: #28a745; --pending: #ff8c00; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; display: none; }
+        :root { --primary: #ff5252; --success: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; display: none; text-align: center; }
         
-        .header { background: var(--dark); color: var(--gold); padding: 20px; border-bottom: 4px solid var(--gold); }
-        .container { max-width: 500px; margin: 20px auto; padding: 10px; }
+        /* Layout Styling */
+        .header-btn { background: var(--primary); color: white; padding: 15px; border-radius: 12px; margin: 20px auto; width: 90%; max-width: 400px; font-weight: bold; font-size: 18px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; }
+        .spin-btn { background: var(--success); color: white; padding: 15px; border-radius: 12px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
+        .reset-btn { background: #f39c12; color: white; padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
 
-        .stats-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
-        
-        /* Table Styling */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
-        .data-table th { background: #f1f1f1; padding: 12px; color: #666; text-transform: uppercase; font-size: 11px; }
-        .data-table td { padding: 12px 8px; border-bottom: 1px solid #eee; }
-        
-        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; color: white; text-transform: uppercase; }
-        .status-approved { background: var(--success); }
-        .status-pending { background: var(--pending); }
+        .stats { font-size: 20px; font-weight: bold; margin-bottom: 20px; }
+        .stats span { color: var(--primary); }
 
-        .loading { padding: 20px; color: var(--primary); font-weight: bold; }
-        .btn-home { display: inline-block; background: var(--dark); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; margin-top: 20px; font-weight: bold; }
+        .container { max-width: 500px; margin: 0 auto; padding: 10px; }
+        
+        .list-header { background: #333; color: white; display: flex; padding: 10px; font-size: 12px; font-weight: bold; border-radius: 5px 5px 0 0; }
+        .list-item { background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; padding: 15px 10px; text-align: left; }
+        
+        .col-info { flex: 2; }
+        .col-tid { flex: 2.5; font-size: 12px; color: #555; }
+        .col-ctrl { flex: 1.5; text-align: right; }
+
+        .name-box { font-weight: 800; font-size: 15px; }
+        .status-tag { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-top: 4px; }
+        .REJECTED { background: #ffebee; color: #c0392b; }
+        .APPROVED { background: #e8f5e9; color: #27ae60; }
+        .PENDING { background: #fff3e0; color: #e67e22; }
+
+        .btn-ctrl { padding: 8px 10px; border-radius: 6px; border: none; color: white; font-weight: bold; font-size: 11px; cursor: pointer; margin: 2px; width: 75px; display: block; }
+        .btn-approve { background: var(--success); }
+        .btn-reject { background: var(--danger); }
+
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; font-weight: bold; color: var(--primary); }
     </style>
 </head>
 <body>
 
-<script>
-    // 1. Passcode Security
-    var passcode = prompt("Enter Admin Code (0770):");
-    if (passcode === "0770") {
-        document.body.style.display = "block";
-        fetchData(); // Sirf tabhi data mangwayein jab code sahi ho
-    } else {
-        alert("Access Denied!");
-        window.location.href = "index.html";
-    }
+<div id="loading-overlay">
+    <div style="font-size: 40px;">⏳</div>
+    <div>Processing Request...</div>
+</div>
 
-    // 2. Fetch Data from Google Sheet (v8)
+<div class="container">
+    <button class="header-btn">GM Agency Master Admin</button>
+    <button class="spin-btn">🎡 SPIN FOR RANDOM WINNER</button><br>
+    <button class="reset-btn">Reset Winner Display</button>
+
+    <div class="stats">Total Participants: <span id="totalCount">0</span></div>
+
+    <div class="list-header">
+        <div style="flex:2">Participant</div>
+        <div style="flex:2.5">TID / Contact</div>
+        <div style="flex:1.5; text-align:right">Control</div>
+    </div>
+    
+    <div id="participantList">
+        <p style="padding:20px; color:#888;">Connecting to GM Agency Server...</p>
+    </div>
+</div>
+
+<script>
+    // Config
+    const PASSCODE = "0770";
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2_QLTxgt0QfeNewn5eycYE6R2HCEZlBCI8y6IhY44rnfmiecEagyLUHB0aSZuD03Osw/exec';
 
-    function fetchData() {
-        const tableBody = document.getElementById('tableBody');
-        const countDisplay = document.getElementById('totalCount');
-        
-        // Action 'checkStatus' ko use karte hue ya ek naya 'getAll' action agar aapne script mein dala hai
-        // Filhal hum aapki script ko request bhej rahe hain
-        fetch(`${SCRIPT_URL}?action=checkStatus&phone=ALL_DATA`) 
-        .then(response => response.json())
+    // 1. Passcode Check
+    window.onload = function() {
+        let code = prompt("Enter Master Admin Code:");
+        if (code === PASSCODE) {
+            document.body.style.display = "block";
+            loadData();
+        } else {
+            alert("Wrong Passcode!");
+            window.location.href = "index.html";
+        }
+    };
+
+    // 2. Fetch All Data
+    function loadData() {
+        fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS`)
+        .then(r => r.json())
         .then(data => {
-            document.getElementById('loading').style.display = 'none';
-            tableBody.innerHTML = "";
+            const list = document.getElementById('participantList');
+            const total = document.getElementById('totalCount');
+            list.innerHTML = "";
             
-            // Yahan hum loop lagayenge jo aapki sheet ke data ko table mein bharega
             if(data && data.records) {
-                countDisplay.innerText = data.records.length;
-                data.records.forEach((row, index) => {
-                    let statusClass = row.status.toLowerCase() === 'approved' ? 'status-approved' : 'status-pending';
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td>#${index + 1}</td>
-                            <td style="text-align:left"><b>${row.name}</b><br><small>${row.phone}</small></td>
-                            <td><span class="status-badge ${statusClass}">${row.status}</span></td>
-                        </tr>
+                total.innerText = data.records.length;
+                data.records.reverse().forEach(user => { // Newest first
+                    const status = user.status || "PENDING";
+                    list.innerHTML += `
+                        <div class="list-item">
+                            <div class="col-info">
+                                <div class="name-box">${user.name}</div>
+                                <span class="status-tag ${status.toUpperCase()}">${status}</span>
+                            </div>
+                            <div class="col-tid">
+                                <b>TID:</b> ${user.tid}<br>
+                                <b>Ph:</b> ${user.phone}
+                            </div>
+                            <div class="col-ctrl">
+                                <button class="btn-ctrl btn-approve" onclick="updateStatus('${user.phone}', 'Approved')">Approve</button>
+                                <button class="btn-ctrl btn-reject" onclick="updateStatus('${user.phone}', 'Rejected')">Reject</button>
+                            </div>
+                        </div>
                     `;
                 });
             } else {
-                tableBody.innerHTML = "<tr><td colspan='3'>No records found or Script Error.</td></tr>";
+                list.innerHTML = "<p>No data found in sheet.</p>";
             }
-        })
-        .catch(err => {
-            document.getElementById('loading').innerText = "Error loading data!";
-            console.error(err);
+        }).catch(err => {
+            document.getElementById('participantList').innerHTML = "<p style='color:red'>Connection Error!</p>";
+        });
+    }
+
+    // 3. Update Status (Live Sync)
+    function updateStatus(phone, newStatus) {
+        if(!confirm(`Are you sure you want to mark this as ${newStatus}?`)) return;
+        
+        document.getElementById('loading-overlay').style.display = 'flex';
+        
+        const params = new URLSearchParams();
+        params.append('action', 'updateUserStatus');
+        params.append('phone', phone);
+        params.append('status', newStatus);
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: params
+        }).then(() => {
+            setTimeout(() => {
+                document.getElementById('loading-overlay').style.display = 'none';
+                alert("Sheet Updated Successfully!");
+                loadData();
+            }, 2500);
+        }).catch(err => {
+            alert("Failed to update sheet.");
+            document.getElementById('loading-overlay').style.display = 'none';
         });
     }
 </script>
-
-<div class="header"><h1>GM Agency Data Center</h1></div>
-
-<div class="container">
-    <div class="stats-card">
-        <div style="font-weight:bold; color:var(--primary); margin-bottom:10px;">
-            👥 Total Registered: <span id="totalCount">0</span>
-        </div>
-
-        <div id="loading" class="loading">⏳ Connecting to Sheet...</div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th style="text-align:left">User Details</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                </tbody>
-        </table>
-    </div>
-
-    <a href="index.html" class="btn-home">Return to Portal</a>
-</div>
 
 </body>
 </html>
