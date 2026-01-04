@@ -16,9 +16,7 @@
         .leaderboard-card { background: #fff3e0; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #fedcba; }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         
-        /* Redeem Card Style */
         .redeem-card { background: #f0f4f8; border: 2px dashed #333; padding: 15px; border-radius: 15px; margin-bottom: 15px; }
-        
         .refer-card { background: #e3f2fd; border: 2px solid #2196f3; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: none; }
         .ref-link-box { background: white; padding: 10px; border-radius: 8px; font-size: 12px; word-break: break-all; margin: 10px 0; border: 1px solid #bbdefb; }
         
@@ -29,13 +27,19 @@
         .btn-blue { background: #2196f3; color: white; margin-top: 5px; }
         .btn-green { background: #1eb41e; color: white; }
         
-        /* Wheel CSS */
         .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
 
+        /* Footer & Tags Styling */
         footer { background: #1a1a1a; color: white; padding: 30px 10px; font-size: 14px; margin-top: 20px; border-radius: 25px 25px 0 0; }
-        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; font-weight:bold; }
+        .footer-links { margin: 15px 0; }
+        .footer-links a { color: #ccc; text-decoration: none; margin: 0 10px; font-size: 13px; }
+        .footer-links a:hover { color: var(--gold); }
+        .service-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 15px; }
+        .tag { background: var(--gold); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; text-decoration: none; }
+
+        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-weight:bold; }
     </style>
 </head>
 <body>
@@ -110,22 +114,32 @@
 
 <footer>
     <p>© 2026 GM Agency Official</p>
-    <div class="footer-links" style="margin: 10px 0;">
-        <a href="mailto:Poppoliveofficial123@gmail.com" style="color:white;">Email Us</a>
+    <p style="font-size: 12px;">📧 <a href="mailto:Poppoliveofficial123@gmail.com" style="color:white; text-decoration:none;">Poppoliveofficial123@gmail.com</a></p>
+    
+    <div class="footer-links">
+        <a href="about.html">About Us</a> | 
+        <a href="privacy.html">Privacy Policy</a> | 
+        <a href="terms.html">Terms & Conditions</a>
+    </div>
+
+    <div class="service-tags">
+        <a href="services.html" class="tag">Poppo Coins</a>
+        <span onclick="document.getElementById('spin-section').scrollIntoView()" class="tag">Daily Rewards</span>
+        <span onclick="document.getElementById('registration-section').scrollIntoView()" class="tag">Lucky Draw</span>
+        <a href="how-to.html" class="tag">How to Earn</a>
     </div>
 </footer>
 
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
-    // Aapka Updated Script URL
+    // Updated Script URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0wTrxyNcE9ztIqPDFVconTJv1Hn9QTDMNHijCFbXyh4ac9TdyNWroNjCFIN_RkPuEpA/exec';
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
         const ref = params.get('ref');
         if(ref) document.getElementById('referrer_id').value = ref;
-        
         loadLeaderboard();
         showReferralLink();
         updateCoinDisplay();
@@ -162,7 +176,6 @@
         alert("Referral link copied!");
     }
 
-    // Coin & Redeem Logic
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
     function updateCoinDisplay() { document.getElementById("userCoins").innerText = coins; }
 
@@ -173,12 +186,11 @@
         }
         const phone = prompt("Enter your Easypaisa/JazzCash Number:");
         if (phone) {
-            alert("Redeem Request Sent for " + phone + ". Your 200 coins are deducted.");
             coins -= 200;
             localStorage.setItem("gm_coins", coins);
             updateCoinDisplay();
-            // Yahan chaho to admin ko WhatsApp bhejwa do
             window.open(`https://wa.me/923023313131?text=Redeem Request: 200 Coins from ID ${localStorage.getItem("gm_user_id")} to number ${phone}`);
+            alert("Redeem Request Sent! Your 200 coins are deducted.");
         }
     }
 
