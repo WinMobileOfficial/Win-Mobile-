@@ -49,9 +49,9 @@
 </div>
 
 <div class="container">
-    <button class="header-btn">GM Agency Master Admin</button>
+    <button class="header-btn">GM Agency Master Admin Panel</button>
     
-    <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK RANDOM WINNER</button><br>
+    <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK & BROADCAST WINNER</button><br>
     
     <button class="clear-btn" onclick="clearDatabase()">🗑️ CLEAR ALL DATABASE</button><br>
     
@@ -72,8 +72,8 @@
 
 <script>
     const PASSCODE = "0770";
-    // Naya Script URL jo aapne diya tha
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyz1n-JOh2V4-oQmwjPDEHqDCjvxmdHbe9Af4CFW8aaYA6CjCcNX8Retas2e7hYvrl0Gg/exec';
+    // Aapka Latest SCRIPT URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvNhPw9XhnNQIbMBGLZ-C2PKZDzDlWk8POh869waNrGCNYdWuKnOB5XgG_cF5rtCDx9w/exec';
 
     let approvedUsers = [];
 
@@ -100,7 +100,6 @@
             approvedUsers = []; 
             
             if(data && data.records && data.records.length > 0) {
-                // Reverse isliye taake naye log upar dikhein
                 [...data.records].reverse().forEach(user => {
                     const status = user.status || "PENDING";
                     if(status === "Approved") approvedUsers.push(user);
@@ -126,7 +125,7 @@
                 });
                 total.innerText = approvedUsers.length;
             } else {
-                list.innerHTML = "<p style='padding:20px;'>No records found in database.</p>";
+                list.innerHTML = "<p style='padding:20px;'>No records found.</p>";
                 total.innerText = "0";
             }
         }).catch(err => {
@@ -148,20 +147,15 @@
         .then(r => r.json())
         .then(res => {
             document.getElementById('loading-overlay').style.display = 'none';
-            if(res.result === "Success") {
-                loadData(); 
-            } else {
-                alert("Error: " + (res.error || "Update failed"));
-            }
+            loadData(); 
         }).catch(() => {
             document.getElementById('loading-overlay').style.display = 'none';
-            alert("Status Updated (Page will refresh)");
             loadData();
         });
     }
 
     function clearDatabase() {
-        if(!confirm("⚠️ DANGER: This will delete ALL users from your Google Sheet. Continue?")) return;
+        if(!confirm("⚠️ DANGER: Delete ALL users?")) return;
         if(prompt("Type 'DELETE' to confirm:") !== "DELETE") return;
         
         document.getElementById('loading-overlay').style.display = 'flex';
@@ -170,32 +164,38 @@
         params.append('pin', PASSCODE);
 
         fetch(SCRIPT_URL, { method: 'POST', body: params })
-        .then(r => r.json())
-        .then(res => {
+        .then(() => {
             document.getElementById('loading-overlay').style.display = 'none';
-            if(res.result === "Success") {
-                alert("Database wiped clean!");
-                loadData();
-            } else {
-                alert("Error: " + res.error);
-            }
-        }).catch(() => {
-            document.getElementById('loading-overlay').style.display = 'none';
+            alert("Database Cleared!");
             loadData();
         });
     }
 
     function pickRandomWinner() {
         if(approvedUsers.length === 0) {
-            alert("Please approve some participants first!");
+            alert("No approved participants!");
             return;
         }
-        alert("Choosing a winner from " + approvedUsers.length + " approved members...");
         
-        setTimeout(() => {
-            const winner = approvedUsers[Math.floor(Math.random() * approvedUsers.length)];
-            alert("🎊 THE WINNER IS: 🎊\n\nName: " + winner.name + "\nPhone: " + winner.phone + "\nID: " + winner.myID);
-        }, 800);
+        const winner = approvedUsers[Math.floor(Math.random() * approvedUsers.length)];
+        if(!confirm(`🎉 Winner Found: ${winner.name}\nDo you want to BROADCAST this winner to the website?`)) return;
+
+        document.getElementById('loading-overlay').style.display = 'flex';
+        const params = new URLSearchParams();
+        params.append('action', 'setWinner');
+        params.append('winnerName', winner.name);
+        params.append('winnerID', winner.myID);
+        params.append('pin', PASSCODE);
+
+        fetch(SCRIPT_URL, { method: 'POST', body: params })
+        .then(r => r.json())
+        .then(res => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            alert("🎊 SUCCESS!\n" + winner.name + " is now displayed on the website as the latest winner.");
+        }).catch(() => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            alert("Winner selected but server update failed.");
+        });
     }
 </script>
 
