@@ -31,7 +31,6 @@
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
 
-        /* Footer & Tags Styling */
         footer { background: #1a1a1a; color: white; padding: 30px 10px; font-size: 14px; margin-top: 20px; border-radius: 25px 25px 0 0; }
         .footer-links { margin: 15px 0; }
         .footer-links a { color: #ccc; text-decoration: none; margin: 0 10px; font-size: 13px; }
@@ -133,8 +132,8 @@
 <a href="https://wa.me/923023313131" class="wa-btn" target="_blank">WA</a>
 
 <script>
-    // Updated Script URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0wTrxyNcE9ztIqPDFVconTJv1Hn9QTDMNHijCFbXyh4ac9TdyNWroNjCFIN_RkPuEpA/exec';
+    // Updated SCRIPT_URL (Ye link aapke naye Backend se connected hai)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyz1n-JOh2V4-oQmwjPDEHqDCjvxmdHbe9Af4CFW8aaYA6CjCcNX8Retas2e7hYvrl0Gg/exec';
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
@@ -149,17 +148,21 @@
     function loadLeaderboard() {
         fetch(`${SCRIPT_URL}?action=checkStatus&phone=GET_ALL_RECORDS&source=leaderboard`)
         .then(r => r.json()).then(data => {
-            document.getElementById('totalDisplay').innerText = data.total || 0;
             const list = document.getElementById('topEarnersList');
-            list.innerHTML = "";
-            const approvedOnes = data.records.filter(u => u.status === "Approved");
-            if(approvedOnes.length > 0) {
-                approvedOnes.slice(0, 5).forEach((user, index) => {
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
-                        <span>#${index+1} ${user.name}</span> <span style="color:#28a745; font-weight:bold;">Verified ✅</span>
-                    </div>`;
-                });
-            } else { list.innerHTML = "<p style='font-size:12px;'>No verified users yet.</p>"; }
+            if(data && data.records) {
+                const approvedOnes = data.records.filter(u => u.status === "Approved");
+                document.getElementById('totalDisplay').innerText = approvedOnes.length;
+                list.innerHTML = "";
+                if(approvedOnes.length > 0) {
+                    approvedOnes.slice(0, 5).forEach((user, index) => {
+                        list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
+                            <span>#${index+1} ${user.name}</span> <span style="color:#28a745; font-weight:bold;">Verified ✅</span>
+                        </div>`;
+                    });
+                } else { list.innerHTML = "<p style='font-size:12px;'>No verified users yet.</p>"; }
+            }
+        }).catch(err => {
+            document.getElementById('topEarnersList').innerHTML = "Server Error!";
         });
     }
 
