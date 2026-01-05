@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GM Agency - Master Admin Panel</title>
     <style>
-        :root { --primary: #ff5252; --success: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --bg: #f4f7f6; }
+        :root { --primary: #ff5252; --success: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --bg: #f4f7f6; --info: #2196f3; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; display: none; text-align: center; }
         
         .header-btn { background: var(--primary); color: white; padding: 15px; border-radius: 12px; margin: 20px auto; width: 90%; max-width: 400px; font-weight: bold; font-size: 18px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; }
         .spin-btn { background: var(--success); color: white; padding: 15px; border-radius: 12px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
+        
+        /* New Reset Button Style */
+        .reset-btn { background: var(--info); color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
         
         .clear-btn { background: #333; color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: 1px solid red; margin-bottom: 15px; cursor: pointer; }
         
@@ -53,6 +56,8 @@
     
     <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK & BROADCAST WINNER</button><br>
     
+    <button class="reset-btn" onclick="resetWinner()">🔄 RESET / CLEAN WINNER</button><br>
+    
     <button class="clear-btn" onclick="clearDatabase()">🗑️ CLEAR ALL DATABASE</button><br>
     
     <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
@@ -72,7 +77,6 @@
 
 <script>
     const PASSCODE = "0770";
-    // FINAL UPDATED SCRIPT URL ADDED HERE
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzNBl_h1gPnCCviC6GJZCs8CDXIYkF3G9L3GpWN2Q6AU0EzP971uldOj7_736blDDn_Q/exec';
 
     let approvedUsers = [];
@@ -195,6 +199,28 @@
         }).catch(() => {
             document.getElementById('loading-overlay').style.display = 'none';
             alert("Winner selected but server update failed.");
+        });
+    }
+
+    // NEW RESET WINNER FUNCTION
+    function resetWinner() {
+        if(!confirm("Are you sure you want to CLEAN the winner from website?")) return;
+        
+        document.getElementById('loading-overlay').style.display = 'flex';
+        const params = new URLSearchParams();
+        params.append('action', 'setWinner');
+        params.append('winnerName', ''); 
+        params.append('winnerID', '');
+        params.append('pin', PASSCODE);
+
+        fetch(SCRIPT_URL, { method: 'POST', body: params })
+        .then(r => r.json())
+        .then(res => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            alert("✅ SUCCESS! Winner box cleaned.");
+        }).catch(() => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            alert("Winner reset failed.");
         });
     }
 </script>
