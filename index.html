@@ -182,12 +182,14 @@
     }
 
     function showReferralLink() {
-        const myID = localStorage.getItem("gm_user_id");
-        if(myID && myID !== "N/A") {
-            document.getElementById('referralCard').style.display = "block";
-            document.getElementById('refLinkText').innerText = window.location.origin + window.location.pathname + "?ref=" + myID;
-        }
+    const myID = localStorage.getItem("gm_user_id");
+    if(myID && myID !== "N/A") {
+        document.getElementById('referralCard').style.display = "block";
+        // Manual link set kar diya hai taake 'index.site' na aaye
+        document.getElementById('refLinkText').innerText = "https://gmagency.site/index.html?ref=" + myID;
     }
+}
+
 
     function copyRefLink() {
         navigator.clipboard.writeText(document.getElementById('refLinkText').innerText);
