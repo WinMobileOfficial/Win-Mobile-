@@ -257,36 +257,54 @@
     });
 
     function checkUserStatus() {
-    const phone = document.getElementById('checkPhone').value;
-    if(!phone) { 
+    let inputPhone = document.getElementById('checkPhone').value.trim();
+    
+    if(!inputPhone) { 
         alert("Please enter your WhatsApp number!"); 
         return; 
     }
+
+    // AGAR USER 0 SE NUMBER SHURU KARE TO 0 HATA DO (Sheet ke '302...' se match karne ke liye)
+    let formattedPhone = inputPhone.startsWith("0") ? inputPhone.substring(1) : inputPhone;
     
     document.getElementById('statusResult').innerText = "Checking...";
     
-    fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
+    // Google Sheet se status mangwana
+    fetch(`${SCRIPT_URL}?action=checkStatus&phone=${formattedPhone}`)
     .then(r => r.json())
     .then(data => {
-        if(data.status) {
-            // ID save karna taake referral link ban sakay
+        // Agar record mil jaye aur status khali na ho
+        if(data.status && data.status !== "No record found") {
             if(data.myID) localStorage.setItem("gm_user_id", data.myID);
             
-            // Status ka rang badalna (Green for Approved)
-            let color = (data.status === "Approved") ? "#1eb41e" : "#ff5252";
-            document.getElementById('statusResult').innerHTML = `Status: <span style="color:${color}; text-transform:uppercase;">${data.status}</span>`;
+            // Status ka rang (Approved = Green, Rejected = Red)
+            let color = (data.status.toLowerCase() === "approved") ? "#1eb41e" : "#ff5252";
+            document.getElementById('statusResult').innerHTML = `Status: <span style="color:${color}; font-weight:bold;">${data.status.toUpperCase()}</span>`;
             
-            // Agar approved hai to Invite link dikhao
             showReferralLink();
         } else {
-            document.getElementById('statusResult').innerHTML = `<span style="color:red">No record found!</span>`;
+            // Agar normalized number se na mile, to pura number try karein
+            checkOriginalNumber(inputPhone);
         }
     })
     .catch(err => {
-        document.getElementById('statusResult').innerText = "Connection Error!";
-        console.error(err);
+        document.getElementById('statusResult').innerText = "Server Error!";
     });
 }
+
+function checkOriginalNumber(original) {
+    fetch(`${SCRIPT_URL}?action=checkStatus&phone=${original}`)
+    .then(r => r.json())
+    .then(data => {
+        if(data.status && data.status !== "No record found") {
+            document.getElementById('statusResult').innerHTML = `Status: <span style="color:#1eb41e; font-weight:bold;">${data.status.toUpperCase()}</span>`;
+            showReferralLink();
+        } else {
+            document.getElementById('statusResult').innerHTML = `<span style="color:red">No record found in Sheet!</span>`;
+        }
+    });
+}
+
 
 </script>
 </body>
