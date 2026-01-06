@@ -258,39 +258,52 @@
 
     function checkUserStatus() {
     let inputPhone = document.getElementById('checkPhone').value.trim();
+    let statusBox = document.getElementById('statusResult');
     
     if(!inputPhone) { 
-        alert("Please enter your WhatsApp number!"); 
+        alert("Please enter number!"); 
         return; 
     }
 
-    // AGAR USER 0 SE NUMBER SHURU KARE TO 0 HATA DO (Sheet ke '302...' se match karne ke liye)
-    let formattedPhone = inputPhone.startsWith("0") ? inputPhone.substring(1) : inputPhone;
+    statusBox.innerText = "Searching in Sheet...";
+    statusBox.style.color = "blue";
+
+    // Normalizing number: Shuru ka 0 hata kar check karna
+    let cleanPhone = inputPhone.startsWith("0") ? inputPhone.substring(1) : inputPhone;
     
-    document.getElementById('statusResult').innerText = "Checking...";
-    
-    // Google Sheet se status mangwana
-    fetch(`${SCRIPT_URL}?action=checkStatus&phone=${formattedPhone}`)
+    // API Call
+    fetch(`${SCRIPT_URL}?action=checkStatus&phone=${cleanPhone}`)
     .then(r => r.json())
     .then(data => {
-        // Agar record mil jaye aur status khali na ho
         if(data.status && data.status !== "No record found") {
+            let s = data.status.toLowerCase();
+            let color = (s === "approved" || s === "verified") ? "#1eb41e" : "#ff5252";
+            statusBox.innerHTML = `Status: <span style="color:${color}; font-weight:bold;">${data.status.toUpperCase()}</span>`;
+            
             if(data.myID) localStorage.setItem("gm_user_id", data.myID);
-            
-            // Status ka rang (Approved = Green, Rejected = Red)
-            let color = (data.status.toLowerCase() === "approved") ? "#1eb41e" : "#ff5252";
-            document.getElementById('statusResult').innerHTML = `Status: <span style="color:${color}; font-weight:bold;">${data.status.toUpperCase()}</span>`;
-            
             showReferralLink();
         } else {
-            // Agar normalized number se na mile, to pura number try karein
-            checkOriginalNumber(inputPhone);
+            // Agar clean number se na mile, to full number (0 ke sath) try karein
+            checkAgainWithFull(inputPhone);
         }
     })
-    .catch(err => {
-        document.getElementById('statusResult').innerText = "Server Error!";
+    .catch(e => { statusBox.innerText = "Network Error!"; });
+}
+
+function checkAgainWithFull(fullNumber) {
+    fetch(`${SCRIPT_URL}?action=checkStatus&phone=${fullNumber}`)
+    .then(r => r.json())
+    .then(data => {
+        let statusBox = document.getElementById('statusResult');
+        if(data.status && data.status !== "No record found") {
+            statusBox.innerHTML = `Status: <span style="color:#1eb41e;">${data.status.toUpperCase()}</span>`;
+            showReferralLink();
+        } else {
+            statusBox.innerHTML = `<span style="color:red">Not Found! Ensure Column B has: ${fullNumber}</span>`;
+        }
     });
 }
+
 
 function checkOriginalNumber(original) {
     fetch(`${SCRIPT_URL}?action=checkStatus&phone=${original}`)
