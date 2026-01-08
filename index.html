@@ -138,36 +138,62 @@
     </div>
 </div>
 <div class="max-w-md mx-auto mt-10 px-4 mb-10">
-    <div class="relative p-[3px] bg-gradient-to-r from-yellow-400 via-pink-500 to-indigo-600 rounded-[2rem] shadow-[0_0_20px_rgba(236,72,153,0.3)] animate-pulse">
-        
-        <div class="bg-white rounded-[1.8rem] p-6 text-center">
+    <style>
+        @keyframes glowing-border {
+            0% { border-color: #ff00c8; box-shadow: 0 0 10px #ff00c8; }
+            50% { border-color: #ffeb3b; box-shadow: 0 0 25px #ffeb3b; }
+            100% { border-color: #ff00c8; box-shadow: 0 0 10px #ff00c8; }
+        }
+        .main-offer-box {
+            animation: glowing-border 2s infinite;
+            border: 5px solid #ff00c8;
+            background: #ffffff;
+            border-radius: 2.5rem;
+            position: relative;
+        }
+        .button-container-box {
+            background: #f8fafc;
+            border: 2px dashed #6366f1;
+            border-radius: 1.5rem;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .premium-btn {
+            background: linear-gradient(90deg, #4f46e5, #ec4899);
+            box-shadow: 0 8px 15px rgba(236, 72, 153, 0.4);
+        }
+    </style>
+
+    <div class="main-offer-box p-8 text-center overflow-hidden">
+        <div class="absolute -top-1 left-1/2 -translate-x-1/2 bg-[#FFEB3B] text-black text-[12px] font-black px-6 py-2 rounded-b-2xl shadow-md uppercase">
+            💎 TOP SERVICE
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-[26px] font-black text-[#1a1a1a] leading-none uppercase tracking-tighter italic">
+                POPPO LIVE SERVICES
+            </h3>
+            <div class="w-20 h-1.5 bg-pink-500 mx-auto my-3 rounded-full"></div>
+            <p class="text-[13px] font-extrabold text-[#666] mb-2 uppercase">
+                Withdraw USDT & Sell Coins
+            </p>
+
+            <div class="button-container-box">
+                <p class="text-[10px] font-black text-indigo-600 mb-3 tracking-widest uppercase">Click Below To Access</p>
+                <a href="poppo.html" class="premium-btn block w-full text-white font-black text-2xl py-5 rounded-2xl transform transition active:scale-95 uppercase border-b-4 border-black/20">
+                    OPEN NOW
+                </a>
+            </div>
             
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-black text-[10px] font-black px-4 py-1 rounded-full shadow-md uppercase tracking-tighter">
-                Limited Time Service
+            <div class="flex justify-center gap-4 mt-6 text-[11px] font-black text-gray-400 uppercase tracking-widest">
+                <span>⚡ INSTANT</span>
+                <span>⭐ TRUSTED</span>
+                <span>🛡️ SECURE</span>
             </div>
-
-            <div class="flex flex-col items-center">
-                <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-3">
-                    <i class="fa-solid fa-gem text-indigo-600 text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-black text-gray-900 leading-none">POPPO LIVE SERVICES</h3>
-                <div class="h-1 w-12 bg-pink-500 my-2 rounded-full"></div>
-                <p class="text-sm font-bold text-gray-500 uppercase tracking-tight">Withdraw USDT & Sell Coins</p>
-            </div>
-
-            <div class="flex justify-center gap-2 my-4">
-                <span class="bg-green-100 text-green-700 text-[10px] font-black px-2 py-1 rounded-md">✓ INSTANT PAYMENT</span>
-                <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-1 rounded-md">✓ 24/7 SUPPORT</span>
-            </div>
-
-            <a href="poppo.html" class="block w-full bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-black text-xl py-4 rounded-2xl shadow-xl transform transition hover:scale-[1.02] active:scale-95 border-b-4 border-black/20 uppercase">
-                OPEN NOW
-            </a>
-            
-            <p class="text-[10px] text-gray-400 mt-3 font-bold">Trusted by 100+ Poppo Streamers</p>
         </div>
     </div>
 </div>
+
 
     
 <footer>
