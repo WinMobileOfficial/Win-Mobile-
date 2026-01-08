@@ -137,6 +137,7 @@
         </form>
     </div>
 </div>
+
 <div class="max-w-md mx-auto mt-10 px-4 mb-10">
     <style>
         @keyframes glowing-border {
@@ -158,9 +159,24 @@
             padding: 15px;
             margin-top: 20px;
         }
-        .premium-btn {
+        /* Button Style: Extra Bold aur Full Box Width */
+        .premium-btn-bold {
             background: linear-gradient(90deg, #4f46e5, #ec4899);
             box-shadow: 0 8px 15px rgba(236, 72, 153, 0.4);
+            display: block;
+            width: 100%;
+            color: white;
+            font-weight: 900; /* Extra Bold */
+            font-size: 1.5rem; /* Large Font */
+            padding: 18px 0;
+            border-radius: 1rem;
+            text-transform: uppercase;
+            border-bottom: 5px solid rgba(0,0,0,0.2);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .premium-btn-bold:active {
+            transform: scale(0.96);
         }
     </style>
 
@@ -180,7 +196,7 @@
 
             <div class="button-container-box">
                 <p class="text-[10px] font-black text-indigo-600 mb-3 tracking-widest uppercase">Click Below To Access</p>
-                <a href="poppo.html" class="premium-btn block w-full text-white font-black text-2xl py-5 rounded-2xl transform transition active:scale-95 uppercase border-b-4 border-black/20">
+                <a href="poppo.html" class="premium-btn-bold">
                     OPEN NOW
                 </a>
             </div>
@@ -193,7 +209,7 @@
         </div>
     </div>
 </div>
-
+    
 
     
 <footer>
