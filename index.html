@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GM Agency - Official Earning Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; scroll-behavior: smooth; }
@@ -33,12 +34,12 @@
         .service-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 15px; }
         .tag { background: var(--gold); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; text-decoration: none; }
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-weight:bold; }
-        
-        /* New Community Button Styles */
+
+        /* New Community Button Styles (Added by Gemini) */
         .comm-btn { text-decoration: none !important; display: flex; align-items: center; justify-content: space-between; background: #25D366; padding: 15px; border-radius: 18px; border-bottom: 4px solid #128C7E; margin: 15px auto; width: 90%; transition: transform 0.2s; }
         .comm-btn:active { transform: scale(0.95); }
-        .ping-box { h: 8px; w: 8px; background: #ff5252; border-radius: 50%; display: inline-block; margin-right: 5px; animation: ping 1s infinite; }
-        @keyframes ping { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .ping-box { height: 8px; width: 8px; background: #ff5252; border-radius: 50%; display: inline-block; margin-right: 5px; animation: ping 1s infinite; }
+        @keyframes ping { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -63,16 +64,18 @@
     <div class="card" style="border: 3px solid #ff007f; background: #fff0f6; position: relative; overflow: hidden; margin-bottom: 20px; border-radius: 20px;">
         <div style="background: #ff007f; color: white; position: absolute; top: 0; right: 0; padding: 6px 18px; font-size: 11px; font-weight: bold; border-bottom-left-radius: 15px;">OFFICIAL GM OFFER</div>
         <h3 style="color: #ff007f; margin: 15px 0 8px 0; font-size: 20px;">🌟 Poppo Agency Join Rewards 🌟</h3>
+        
         <div style="background: #1a1a1a; color: #ffd700; padding: 15px; border-radius: 15px; margin: 10px auto; width: 85%; border: 1px solid #ffd700;">
             <span style="font-size: 13px; color: #fff; display: block; margin-bottom: 5px; opacity: 0.9;">Agency Join Code:</span>
             <strong style="font-size: 28px; letter-spacing: 4px; font-family: monospace;">2753578</strong>
         </div>
+
         <div style="background: white; border: 2px dashed #ff007f; border-radius: 15px; padding: 18px; margin: 15px 10px;">
             <p style="margin: 0; font-weight: 900; color: #ff007f; font-size: 19px; text-transform: uppercase;">🔥 5,000 Coins Welcome Gift 🔥</p>
             <p style="margin: 10px 0 0 0; font-size: 14px; color: #444; line-height: 1.5;">Naye hosts hamari agency join karein aur hasil karein <b>5,000 Coins</b> ka fori gift!</p>
         </div>
 
-        <a href="https://chat.whatsapp.com/Dd1rtjmg1oz4iMgDkiRAce" class="comm-btn">
+        <a href="https://chat.whatsapp.com/Dd1rtjmg1oz4iMgDkiRAce" class="comm-btn" target="_blank">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div style="background: white; padding: 8px; border-radius: 10px; color: #25D366; font-size: 20px;">
                     <i class="fa-brands fa-whatsapp"></i>
@@ -187,10 +190,10 @@
                 document.getElementById('winnerName').innerText = data.latestWinner;
                 document.getElementById('winnerID').innerText = "Congratulations! 🏆";
                 winnerBox.style.display = 'block';
-            }
+            } else { winnerBox.style.display = 'none'; }
             const list = document.getElementById('topEarnersList');
             list.innerHTML = "";
-            if (data.records) {
+            if (data.records && data.records.length > 0) {
                 const approvedOnes = data.records.filter(u => u.status === "Approved");
                 document.getElementById('totalDisplay').innerText = approvedOnes.length;
                 approvedOnes.slice(0, 5).forEach((user, index) => {
@@ -202,16 +205,16 @@
 
     function checkUserStatus() {
         const phone = document.getElementById('checkPhone').value;
-        if(!phone) return alert("Please enter phone number");
-        document.getElementById('statusResult').innerText = "Searching...";
+        if(!phone) return alert("Enter number");
+        document.getElementById('statusResult').innerText = "Checking...";
         fetch(`${SCRIPT_URL}?action=getRecords`).then(r => r.json()).then(data => {
             const user = data.records.find(u => u.phone == phone);
-            document.getElementById('statusResult').innerText = user ? `Status: ${user.status}` : "No record found.";
+            document.getElementById('statusResult').innerText = user ? `Status: ${user.status}` : "Not found";
         });
     }
 
     function showReferralLink() {
-        const myID = localStorage.getItem("gm_user_id") || "GM" + Math.floor(Math.random()*1000);
+        const myID = localStorage.getItem("gm_user_id") || "GM" + Math.floor(Math.random()*9000);
         localStorage.setItem("gm_user_id", myID);
         document.getElementById('referralCard').style.display = "block";
         document.getElementById('refLinkText').innerText = window.location.href.split('?')[0] + "?ref=" + myID;
@@ -246,6 +249,11 @@
             document.getElementById("spinBtn").disabled = true;
             document.getElementById("timerDisplay").style.display = "block";
         }
+    }
+
+    function redeemCoins() {
+        if (coins < 200) { alert("Need 200 coins!"); return; }
+        window.open(`https://wa.me/923023313131?text=Redeem Request ID: ${localStorage.getItem("gm_user_id")}`);
     }
 </script>
 </body>
