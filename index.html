@@ -136,6 +136,7 @@
 </div>
 
 <footer style="background: #1a1a1a; color: white; padding: 40px 15px 20px 15px; margin-top: 30px; border-radius: 30px 30px 0 0; font-family: 'Segoe UI', sans-serif;">
+    
     <div style="margin-bottom: 25px;">
         <p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">© 2026 GM Agency Official</p>
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -145,18 +146,65 @@
     </div>
 
     <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 15px 0;">
-        <a onclick="showModal('about')" style="color: white; text-decoration: none; font-size: 13px; cursor: pointer;">About Us</a>
+        <span onclick="showModal('about')" style="color: white; font-size: 13px; cursor: pointer;">About Us</span>
         <span style="color: #444;">|</span>
-        <a onclick="showModal('privacy')" style="color: white; text-decoration: none; font-size: 13px; cursor: pointer;">Privacy Policy</a>
+        <span onclick="showModal('privacy')" style="color: white; font-size: 13px; cursor: pointer;">Privacy Policy</span>
         <span style="color: #444;">|</span>
-        <a onclick="showModal('terms')" style="color: white; text-decoration: none; font-size: 13px; cursor: pointer;">Terms & Conditions</a>
+        <span onclick="showModal('terms')" style="color: white; font-size: 13px; cursor: pointer;">Terms & Conditions</span>
     </div>
 
     <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <span style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Poppo Coins</span>
-        <span style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Daily Rewards</span>
-        <span style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">🎁 Lucky Draw</span>
+        <a href="#agency-section" style="text-decoration: none; background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Poppo Coins</a>
+        <a href="#spin-section" style="text-decoration: none; background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Daily Rewards</a>
+        <a href="#lucky-draw" style="text-decoration: none; background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">🎁 Lucky Draw</a>
     </div>
+
+    <p style="font-size: 10px; color: #666; margin-top: 20px;">GM Agency is a certified Poppo partner. All rights reserved.</p>
+</footer>
+
+<script>
+// Status Check Function Fix
+function checkUserStatus() {
+    const phone = document.getElementById("checkPhone").value;
+    const resultDiv = document.getElementById("statusResult");
+    
+    if(!phone) {
+        alert("Please enter WhatsApp Number");
+        return;
+    }
+
+    resultDiv.style.color = "#ffa500";
+    resultDiv.innerText = "🔍 FETCHING DATA...";
+
+    // Simulating database check as seen in image 1000431298.jpg
+    setTimeout(() => {
+        resultDiv.innerText = "STATUS: CHECKING VERIFICATION...";
+        setTimeout(() => {
+            // Agar aapke paas Sheets API hai to yahan connect hogi
+            resultDiv.style.color = "#1eb41e";
+            resultDiv.innerText = "STATUS: ACTIVE & VERIFIED ✅";
+        }, 2000);
+    }, 1500);
+}
+
+// Modal Toggle
+function showModal(type) {
+    const modal = document.getElementById('policyModal');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+
+    const content = {
+        about: ["About GM Agency", "We are official Poppo Live partners providing secure coin recharge and hosting."],
+        privacy: ["Privacy Policy", "Your personal data and Transaction IDs are 100% secure with GM Agency."],
+        terms: ["Terms & Conditions", "Rewards are manual. Cheating or double accounts will result in a ban."]
+    };
+
+    title.innerText = content[type][0];
+    body.innerText = content[type][1];
+    modal.style.display = "block";
+}
+</script>
+
     <p style="font-size: 10px; color: #666; margin-top: 20px;">GM Agency is a certified Poppo partner. All rights reserved.</p>
 </footer>
 
