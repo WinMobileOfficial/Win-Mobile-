@@ -31,13 +31,14 @@
         footer { background: #1a1a1a; color: white; padding: 30px 10px; font-size: 14px; margin-top: 20px; border-radius: 25px 25px 0 0; }
         .tag { background: var(--gold); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; margin: 2px; }
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; text-align:center; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-weight:bold; }
+        @keyframes glowing-border { 0% { border-color: #ff00c8; box-shadow: 0 0 10px #ff00c8; } 50% { border-color: #ffeb3b; box-shadow: 0 0 25px #ffeb3b; } 100% { border-color: #ff00c8; box-shadow: 0 0 10px #ff00c8; } }
+        .main-offer-box { animation: glowing-border 2s infinite; border: 5px solid #ff00c8; background: #ffffff; border-radius: 2.5rem; position: relative; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <a href="services.html" class="poppo-banner">🔥 POPPO LIVE SPECIAL OFFER 🔥<br><span style="font-size: 12px;">Cheapest Coins Recharge - Click Here!</span></a>
-    
     <div class="welcome-box"><h2>GM Agency Official</h2></div>
 
     <div id="winnerBox" style="display:none;">
@@ -50,16 +51,6 @@
         <div style="font-weight:bold; color:var(--primary);">👥 Approved Participants: <span id="totalDisplay">0</span></div>
         <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
         <div id="topEarnersList">Loading leaderboard...</div>
-    </div>
-
-    <div class="card" style="border: 3px solid #ff007f; background: #fff0f6; position: relative; overflow: hidden; margin-bottom: 20px; border-radius: 20px;">
-        <div style="background: #ff007f; color: white; position: absolute; top: 0; right: 0; padding: 6px 18px; font-size: 11px; font-weight: bold; border-bottom-left-radius: 15px;">OFFICIAL GM OFFER</div>
-        <h3 style="color: #ff007f; margin: 15px 0 8px 0; font-size: 20px;">🌟 Poppo Agency Join Rewards 🌟</h3>
-        <div style="background: #1a1a1a; color: #ffd700; padding: 15px; border-radius: 15px; margin: 10px auto; width: 85%; border: 1px solid #ffd700;">
-            <span style="font-size: 13px; color: #fff; display: block; margin-bottom: 5px; opacity: 0.9;">Agency Join Code:</span>
-            <strong style="font-size: 28px; letter-spacing: 4px; font-family: monospace;">2753578</strong>
-        </div>
-        <a href="https://wa.me/923023313131" class="btn" style="background: linear-gradient(45deg, #ff007f, #ff5252); color: white; text-decoration: none; display: block; margin: 15px 10px; border-radius: 12px; padding: 16px;">CLAIM 5000 COINS NOW 🚀</a>
     </div>
 
     <div class="card" id="spin-section">
@@ -78,14 +69,13 @@
             </svg>
         </div>
         <button id="spinBtn" class="btn btn-red" onclick="spinWheel()" style="width:auto; padding: 10px 40px;">SPIN NOW</button>
-        <div id="timerDisplay" style="display:none; font-weight:bold; color:var(--primary); margin-top:15px;">Next spin available tomorrow</div>
+        <div id="timerDisplay" style="display:none; font-weight:bold; color:var(--primary); margin-top:15px;">Next spin tomorrow</div>
     </div>
 
     <div class="coin-box"><span>🪙 My Coins:</span><span id="userCoins" style="font-size: 26px;">0</span></div>
 
     <div class="redeem-card">
         <h4 style="margin:0; color:#333;">🎁 Redeem Rewards</h4>
-        <p style="font-size:12px; margin:5px 0;">Minimum 200 Coins required.</p>
         <button onclick="redeemCoins()" class="btn btn-green">REDEEM 200 COINS</button>
     </div>
 
@@ -93,13 +83,6 @@
         <h4 style="margin:0; color:#1976d2;">📢 Invite & Earn</h4>
         <div class="ref-link-box" id="refLinkText">Generating link...</div>
         <button onclick="copyRefLink()" class="btn" style="background:#2196f3; color:white; padding:8px; font-size:12px; width:auto;">COPY LINK</button>
-    </div>
-
-    <div class="card" style="border: 2px solid #333; background: #f9f9f9;">
-        <h4 style="margin:0;">🔍 Check Your Status</h4>
-        <input type="number" id="checkPhone" placeholder="WhatsApp Number">
-        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white;">CHECK STATUS</button>
-        <div id="statusResult" style="margin-top: 10px; font-weight: bold;"></div>
     </div>
 
     <div class="px-4 mb-8 text-center mt-5">
@@ -114,13 +97,33 @@
             <i class="fa-solid fa-chevron-right text-white"></i>
         </a>
     </div>
+
+    <div class="max-w-md mx-auto mt-10 px-4 mb-10">
+        <div class="main-offer-box p-8 text-center overflow-hidden">
+            <div class="absolute -top-1 left-1/2 -translate-x-1/2 bg-[#FFEB3B] text-black text-[12px] font-black px-6 py-2 rounded-b-2xl shadow-md uppercase">💎 TOP SERVICE</div>
+            <div class="mt-6">
+                <h3 class="text-[26px] font-black text-[#1a1a1a] leading-none uppercase italic">POPPO LIVE SERVICES</h3>
+                <div class="w-20 h-1.5 bg-pink-500 mx-auto my-3 rounded-full"></div>
+                <p class="text-[13px] font-extrabold text-[#666] mb-2 uppercase">Withdraw USDT & Sell Coins</p>
+                <div style="background: #f8fafc; border: 2px dashed #6366f1; border-radius: 1.5rem; padding: 15px; margin-top: 20px;">
+                    <a href="poppo.html" style="background: linear-gradient(90deg, #4f46e5, #ec4899); display: block; width: 100%; color: white; font-weight: 900; font-size: 1.5rem; padding: 18px 0; border-radius: 1rem; text-transform: uppercase; text-decoration:none;">OPEN NOW</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer>
     <p>© 2026 GM Agency Official</p>
+    <p style="font-size: 12px;">📧 Poppoliveofficial123@gmail.com</p>
+    <div style="margin: 15px 0;">
+        <a href="about.html" style="color:#ccc; text-decoration:none;">About</a> | 
+        <a href="privacy.html" style="color:#ccc; text-decoration:none;">Privacy</a> | 
+        <a href="terms.html" style="color:#ccc; text-decoration:none;">Terms</a>
+    </div>
     <div class="service-tags">
+        <a href="services.html" class="tag">Poppo Coins</a>
         <span onclick="document.getElementById('spin-section').scrollIntoView()" class="tag">Daily Rewards</span>
-        <span class="tag">Lucky Draw</span>
     </div>
 </footer>
 
@@ -128,8 +131,6 @@
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaPhp2qLrGzvHhOdNvu8QdhTFDF4-k0xSQ530Tdn8mTDsYqfvaE7X1hZUTeuIxXbjo9g/exec';
-
-    // Global Coins
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
 
     window.onload = function() {
@@ -139,104 +140,64 @@
         checkSpin();
     };
 
-    function updateCoinDisplay() {
-        document.getElementById("userCoins").innerText = coins;
-    }
+    function updateCoinDisplay() { document.getElementById("userCoins").innerText = coins; }
 
     function loadData() {
-        fetch(`${SCRIPT_URL}?action=getRecords`)
-        .then(res => res.json())
-        .then(data => {
-            // Winner Update
+        fetch(`${SCRIPT_URL}?action=getRecords`).then(res => res.json()).then(data => {
             if (data.latestWinner && data.latestWinner !== "No Winner Yet") {
                 document.getElementById('winnerName').innerText = data.latestWinner;
                 document.getElementById('winnerBox').style.display = 'block';
             }
-            // Leaderboard Update
             const list = document.getElementById('topEarnersList');
             list.innerHTML = "";
             const approved = data.records ? data.records.filter(u => u.status === "Approved") : [];
             document.getElementById('totalDisplay').innerText = approved.length;
-            
-            if(approved.length > 0) {
-                approved.slice(0, 5).forEach((u, i) => {
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee;">
-                        <span>#${i+1} ${u.name}</span> <span style="color:green; font-weight:bold;">Verified ✅</span>
-                    </div>`;
-                });
-            } else {
-                list.innerHTML = "Waiting for verified users...";
-            }
-        }).catch(err => console.log("Error loading data"));
+            approved.slice(0, 5).forEach((u, i) => {
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee;"><span>#${i+1} ${u.name}</span><span style="color:green; font-weight:bold;">Verified ✅</span></div>`;
+            });
+        }).catch(e => console.log(e));
     }
 
     function checkSpin() {
-        const lastSpin = localStorage.getItem("last_spin_time");
-        if(lastSpin) {
-            const hoursPast = (new Date().getTime() - lastSpin) / (1000 * 60 * 60);
-            if(hoursPast < 24) {
-                document.getElementById("spinBtn").disabled = true;
-                document.getElementById("spinBtn").style.opacity = "0.5";
-                document.getElementById("timerDisplay").style.display = "block";
-            }
+        const last = localStorage.getItem("last_spin_time");
+        if(last && (new Date().getTime() - last < 24*60*60*1000)) {
+            document.getElementById("spinBtn").disabled = true;
+            document.getElementById("spinBtn").style.opacity = "0.5";
+            document.getElementById("timerDisplay").style.display = "block";
         }
     }
 
     function spinWheel() {
         const wheel = document.getElementById("wheel");
         const btn = document.getElementById("spinBtn");
-        
         btn.disabled = true;
         const deg = 1800 + Math.floor(Math.random() * 360);
         wheel.style.transform = `rotate(${deg}deg)`;
-        
         setTimeout(() => {
             coins += 2;
             localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", new Date().getTime());
             updateCoinDisplay();
-            alert("🎉 Mubarak Ho! Aapne 2 Coins jeet liye hain.");
+            alert("Mubarak Ho! 2 Coins mil gaye.");
             checkSpin();
         }, 4000);
     }
 
     function showReferralLink() {
-        let myID = localStorage.getItem("gm_user_id");
-        if(!myID) {
-            myID = "GM" + Math.floor(1000 + Math.random() * 9000);
-            localStorage.setItem("gm_user_id", myID);
-        }
+        let id = localStorage.getItem("gm_user_id") || "GM"+Math.floor(Math.random()*9000);
+        localStorage.setItem("gm_user_id", id);
         document.getElementById('referralCard').style.display = "block";
-        document.getElementById('refLinkText').innerText = "https://gmagency.site/index.html?ref=" + myID;
+        document.getElementById('refLinkText').innerText = "https://gmagency.site/index.html?ref=" + id;
     }
 
     function copyRefLink() {
-        const link = document.getElementById('refLinkText').innerText;
-        navigator.clipboard.writeText(link).then(() => alert("Referral Link Copy Ho Gaya!"));
+        navigator.clipboard.writeText(document.getElementById('refLinkText').innerText).then(() => alert("Copied!"));
     }
 
     function redeemCoins() {
-        if (coins < 200) {
-            alert("Aapko kam az kam 200 Coins chahiye redeem karne ke liye!");
-        } else {
-            const id = localStorage.getItem("gm_user_id") || "Unknown";
-            window.open(`https://wa.me/923023313131?text=Redeem Request: 200 Coins from ID ${id}`);
-        }
-    }
-
-    function checkUserStatus() {
-        const phone = document.getElementById('checkPhone').value;
-        if(!phone) return alert("WhatsApp Number enter karein!");
-        
-        document.getElementById('statusResult').innerText = "Checking...";
-        fetch(`${SCRIPT_URL}?action=getRecords`)
-        .then(res => res.json())
-        .then(data => {
-            const user = data.records.find(u => u.phone == phone);
-            document.getElementById('statusResult').innerText = user ? `Status: ${user.status}` : "Record Not Found!";
-        });
+        if(coins < 200) return alert("Min 200 Coins!");
+        window.open("https://wa.me/923023313131?text=Redeem Request ID: "+localStorage.getItem("gm_user_id"));
     }
 </script>
-
 </body>
 </html>
