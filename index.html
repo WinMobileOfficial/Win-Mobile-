@@ -9,6 +9,8 @@
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; scroll-behavior: smooth; }
         .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+        
+        /* Banner & Boxes */
         .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: bounce 2s infinite; text-decoration: none; display: block; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         #winnerBox { background: linear-gradient(45deg, #ffd700, #ff8c00); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 2px solid white; color: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
@@ -21,19 +23,23 @@
         .btn-red { background: var(--primary); color: white; }
         .btn-green { background: #1eb41e; color: white; }
         
-        /* Fixed Wheel */
+        /* Spin Wheel */
         .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
 
-        /* Poppo Service Box Styling */
+        /* Poppo Service Box */
         .main-offer-box { border: 5px solid #ff00c8; background: #ffffff; border-radius: 2.5rem; position: relative; padding: 25px; margin: 20px 0; animation: glow 2s infinite; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff00c8; } 50% { box-shadow: 0 0 25px #ffeb3b; } }
         .premium-btn-bold { background: linear-gradient(90deg, #4f46e5, #ec4899); display: block; width: 100%; color: white; font-weight: 900; font-size: 1.4rem; padding: 15px 0; border-radius: 1rem; text-transform: uppercase; text-decoration: none; text-align: center; }
 
+        /* Footer & Modals */
         footer { background: #1a1a1a; color: white; padding: 30px 10px; margin-top: 20px; border-radius: 25px 25px 0 0; }
+        .footer-links a { color: #aaa; text-decoration: none; font-size: 12px; margin: 0 5px; cursor: pointer; }
         .tag { background: var(--gold); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-decoration: none; margin: 3px; display: inline-block; }
-        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: white; margin: 20% auto; padding: 20px; border-radius: 15px; width: 85%; max-width: 400px; text-align: left; font-size: 14px; max-height: 60vh; overflow-y: auto; }
+        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; }
     </style>
 </head>
 <body>
@@ -114,13 +120,25 @@
 
 <footer>
     <p>© 2026 GM Agency Official</p>
-    <p style="font-size: 12px;">📧 Poppoliveofficial123@gmail.com</p>
-    <div class="service-tags">
+    <p style="font-size: 11px; margin-bottom: 10px;">📧 Poppoliveofficial123@gmail.com</p>
+    <div class="footer-links">
+        <a onclick="openModal('terms')">Terms & Conditions</a> | 
+        <a onclick="openModal('privacy')">Privacy Policy</a>
+    </div>
+    <div class="service-tags" style="margin-top: 15px;">
         <span class="tag">Poppo Coins</span>
         <span class="tag">Daily Rewards</span>
         <span class="tag">Lucky Draw</span>
     </div>
 </footer>
+
+<div id="modalBox" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle"></h3>
+        <p id="modalText"></p>
+        <button onclick="closeModal()" class="btn btn-red" style="padding: 10px;">Close</button>
+    </div>
+</div>
 
 <a href="https://wa.me/923023313131" class="wa-btn"><i class="fab fa-whatsapp" style="font-size:30px; color:white;"></i></a>
 
@@ -128,51 +146,35 @@
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaPhp2qLrGzvHhOdNvu8QdhTFDF4-k0xSQ530Tdn8mTDsYqfvaE7X1hZUTeuIxXbjo9g/exec';
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
 
-    window.onload = function() {
-        loadData();
-        updateCoinDisplay();
-        checkTimer();
-    };
+    window.onload = function() { loadData(); updateCoinDisplay(); checkTimer(); };
 
     function loadData() {
-        fetch(`${SCRIPT_URL}?action=getRecords`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.latestWinner && data.latestWinner !== "" && data.latestWinner !== "No Winner Yet") {
+        fetch(`${SCRIPT_URL}?action=getRecords`).then(r => r.json()).then(data => {
+            if (data.latestWinner && data.latestWinner !== "No Winner Yet") {
                 document.getElementById('winnerName').innerText = data.latestWinner;
                 document.getElementById('winnerBox').style.display = 'block';
             }
             const list = document.getElementById('topEarnersList');
             list.innerHTML = "";
-            if (data.records && data.records.length > 0) {
-                const approved = data.records.filter(u => u.status === "Approved");
-                document.getElementById('totalDisplay').innerText = approved.length;
-                approved.slice(0, 5).forEach((user, index) => {
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
-                        <span>#${index+1} ${user.name}</span> <span style="color:#28a745; font-weight:bold;">Verified ✅</span>
-                    </div>`;
-                });
-            } else { list.innerHTML = "No verified users."; }
+            const approved = data.records.filter(u => u.status === "Approved");
+            document.getElementById('totalDisplay').innerText = approved.length;
+            approved.slice(0, 5).forEach((u, i) => {
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee;"><span>#${i+1} ${u.name}</span><span style="color:green; font-weight:bold;">Verified ✅</span></div>`;
+            });
         });
     }
 
     function updateCoinDisplay() { document.getElementById("userCoins").innerText = coins; }
 
     function spinWheel() {
-        const last = localStorage.getItem("last_spin_time");
-        if (last && (Date.now() - last < 86400000)) return;
-
+        if (localStorage.getItem("last_spin_time") && (Date.now() - localStorage.getItem("last_spin_time") < 86400000)) return;
         const wheel = document.getElementById("wheel");
-        wheel.style.transform = `rotate(3600deg)`; // Lands on 2
+        wheel.style.transform = `rotate(3600deg)`;
         document.getElementById("spinBtn").disabled = true;
-
         setTimeout(() => {
-            coins += 2;
-            localStorage.setItem("gm_coins", coins);
+            coins += 2; localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", Date.now());
-            updateCoinDisplay();
-            alert("🎡 Mubarak! 2 coins mil gaye.");
-            checkTimer();
+            updateCoinDisplay(); alert("🎡 2 coins added!"); checkTimer();
         }, 4100);
     }
 
@@ -191,20 +193,31 @@
     }
 
     function redeemCoins() {
-        if (coins < 200) { alert("200 coins lazmi hain!"); return; }
-        coins = 0;
-        localStorage.setItem("gm_coins", 0);
-        updateCoinDisplay();
-        window.open("https://wa.me/923023313131?text=Redeem Request: 200 Coins");
+        if (coins < 200) { alert("200 coins required!"); return; }
+        coins = 0; localStorage.setItem("gm_coins", 0); updateCoinDisplay();
+        window.open("https://wa.me/923023313131?text=Redeem Request");
     }
 
     function checkUserStatus() {
-        if(!document.getElementById("checkPhone").value) return alert("Number likhen!");
+        if(!document.getElementById("checkPhone").value) return alert("Enter Number");
         document.getElementById("statusResult").innerText = "Checking Verification...";
-        setTimeout(() => {
-            document.getElementById("statusResult").innerText = "STATUS: CHECKING VERIFICATION";
-        }, 1500);
+        setTimeout(() => { document.getElementById("statusResult").innerText = "STATUS: CHECKING VERIFICATION"; }, 1500);
     }
+
+    function openModal(type) {
+        const m = document.getElementById('modalBox');
+        const t = document.getElementById('modalTitle');
+        const txt = document.getElementById('modalText');
+        if(type === 'terms') {
+            t.innerText = "Terms & Conditions";
+            txt.innerText = "1. Rewards are for active Poppo hosts only.\n2. One account per user is allowed.\n3. Fake registrations will lead to a permanent ban.\n4. Coins redemption takes 24-48 hours.";
+        } else {
+            t.innerText = "Privacy Policy";
+            txt.innerText = "We value your privacy. Your phone number is only used for verification and payment purposes. We do not share your data with third-party apps.";
+        }
+        m.style.display = "block";
+    }
+    function closeModal() { document.getElementById('modalBox').style.display = "none"; }
 </script>
 </body>
 </html>
