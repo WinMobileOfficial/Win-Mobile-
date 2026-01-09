@@ -9,34 +9,31 @@
         :root { --primary: #ff5252; --secondary: #333; --gold: #ffd700; --bg: #f4f7f6; --poppo: #ff007f; --easypaisa: #1eb41e; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; scroll-behavior: smooth; }
         .container { max-width: 480px; margin: 15px auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
-        
-        /* Bouncing Banner */
-        .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: pulse 2s infinite; text-decoration: none; display: block; }
-        @keyframes pulse { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-
+        .poppo-banner { background: linear-gradient(45deg, #ff007f, #ff5252); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; font-weight: bold; border: 2px solid var(--gold); cursor: pointer; animation: bounce 2s infinite; text-decoration: none; display: block; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        #winnerBox { background: linear-gradient(45deg, #ffd700, #ff8c00); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 2px solid white; color: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .welcome-box { background: #222; color: var(--gold); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--gold); }
         .leaderboard-card { background: #fff3e0; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #fedcba; text-align: left; }
         .coin-box { background: linear-gradient(135deg, var(--gold), #ffa000); color: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; text-align: center; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-red { background: var(--primary); color: white; }
+        .btn-green { background: #1eb41e; color: white; }
         
-        /* Spin Wheel Style */
+        /* Fixed Wheel */
         .wheel-container { position: relative; width: 220px; height: 220px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
 
-        .card { padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; background: #fff; }
-        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; text-align: center; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-red { background: var(--primary); color: white; }
-        .btn-green { background: #1eb41e; color: white; }
-
-        /* Poppo Service Box */
-        .main-offer-box { border: 5px solid #ff00c8; background: #ffffff; border-radius: 2.5rem; position: relative; padding: 30px 15px; margin: 20px 0; animation: glow 2s infinite; }
+        /* Poppo Service Box Styling */
+        .main-offer-box { border: 5px solid #ff00c8; background: #ffffff; border-radius: 2.5rem; position: relative; padding: 25px; margin: 20px 0; animation: glow 2s infinite; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #ff00c8; } 50% { box-shadow: 0 0 25px #ffeb3b; } }
-        .premium-btn-bold { background: linear-gradient(90deg, #4f46e5, #ec4899); display: block; width: 100%; color: white; font-weight: 900; font-size: 1.4rem; padding: 15px 0; border-radius: 1rem; text-transform: uppercase; text-decoration: none; }
+        .premium-btn-bold { background: linear-gradient(90deg, #4f46e5, #ec4899); display: block; width: 100%; color: white; font-weight: 900; font-size: 1.4rem; padding: 15px 0; border-radius: 1rem; text-transform: uppercase; text-decoration: none; text-align: center; }
 
         footer { background: #1a1a1a; color: white; padding: 30px 10px; margin-top: 20px; border-radius: 25px 25px 0 0; }
         .tag { background: var(--gold); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-decoration: none; margin: 3px; display: inline-block; }
-        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; font-weight:bold; }
+        .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -46,25 +43,29 @@
     
     <div class="welcome-box"><h2>GM Agency Official</h2></div>
 
-    <div class="leaderboard-card">
-        <div style="font-weight:bold; color:var(--primary);">👥 Approved Participants: <span id="totalDisplay">2</span></div>
-        <div id="topEarnersList" style="font-size: 13px; margin-top: 10px;">
-            <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;"><span>#1 Saeed Umar</span><span style="color:#28a745; font-weight:bold;">Verified ✅</span></div>
-            <div style="display:flex; justify-content:space-between; padding:5px 0;"><span>#2 Ghulam Mujtaba</span><span style="color:#28a745; font-weight:bold;">Verified ✅</span></div>
-        </div>
+    <div id="winnerBox" style="display:none;">
+        <h3 style="margin:0;">🎉 LATEST WINNER 🎉</h3>
+        <div id="winnerName" style="font-size: 22px; font-weight: 900; margin: 5px 0;">Loading...</div>
+        <div id="winnerID" style="font-size: 14px; font-weight: bold; opacity: 0.8;">Congratulations! 🏆</div>
+    </div>
+
+    <div id="leaderboard" class="leaderboard-card">
+        <div style="font-weight:bold; color:var(--primary);">👥 Approved Participants: <span id="totalDisplay">0</span></div>
+        <h4 style="margin:10px 0; color:#e65100;">🏆 Top Earners</h4>
+        <div id="topEarnersList">Loading leaderboard...</div>
     </div>
 
     <div class="card" style="border: 3px solid #ff007f; background: #fff0f6; position: relative; border-radius: 20px;">
         <div style="background: #ff007f; color: white; position: absolute; top: 0; right: 0; padding: 6px 18px; font-size: 10px; font-weight: bold; border-bottom-left-radius: 15px;">OFFICIAL GM OFFER</div>
         <h3 style="color: #ff007f; margin: 15px 0;">🌟 Poppo Agency Join Rewards 🌟</h3>
-        <div style="background: #1a1a1a; color: #ffd700; padding: 15px; border-radius: 15px; margin: 10px auto; width: 80%; border: 1px solid #ffd700;">
-            <span style="font-size: 11px; color: #fff;">Agency Join Code:</span><br>
-            <strong style="font-size: 24px; letter-spacing: 3px;">2753578</strong>
+        <div style="background: #1a1a1a; color: #ffd700; padding: 15px; border-radius: 15px; margin: 10px auto; width: 85%; border: 1px solid #ffd700;">
+            <span style="font-size: 12px; color: #fff;">Agency Join Code:</span><br>
+            <strong style="font-size: 26px; letter-spacing: 4px;">2753578</strong>
         </div>
         <div style="background: white; border: 2px dashed #ff007f; border-radius: 15px; padding: 15px; margin: 10px;">
-            <p style="margin: 0; font-weight: 900; color: #ff007f; font-size: 16px;">🔥 5,000 COINS WELCOME GIFT 🔥</p>
+            <p style="margin: 0; font-weight: 900; color: #ff007f; font-size: 18px;">🔥 5,000 COINS WELCOME GIFT 🔥</p>
         </div>
-        <a href="https://wa.me/923023313131" class="btn btn-red" style="text-decoration:none; display:block; width:90%; margin: 10px auto;">CLAIM 5000 COINS NOW 🚀</a>
+        <a href="https://wa.me/923023313131" class="btn btn-red" style="text-decoration:none; display:block; width:90%; margin:auto;">CLAIM 5000 COINS NOW 🚀</a>
     </div>
 
     <div class="card" id="spin-section">
@@ -93,19 +94,18 @@
         <button onclick="redeemCoins()" class="btn btn-green">REDEEM 200 COINS</button>
     </div>
 
-    <div class="card" style="border: 2px solid #333; background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-    <h4 style="margin:0; color: #333;">🔍 Check Your Status</h4>
-    <input type="number" id="checkPhone" placeholder="WhatsApp Number" style="width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
-    <button onclick="checkUserStatus()" class="btn" style="width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; background: #333; color: white;">CHECK STATUS</button>
-    <div id="statusResult" style="margin-top: 10px; font-weight: bold; font-size: 13px; color: #ff8c00; height: 20px;"></div>
-</div>
-
+    <div class="card" style="border: 2px solid #333;">
+        <h4 style="margin:0;">🔍 Check Your Status</h4>
+        <input type="number" id="checkPhone" placeholder="WhatsApp Number">
+        <button onclick="checkUserStatus()" class="btn" style="background: #333; color: white;">CHECK STATUS</button>
+        <div id="statusResult" style="margin-top: 10px; font-weight: bold; font-size: 13px; color: #ff8c00;"></div>
+    </div>
 
     <div class="main-offer-box">
         <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #FFEB3B; color: black; padding: 5px 20px; border-radius: 20px; font-weight: 900; font-size: 12px; border: 2px solid black;">💎 TOP SERVICE</div>
-        <h3 style="font-weight: 900; font-style: italic; font-size: 24px;">POPPO LIVE SERVICES</h3>
+        <h3 style="font-weight: 900; font-style: italic; font-size: 22px; margin-top: 10px;">POPPO LIVE SERVICES</h3>
         <p style="color: #666; font-size: 12px; font-weight: bold; margin-bottom: 20px;">Withdraw USDT & Sell Coins</p>
-        <div style="background: #f8fafc; border: 2px dashed #6366f1; padding: 20px; border-radius: 20px;">
+        <div style="background: #f8fafc; border: 2px dashed #6366f1; padding: 15px; border-radius: 20px;">
             <p style="font-size: 10px; font-weight: 900; color: #6366f1; margin-bottom: 10px;">CLICK BELOW TO ACCESS</p>
             <a href="https://wa.me/923023313131" class="premium-btn-bold">OPEN NOW</a>
         </div>
@@ -116,76 +116,95 @@
     <p>© 2026 GM Agency Official</p>
     <p style="font-size: 12px;">📧 Poppoliveofficial123@gmail.com</p>
     <div class="service-tags">
-        <a href="#" class="tag">Poppo Coins</a>
-        <a href="#" class="tag">Daily Rewards</a>
-        <a href="#" class="tag">Lucky Draw</a>
+        <span class="tag">Poppo Coins</span>
+        <span class="tag">Daily Rewards</span>
+        <span class="tag">Lucky Draw</span>
     </div>
 </footer>
 
-<a href="https://wa.me/923023313131" class="wa-btn">WA</a>
+<a href="https://wa.me/923023313131" class="wa-btn"><i class="fab fa-whatsapp" style="font-size:30px; color:white;"></i></a>
 
 <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaPhp2qLrGzvHhOdNvu8QdhTFDF4-k0xSQ530Tdn8mTDsYqfvaE7X1hZUTeuIxXbjo9g/exec';
     let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
-    document.getElementById("userCoins").innerText = coins;
 
-    // --- Spin Logic (Hamesha 2 par rukega) ---
+    window.onload = function() {
+        loadData();
+        updateCoinDisplay();
+        checkTimer();
+    };
+
+    function loadData() {
+        fetch(`${SCRIPT_URL}?action=getRecords`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.latestWinner && data.latestWinner !== "" && data.latestWinner !== "No Winner Yet") {
+                document.getElementById('winnerName').innerText = data.latestWinner;
+                document.getElementById('winnerBox').style.display = 'block';
+            }
+            const list = document.getElementById('topEarnersList');
+            list.innerHTML = "";
+            if (data.records && data.records.length > 0) {
+                const approved = data.records.filter(u => u.status === "Approved");
+                document.getElementById('totalDisplay').innerText = approved.length;
+                approved.slice(0, 5).forEach((user, index) => {
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #fedcba;">
+                        <span>#${index+1} ${user.name}</span> <span style="color:#28a745; font-weight:bold;">Verified ✅</span>
+                    </div>`;
+                });
+            } else { list.innerHTML = "No verified users."; }
+        });
+    }
+
+    function updateCoinDisplay() { document.getElementById("userCoins").innerText = coins; }
+
     function spinWheel() {
-        const lastSpin = localStorage.getItem("last_spin_time");
-        if (lastSpin && (Date.now() - lastSpin < 86400000)) return;
+        const last = localStorage.getItem("last_spin_time");
+        if (last && (Date.now() - last < 86400000)) return;
 
         const wheel = document.getElementById("wheel");
-        const btn = document.getElementById("spinBtn");
-        
-        // Calculation for 2: (0 * 72deg) + (360 * 10 spins) = 3600deg
-        wheel.style.transform = `rotate(3600deg)`;
-        btn.disabled = true;
+        wheel.style.transform = `rotate(3600deg)`; // Lands on 2
+        document.getElementById("spinBtn").disabled = true;
 
         setTimeout(() => {
             coins += 2;
             localStorage.setItem("gm_coins", coins);
             localStorage.setItem("last_spin_time", Date.now());
-            document.getElementById("userCoins").innerText = coins;
-            alert("🎡 Mubarak! Aap ne 2 coins jeet liye.");
-            updateTimer();
+            updateCoinDisplay();
+            alert("🎡 Mubarak! 2 coins mil gaye.");
+            checkTimer();
         }, 4100);
     }
 
-    // --- Redeem Logic (Coins zero ho jayenge) ---
-    function redeemCoins() {
-        if (coins < 200) {
-            alert("Kam az kam 200 coins chahiye!");
-        } else {
-            coins = 0;
-            localStorage.setItem("gm_coins", 0);
-            document.getElementById("userCoins").innerText = 0;
-            window.open("https://wa.me/923023313131?text=Redeem Request: 200 Coins");
-        }
-    }
-
-    // --- Check Status Logic ---
-    function checkUserStatus() {
-        const ph = document.getElementById("checkPhone").value;
-        if(!ph) return alert("Number likhen!");
-        document.getElementById("statusResult").innerText = "Checking Verification...";
-        setTimeout(() => {
-            document.getElementById("statusResult").innerText = "STATUS: CHECKING VERIFICATION";
-        }, 1500);
-    }
-
-    function updateTimer() {
+    function checkTimer() {
         const last = localStorage.getItem("last_spin_time");
         if (last && (Date.now() - last < 86400000)) {
             document.getElementById("spinBtn").style.display = "none";
             document.getElementById("timerDisplay").style.display = "block";
-            const itv = setInterval(() => {
+            setInterval(() => {
                 const diff = 86400000 - (Date.now() - last);
-                if (diff <= 0) { clearInterval(itv); location.reload(); }
+                if (diff <= 0) location.reload();
                 const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
                 document.getElementById("timeRemaining").innerText = `${h}h ${m}m ${s}s`;
             }, 1000);
         }
     }
-    updateTimer();
+
+    function redeemCoins() {
+        if (coins < 200) { alert("200 coins lazmi hain!"); return; }
+        coins = 0;
+        localStorage.setItem("gm_coins", 0);
+        updateCoinDisplay();
+        window.open("https://wa.me/923023313131?text=Redeem Request: 200 Coins");
+    }
+
+    function checkUserStatus() {
+        if(!document.getElementById("checkPhone").value) return alert("Number likhen!");
+        document.getElementById("statusResult").innerText = "Checking Verification...";
+        setTimeout(() => {
+            document.getElementById("statusResult").innerText = "STATUS: CHECKING VERIFICATION";
+        }, 1500);
+    }
 </script>
 </body>
 </html>
