@@ -23,20 +23,20 @@
         .btn-red { background: var(--primary); color: white; }
         .btn-green { background: #1eb41e; color: white; }
 
-        /* Community Section */
         .comm-btn { background: #25D366; color: white; padding: 15px; border-radius: 15px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; margin: 15px 0; border-bottom: 4px solid rgba(0,0,0,0.2); }
 
-        /* Wheel */
         .wheel-container { position: relative; width: 200px; height: 200px; margin: 15px auto; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333; z-index: 10; }
 
-        /* Glow Box */
         .main-offer-box { border: 5px solid #ff00c8; background: #ffffff; border-radius: 2.5rem; padding: 25px; margin: 20px 0; box-shadow: 0 0 20px rgba(255, 0, 200, 0.4); position: relative; }
         .premium-btn-bold { background: linear-gradient(90deg, #4f46e5, #ec4899); display: block; width: 100%; color: white; font-weight: 900; font-size: 1.5rem; padding: 18px 0; border-radius: 1rem; text-transform: uppercase; text-decoration: none; text-align: center; }
 
-        footer { background: #1a1a1a; color: white; padding: 30px 10px; margin-top: 20px; border-radius: 25px 25px 0 0; }
         .wa-btn { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25d366; color:#FFF; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; z-index:9999; }
+        
+        /* Modal Style */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+        .modal-content { background: white; margin: 20% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; color: #333; text-align: left; }
     </style>
 </head>
 <body>
@@ -62,18 +62,15 @@
             <span style="font-size: 11px;">Join Code:</span><br>
             <strong style="font-size: 24px; letter-spacing: 3px;">2753578</strong>
         </div>
-        
         <div style="background: white; border: 2px dashed #ff007f; padding: 15px; border-radius: 12px; margin-bottom:10px;">
             <p style="margin:0; font-weight:900; color:#ff007f; font-size:17px;">🔥 5,000 COINS WELCOME GIFT</p>
             <p style="margin:5px 0 0 0; font-size:12px; color:#444;">Naye hosts agency join kar ke 5000 coins hasil karein.</p>
         </div>
-
         <a href="https://chat.whatsapp.com/Kxmmzms3t0v7EapD6iySEK" style="text-decoration:none; display:block; margin-bottom:10px;">
             <div style="background: #fff; color: #ff007f; border: 1px solid #ff007f; padding: 10px; border-radius: 20px; font-size: 13px; font-weight: bold;">
                 📢 Join Daily 3000 Coins Group
             </div>
         </a>
-
         <a href="https://wa.me/923023313131" class="btn btn-red">CLAIM 5000 COINS NOW 🚀</a>
     </div>
 
@@ -103,11 +100,13 @@
         <div id="timerDisplay" style="display:none; font-weight:bold; color:red; margin-top:10px;">Next spin: <span id="timeRemaining"></span></div>
     </div>
 
-    <div class="coin-box"><span>🪙 My Coins:</span><span id="userCoins" style="font-size: 26px;">0</span></div>
+    <div class="card" style="background:var(--gold); color:#000; font-weight:bold;">
+        <span>🪙 My Coins: <span id="userCoins" style="font-size: 26px;">0</span></span>
+    </div>
 
     <div class="card" style="border: 2px dashed #333; background: #f0f4f8;">
         <h4>🎁 Withdraw Cash</h4>
-        <button onclick="redeemCoins()" class="btn btn-green">REDEEM (Min 200)</button>
+        <button onclick="redeemCoins()" class="btn btn-green">REDEEM 200 COINS</button>
     </div>
 
     <div class="card" style="border: 2px solid #333;">
@@ -126,7 +125,7 @@
         </div>
         <input type="text" id="regName" placeholder="Full Name">
         <input type="text" id="regTID" placeholder="Transaction ID (TID)">
-        <button class="btn btn-red" onclick="window.open('https://wa.me/923023313131?text=Lucky Draw Registration')">CONFIRM MOBILE REGISTRATION</button>
+        <button class="btn btn-red" onclick="window.open('https://wa.me/923023313131')">CONFIRM REGISTRATION</button>
     </div>
 
     <div class="main-offer-box">
@@ -136,77 +135,7 @@
     </div>
 </div>
 
-<footer>
-    <p>© 2026 GM Agency Official</p>
-    <p style="font-size: 12px; margin-bottom: 10px;">📧 Poppoliveofficial123@gmail.com</p>
-    <div style="font-size:12px; opacity:0.7;">
-        <span onclick="alert('Terms applied')">Terms</span> | <span onclick="alert('Privacy Policy active')">Privacy</span>
-    </div>
-</footer>
-
-<a href="https://wa.me/923023313131" class="wa-btn"><i class="fab fa-whatsapp" style="font-size:35px; color:white;"></i></a>
-
-<script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaPhp2qLrGzvHhOdNvu8QdhTFDF4-k0xSQ530Tdn8mTDsYqfvaE7X1hZUTeuIxXbjo9g/exec';
-    let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
-    document.getElementById("userCoins").innerText = coins;
-
-    window.onload = function() { loadData(); checkTimer(); };
-
-    function loadData() {
-        fetch(`${SCRIPT_URL}?action=getRecords`).then(r => r.json()).then(data => {
-            if (data.latestWinner && data.latestWinner !== "No Winner Yet") {
-                document.getElementById('winnerName').innerText = data.latestWinner;
-                document.getElementById('winnerBox').style.display = 'block';
-            }
-            const list = document.getElementById('topEarnersList');
-            const approved = data.records.filter(u => u.status === "Approved");
-            document.getElementById('totalDisplay').innerText = approved.length;
-            list.innerHTML = approved.slice(0,5).map(u => `<div style="padding:4px; border-bottom:1px solid #eee;">${u.name} - <span style="color:green;">Verified ✅</span></div>`).join('');
-        });
-    }
-
-    function spinWheel() {
-        if (localStorage.getItem("last_spin_time") && (Date.now() - localStorage.getItem("last_spin_time") < 86400000)) return;
-        document.getElementById("wheel").style.transform = "rotate(3600deg)";
-        document.getElementById("spinBtn").disabled = true;
-        setTimeout(() => {
-            coins += 2; localStorage.setItem("gm_coins", coins);
-            localStorage.setItem("last_spin_time", Date.now());
-            document.getElementById("userCoins").innerText = coins;
-            alert("Mubarak! 2 Coins mil gaye."); checkTimer();
-        }, 4100);
-    }
-
-    function checkTimer() {
-        const last = localStorage.getItem("last_spin_time");
-        if (last && (Date.now() - last < 86400000)) {
-            document.getElementById("spinBtn").style.display = "none";
-            document.getElementById("timerDisplay").style.display = "block";
-            setInterval(() => {
-                const diff = 86400000 - (Date.now() - last);
-                if (diff <= 0) location.reload();
-                const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
-                document.getElementById("timeRemaining").innerText = `${h}h ${m}m ${s}s`;
-            }, 1000);
-        }
-    }
-
-    function redeemCoins() {
-        if (coins < 200) { alert("200 coins required!"); return; }
-        coins = 0; localStorage.setItem("gm_coins", 0);
-        document.getElementById("userCoins").innerText = 0;
-        window.open("https://wa.me/923023313131?text=Redeem Request: 200 Coins");
-    }
-
-    function checkUserStatus() {
-        if(!document.getElementById("checkPhone").value) return alert("Enter number");
-        document.getElementById("statusResult").innerText = "Checking Verification...";
-        setTimeout(() => { document.getElementById("statusResult").innerText = "STATUS: CHECKING VERIFICATION"; }, 1500);
-    }  
-
-    <footer style="background: #1a1a1a; color: white; padding: 40px 15px 20px 15px; margin-top: 30px; border-radius: 30px 30px 0 0; font-family: 'Segoe UI', sans-serif;">
-    
+<footer style="background: #1a1a1a; color: white; padding: 40px 15px 20px 15px; margin-top: 30px; border-radius: 30px 30px 0 0; font-family: 'Segoe UI', sans-serif;">
     <div style="margin-bottom: 25px;">
         <p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">© 2026 GM Agency Official</p>
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -224,60 +153,77 @@
     </div>
 
     <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <span class="tag" style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Poppo Coins</span>
-        <span class="tag" style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Daily Rewards</span>
-        <span class="tag" style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">🎁 Lucky Draw</span>
+        <span style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Poppo Coins</span>
+        <span style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Daily Rewards</span>
+        <span style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">🎁 Lucky Draw</span>
     </div>
-
-    <p style="font-size: 10px; color: #666; margin-top: 20px; line-height: 1.5;">
-        GM Agency is a certified Poppo Live partner. We provide legal recharge services and community rewards. All rights reserved.
-    </p>
+    <p style="font-size: 10px; color: #666; margin-top: 20px;">GM Agency is a certified Poppo partner. All rights reserved.</p>
 </footer>
-
-<style>
-    .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
-    .modal-content { background: white; margin: 10% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 450px; color: #333; text-align: left; }
-    .modal-header { font-size: 20px; font-weight: bold; color: #ff007f; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-    .modal-text { font-size: 14px; line-height: 1.6; max-height: 300px; overflow-y: auto; }
-</style>
 
 <div id="policyModal" class="modal">
     <div class="modal-content">
-        <div id="modalTitle" class="modal-header"></div>
-        <div id="modalBody" class="modal-text"></div>
-        <button onclick="closeModal()" class="btn btn-red" style="margin-top: 20px;">I Understand</button>
+        <div id="modalTitle" style="font-size:20px; font-weight:bold; color:#ff007f; margin-bottom:10px;"></div>
+        <div id="modalBody" style="font-size:14px; line-height:1.6;"></div>
+        <button onclick="closeModal()" class="btn btn-red" style="margin-top:20px;">Close</button>
     </div>
 </div>
 
+<a href="https://wa.me/923023313131" class="wa-btn"><i class="fab fa-whatsapp" style="font-size:35px; color:white;"></i></a>
+
 <script>
-function showModal(type) {
-    const modal = document.getElementById('policyModal');
-    const title = document.getElementById('modalTitle');
-    const body = document.getElementById('modalBody');
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaPhp2qLrGzvHhOdNvu8QdhTFDF4-k0xSQ530Tdn8mTDsYqfvaE7X1hZUTeuIxXbjo9g/exec';
+    let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
+    document.getElementById("userCoins").innerText = coins;
 
-    if(type === 'about') {
-        title.innerText = "About GM Agency";
-        body.innerHTML = "GM Agency is an official Poppo Live hosting and recharge agency. We help creators grow their audience and provide secure, instant coin recharge services in Pakistan.";
-    } else if(type === 'privacy') {
-        title.innerText = "Privacy Policy";
-        body.innerHTML = "We respect your privacy. Your phone number and Transaction IDs are only used for manual verification of rewards. We do not share your data with third parties.";
-    } else if(type === 'terms') {
-        title.innerText = "Terms & Conditions";
-        body.innerHTML = "1. Only one spin per day per user.<br>2. Minimum withdrawal is 200 coins.<br>3. Any attempt to cheat the system will result in a permanent ban.<br>4. Lucky Draw registration fee is non-refundable.";
-    }
-    modal.style.display = "block";
-}
+    window.onload = function() { loadData(); checkTimer(); };
 
-function closeModal() {
-    document.getElementById('policyModal').style.display = "none";
-}
-
-// Close modal if user clicks outside
-window.onclick = function(event) {
-    if (event.target == document.getElementById('policyModal')) {
-        closeModal();
+    function loadData() {
+        fetch(`${SCRIPT_URL}?action=getRecords`).then(r => r.json()).then(data => {
+            if (data.latestWinner && data.latestWinner !== "No Winner Yet") {
+                document.getElementById('winnerName').innerText = data.latestWinner;
+                document.getElementById('winnerBox').style.display = 'block';
+            }
+            const approved = data.records ? data.records.filter(u => u.status === "Approved") : [];
+            document.getElementById('totalDisplay').innerText = approved.length;
+            document.getElementById('topEarnersList').innerHTML = approved.slice(0,5).map(u => `<div style="padding:4px; border-bottom:1px solid #eee;">${u.name} - Verified ✅</div>`).join('');
+        });
     }
 
+    function spinWheel() {
+        if (localStorage.getItem("last_spin_time") && (Date.now() - localStorage.getItem("last_spin_time") < 86400000)) return;
+        document.getElementById("wheel").style.transform = "rotate(3600deg)";
+        setTimeout(() => {
+            coins += 2; localStorage.setItem("gm_coins", coins);
+            localStorage.setItem("last_spin_time", Date.now());
+            document.getElementById("userCoins").innerText = coins;
+            checkTimer();
+        }, 4100);
+    }
+
+    function checkTimer() {
+        const last = localStorage.getItem("last_spin_time");
+        if (last && (Date.now() - last < 86400000)) {
+            document.getElementById("spinBtn").style.display = "none";
+            document.getElementById("timerDisplay").style.display = "block";
+            setInterval(() => {
+                const diff = 86400000 - (Date.now() - last);
+                const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
+                document.getElementById("timeRemaining").innerText = `${h}h ${m}m ${s}s`;
+            }, 1000);
+        }
+    }
+
+    function showModal(type) {
+        const m = document.getElementById('policyModal');
+        const t = document.getElementById('modalTitle');
+        const b = document.getElementById('modalBody');
+        if(type==='about'){ t.innerText="About Us"; b.innerText="GM Agency is official Poppo partner."; }
+        if(type==='privacy'){ t.innerText="Privacy Policy"; b.innerText="Your data is safe with us."; }
+        if(type==='terms'){ t.innerText="Terms"; b.innerText="1 spin per day only."; }
+        m.style.display = "block";
+    }
+    function closeModal(){ document.getElementById('policyModal').style.display="none"; }
+    function checkUserStatus() { document.getElementById("statusResult").innerText = "CHECKING VERIFICATION..."; }
 </script>
 </body>
 </html>
