@@ -203,7 +203,81 @@
         if(!document.getElementById("checkPhone").value) return alert("Enter number");
         document.getElementById("statusResult").innerText = "Checking Verification...";
         setTimeout(() => { document.getElementById("statusResult").innerText = "STATUS: CHECKING VERIFICATION"; }, 1500);
+    }  
+
+    <footer style="background: #1a1a1a; color: white; padding: 40px 15px 20px 15px; margin-top: 30px; border-radius: 30px 30px 0 0; font-family: 'Segoe UI', sans-serif;">
+    
+    <div style="margin-bottom: 25px;">
+        <p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">© 2026 GM Agency Official</p>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="fas fa-envelope" style="color: #ffd700;"></i>
+            <a href="mailto:Poppoliveofficial123@gmail.com" style="color: #bbb; text-decoration: none; font-size: 14px;">Poppoliveofficial123@gmail.com</a>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 15px 0;">
+        <a onclick="showModal('about')" style="color: white; text-decoration: none; font-size: 13px; cursor: pointer;">About Us</a>
+        <span style="color: #444;">|</span>
+        <a onclick="showModal('privacy')" style="color: white; text-decoration: none; font-size: 13px; cursor: pointer;">Privacy Policy</a>
+        <span style="color: #444;">|</span>
+        <a onclick="showModal('terms')" style="color: white; text-decoration: none; font-size: 13px; cursor: pointer;">Terms & Conditions</a>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <span class="tag" style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Poppo Coins</span>
+        <span class="tag" style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">Daily Rewards</span>
+        <span class="tag" style="background: #ffd700; color: #000; padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;">🎁 Lucky Draw</span>
+    </div>
+
+    <p style="font-size: 10px; color: #666; margin-top: 20px; line-height: 1.5;">
+        GM Agency is a certified Poppo Live partner. We provide legal recharge services and community rewards. All rights reserved.
+    </p>
+</footer>
+
+<style>
+    .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+    .modal-content { background: white; margin: 10% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 450px; color: #333; text-align: left; }
+    .modal-header { font-size: 20px; font-weight: bold; color: #ff007f; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    .modal-text { font-size: 14px; line-height: 1.6; max-height: 300px; overflow-y: auto; }
+</style>
+
+<div id="policyModal" class="modal">
+    <div class="modal-content">
+        <div id="modalTitle" class="modal-header"></div>
+        <div id="modalBody" class="modal-text"></div>
+        <button onclick="closeModal()" class="btn btn-red" style="margin-top: 20px;">I Understand</button>
+    </div>
+</div>
+
+<script>
+function showModal(type) {
+    const modal = document.getElementById('policyModal');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+
+    if(type === 'about') {
+        title.innerText = "About GM Agency";
+        body.innerHTML = "GM Agency is an official Poppo Live hosting and recharge agency. We help creators grow their audience and provide secure, instant coin recharge services in Pakistan.";
+    } else if(type === 'privacy') {
+        title.innerText = "Privacy Policy";
+        body.innerHTML = "We respect your privacy. Your phone number and Transaction IDs are only used for manual verification of rewards. We do not share your data with third parties.";
+    } else if(type === 'terms') {
+        title.innerText = "Terms & Conditions";
+        body.innerHTML = "1. Only one spin per day per user.<br>2. Minimum withdrawal is 200 coins.<br>3. Any attempt to cheat the system will result in a permanent ban.<br>4. Lucky Draw registration fee is non-refundable.";
     }
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById('policyModal').style.display = "none";
+}
+
+// Close modal if user clicks outside
+window.onclick = function(event) {
+    if (event.target == document.getElementById('policyModal')) {
+        closeModal();
+    }
+}
 </script>
 </body>
 </html>
