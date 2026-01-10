@@ -16,87 +16,34 @@
         .card { background: #fff; border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: block; text-decoration: none; margin-top: 8px; }
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; text-align: center; }
-        .join-box { border: 3px solid var(--poppo); border-radius: 20px; padding: 20px; margin-bottom: 15px; background: #fff0f6; position: relative; }
-        .badge { position: absolute; top: 0; right: 10px; background: var(--poppo); color: white; padding: 3px 12px; border-radius: 0 0 10px 10px; font-size: 10px; font-weight: bold; }
-        .code-box { background: #222; color: var(--gold); padding: 12px; border-radius: 12px; font-size: 28px; font-weight: 900; margin: 15px 0; letter-spacing: 2px; }
-        .btn-claim { background: linear-gradient(to right, #ff5252, #ff1744); color: white; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; display: block; text-decoration: none; margin-top: 10px; }
-        .group-box { border: 2px solid var(--poppo); border-radius: 50px; padding: 12px; background: white; text-align: center; text-decoration: none; display: block; color: var(--poppo); font-weight: bold; font-size: 11px; margin-bottom: 15px; }
-        .win-card { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); border: 2px solid #ffd700; border-radius: 20px; padding: 20px; margin: 20px 0; color: white; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
-        .payment-info { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px; margin: 15px 0; text-align: left; border: 1px dashed #ffd700; }
-        .win-input { width: 90%; padding: 10px; margin: 5px 0; border-radius: 8px; border: none; font-size: 14px; text-align: center; }
+        .win-card { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); border: 2px solid #ffd700; border-radius: 20px; padding: 20px; margin: 20px 0; color: white; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; }
         .btn-submit-win { background: #ffd700; color: black; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
-        .community-link { display: block; background: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 50px; font-weight: bold; margin-top: 15px; font-size: 13px; border: 2px solid white; }
-        .redeem-section { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
-        .coin-display { background: #f8f9fa; padding: 10px; border-radius: 12px; border: 2px dashed #ffc107; margin-bottom: 10px; }
-        .btn-redeem { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; }
-        .btn-active { background: #28a745; color: white; }
-        .btn-disabled { background: #ccc; color: #666; cursor: not-allowed; }
-        .service-card { border: 2px solid #ffd700; border-radius: 25px; padding: 25px; margin: 25px 0; background: linear-gradient(145deg, #ffffff, #fffdf0); box-shadow: 0 10px 20px rgba(0,0,0,0.08); position: relative; overflow: hidden; }
-        .service-badge { position: absolute; top: 0; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 4px 20px; border-radius: 0 0 15px 15px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-        .service-list { text-align: left; display: inline-block; margin: 15px 0; list-style: none; padding: 0; }
-        .service-list li { font-size: 14px; margin-bottom: 8px; color: #444; }
-        .service-list i { color: #28a745; margin-right: 10px; }
-        .pulse-btn { background: linear-gradient(45deg, #6366f1, #d946ef); color: white; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; display: block; text-decoration: none; margin-top: 10px; box-shadow: 0 5px 15px rgba(217, 70, 239, 0.4); transition: 0.3s; }
-        footer { background: #1a1a1a; color: white; padding: 30px 15px; border-radius: 30px 30px 0 0; margin-top: 40px; }
+        
+        /* Footer & Sitemap Styling */
+        footer { background: #1a1a1a; color: white; padding: 30px 15px; border-radius: 30px 30px 0 0; margin-top: 40px; position: relative; }
         .footer-links { margin: 15px 0; font-size: 13px; }
-        .footer-links a { color: #aaa; text-decoration: none; margin: 0 8px; transition: 0.3s; }
-        .footer-links a:hover { color: var(--gold); }
-        .nav-btn { background: var(--gold); color: black; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-decoration: none; margin: 5px; display: inline-block; }
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 100; text-decoration: none; }
+        .footer-links a { color: #aaa; text-decoration: none; margin: 0 8px; }
+        .quick-nav { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .nav-btn { background: var(--gold); color: black; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-decoration: none; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 100; text-decoration: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="services.html" class="top-banner">
-        ⚡ SPECIAL POPPO OFFER ⚡<br>
-        <span style="font-size: 11px; font-weight: normal;">Lowest Coin Rates & Fast Support</span>
-    </a>
+    <a href="services.html" class="top-banner">⚡ SPECIAL POPPO OFFER ⚡</a>
 
     <div class="leaderboard" id="winnersList">
         <h4 style="color: #ef6c00; margin: 0;"><i class="fas fa-users"></i> Loading Participants...</h4>
     </div>
 
-    <div class="join-box">
-        <div class="badge">OFFICIAL GM OFFER</div>
-        <h3 style="color: var(--poppo); margin: 0;">🌟 Poppo Agency Join Rewards 🌟</h3>
-        <p style="font-size: 12px; margin: 10px 0 5px;">Agency Join Code:</p>
-        <div class="code-box">2753578</div>
-        <p style="font-weight: bold; font-size: 14px; color: #333;">🔥 5,000 COINS WELCOME GIFT 🔥</p>
-        <a href="https://wa.me/923023313131?text=Hi%20GM%20Agency,%20I%20joined%20your%20agency%20with%20code%202753578." class="btn-claim">CLAIM 5000 COINS NOW 🚀</a>
-    </div>
-
     <div class="win-card">
         <h2 style="color: #ffd700; margin: 0;">🎁 WIN MOBILE 1000</h2>
-        <p style="font-size: 11px; opacity: 0.8;">Luckydraw mein shamil hone ke liye details submit karein</p>
-        <div class="payment-info">
-            <p><strong><i class="fas fa-university"></i> Easypaisa Account</strong></p>
-            <p>Name: <span style="color: #ffd700;">Tasleem Akhtar</span></p>
-            <p>Number: <span style="color: #ffd700;">03196557461</span></p>
-        </div>
-        <div style="text-align: left;">
-            <input type="text" id="winName" class="win-input" placeholder="Apna Name Likhein">
-            <input type="number" id="winWa" class="win-input" placeholder="WhatsApp Number">
-            <input type="text" id="winTid" class="win-input" placeholder="Transaction ID (TID)">
-            <button class="btn-submit-win" onclick="submitWinEntry()">SUBMIT ENTRY 🚀</button>
-        </div>
-        <a href="https://chat.whatsapp.com/Dd1rtjmg1oz4iMgDkiRAce" class="community-link">
-            <i class="fab fa-whatsapp"></i> JOIN GM COMMUNITY
-        </a>
-    </div>
-
-    <a href="https://chat.whatsapp.com/Kxmmzms3t0v7EapD6iySEK" class="group-box">📢 JOIN POPPO REWARDS GROUP (DAILY 3000 COINS)</a>
-
-    <div class="card">
-        <h4>🎡 Daily Reward Spin</h4>
-        <p id="spinTimer" style="color:red; font-size:12px; font-weight:bold; display:none;"></p>
-        <button id="spinBtn" class="btn" style="background:#ff5252; color:white;" onclick="collectDailyCoins()">SPIN NOW</button>
-        <div class="redeem-section">
-            <div class="coin-display">
-                <span style="font-size: 12px; color: #555;">Remaining Coins</span><br>
-                <strong style="font-size: 24px; color: #333;">🪙 <span id="currentCoins">0</span></strong>
-            </div>
-            <button id="redeemBtn" class="btn-redeem btn-disabled" onclick="processRedeem()" disabled>REDEEM (Min 200)</button>
+        <div style="text-align: left; padding: 10px;">
+            <input type="text" id="winName" placeholder="Apna Name Likhein">
+            <input type="number" id="winWa" placeholder="WhatsApp Number">
+            <input type="text" id="winTid" placeholder="Transaction ID (TID)">
+            <button class="btn-submit-win" id="submitBtn" onclick="submitWinEntry()">SUBMIT ENTRY 🚀</button>
         </div>
     </div>
 
@@ -104,18 +51,7 @@
         <h4>🔍 Check Your Status</h4>
         <input type="number" id="phoneInput" placeholder="03023313131">
         <button onclick="checkDatabaseStatus()" class="btn" style="background:#222; color:white;">CHECK STATUS</button>
-        <div id="statusInfo" style="margin-top:10px; font-weight:bold; font-size:13px;"></div>
-    </div>
-
-    <div class="service-card">
-        <div class="service-badge">💎 Verified Agency Service</div>
-        <h2 style="margin-top: 10px; color: #333; font-size: 22px;">Poppo Live Official Center</h2>
-        <ul class="service-list">
-            <li><i class="fas fa-check-circle"></i> 🟢 <b>Instant Coin Recharge</b> (24/7)</li>
-            <li><i class="fas fa-check-circle"></i> 💰 <b>Lowest Market Rates</b></li>
-            <li><i class="fas fa-check-circle"></i> 🛡️ <b>100% Secure</b> Platform</li>
-        </ul>
-        <a href="poppo.html" class="pulse-btn">OPEN SERVICES NOW <i class="fas fa-arrow-right"></i></a>
+        <div id="statusInfo" style="margin-top:10px; font-weight:bold;"></div>
     </div>
 </div>
 
@@ -124,22 +60,21 @@
 <footer>
     <p>© 2026 GM Agency Official</p>
     <div class="footer-links">
-        <a href="about.html">About Us</a> | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a>
+        <a href="about.html">About Us</a> | 
+        <a href="privacy.html">Privacy Policy</a> | 
+        <a href="terms.html">Terms</a>
+    </div>
+    <div class="quick-nav">
+        <a href="poppo.html" class="nav-btn">Poppo Coins</a>
+        <a href="index.html" class="nav-btn">Daily Rewards</a>
+        <a href="services.html" class="nav-btn">Lucky Draw</a>
     </div>
 </footer>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwzzT5hdAiCfu6kFGXalFtmaNb3YoXzvDn0wneqw1mLhwOjMRQ9oHSN8YgUXMEukNZOag/exec';
-    let coins = parseInt(localStorage.getItem("gm_coins")) || 0;
-    
-    function updateUI() {
-        document.getElementById("currentCoins").innerText = coins;
-        const btn = document.getElementById("redeemBtn");
-        btn.disabled = coins < 200;
-        btn.className = coins >= 200 ? "btn-redeem btn-active" : "btn-redeem btn-disabled";
-    }
+    // Lazmi apna Naya Web App URL yahan dalein
+    const scriptURL = 'APNA_SCRIPT_URL_YAHAN_DALEIN'; 
 
-    // WINNER & PARTICIPANT FETCH
     function loadLeaderboard() {
         fetch(scriptURL + "?action=getRecords")
         .then(r => r.json()).then(data => {
@@ -151,6 +86,8 @@
                 html += `<div class="user-row"><span>#${i+1} ${u.name}</span> ${label}</div>`;
             });
             list.innerHTML = html;
+        }).catch(() => {
+            document.getElementById("winnersList").innerHTML = "<h4>Connection Error!</h4>";
         });
     }
 
@@ -158,7 +95,7 @@
         const name = document.getElementById('winName').value;
         const wa = document.getElementById('winWa').value;
         const tid = document.getElementById('winTid').value;
-        const btn = document.querySelector('.btn-submit-win');
+        const btn = document.getElementById('submitBtn');
 
         if(!name || !wa || !tid) return alert("Details bharein!");
         
@@ -183,22 +120,7 @@
         });
     }
 
-    function collectDailyCoins() {
-        coins += 2;
-        localStorage.setItem("gm_coins", coins);
-        localStorage.setItem("last_collection", new Date().getTime());
-        updateUI();
-        alert("2 Coins Collected!");
-    }
-
-    function processRedeem() {
-        if (coins >= 200) {
-            window.location.href = `https://wa.me/923023313131?text=Redeem%20Request:%20${coins}%20Coins`;
-            coins = 0; localStorage.setItem("gm_coins", 0); updateUI();
-        }
-    }
-
-    window.onload = () => { updateUI(); loadLeaderboard(); };
+    window.onload = loadLeaderboard;
 </script>
 </body>
 </html>
