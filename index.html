@@ -182,32 +182,45 @@
         window.location.href = "https://wa.me/923023313131?text=Redeem%20200%20Coins";
     }
 
- function loadData() {
+ 
+    function loadData() {
     fetch(`${SCRIPT_URL}?action=getRecords`)
     .then(res => res.json())
     .then(data => {
-        // 1. Top Earners update
-        const approved = data.records.filter(u => u.status && u.status.toLowerCase() === "approved");
-        document.getElementById('totalDisplay').innerText = approved.length;
-        document.getElementById('topEarnersList').innerHTML = approved.slice(0,5).map(u => `<div>${u.name} - Verified ✅</div>`).join('');
+        // 1. Total Approved Count (Matching Admin Panel)
+        const approved = data.records.filter(u => {
+            return u.status && u.status.toString().toUpperCase().trim() === "APPROVED";
+        });
 
-        // 2. Winner Logic (Checking Column H specifically)
+        // Website par count update karna
+        const displayCount = document.getElementById('totalDisplay');
+        if(displayCount) displayCount.innerText = approved.length;
+
+        // Leaderboard/Top Earners update karna
+        const earnersList = document.getElementById('topEarnersList');
+        if(earnersList) {
+            earnersList.innerHTML = approved.slice(0,5).map(u => 
+                `<div style="padding:8px; border-bottom:1px solid #f0f0f0; font-size:14px;">${u.name} - Verified ✅</div>`
+            ).join('');
+        }
+
+        // 2. Winner Logic (Checking for "WINNER" in any column)
         const winner = data.records.find(u => {
-            // Hum row ki har value check karte hain, agar "WINNER" likha ho
             return Object.values(u).some(v => v && v.toString().toUpperCase().includes("WINNER"));
         });
 
         const wBox = document.getElementById('winnerBox');
         const wName = document.getElementById('winnerName');
 
-        if (winner) {
+        if (winner && wBox && wName) {
             wBox.style.display = "block";
             wName.innerText = winner.name;
-        } else {
+        } else if (wBox) {
             wBox.style.display = "none";
         }
-    });
- }
+    })
+    .catch(err => console.log("Data error:", err));
+    }
     
 
     function checkUserStatus() {
