@@ -11,30 +11,41 @@
         .container { max-width: 480px; margin: 0 auto; background: white; padding: 15px; min-height: 100vh; }
         .top-banner { background: linear-gradient(90deg, #7000ff, #ff007f, #7000ff); background-size: 200% auto; color: white; padding: 15px; border-radius: 15px; margin: 10px 0 20px 0; border: 2px solid var(--gold); font-weight: bold; text-decoration: none; display: block; animation: grad 3s linear infinite; }
         @keyframes grad { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        
+        /* Leaderboard Style */
         .leaderboard { background: #fff8f0; border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid #ffe0b2; }
         .user-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid #eee; }
+        
         .card { background: #fff; border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: block; text-decoration: none; margin-top: 8px; }
         input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; text-align: center; }
-        .win-card { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); border: 2px solid #ffd700; border-radius: 20px; padding: 20px; margin: 20px 0; color: white; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; }
+        
+        .win-card { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); border: 2px solid #ffd700; border-radius: 20px; padding: 20px; margin: 20px 0; color: white; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
         .btn-submit-win { background: #ffd700; color: black; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
         
-        /* Footer & Sitemap Styling */
-        footer { background: #1a1a1a; color: white; padding: 30px 15px; border-radius: 30px 30px 0 0; margin-top: 40px; position: relative; }
-        .footer-links { margin: 15px 0; font-size: 13px; }
-        .footer-links a { color: #aaa; text-decoration: none; margin: 0 8px; }
-        .quick-nav { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-        .nav-btn { background: var(--gold); color: black; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-decoration: none; }
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 100; text-decoration: none; }
+        /* Sitemap & Footer Styling */
+        .sitemap-box { background: #fdfdfd; padding: 20px 10px; border-top: 1px solid #eee; margin-top: 20px; }
+        .sitemap-title { font-size: 14px; font-weight: bold; color: #555; margin-bottom: 15px; display: block; }
+        .quick-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { background: #eee; color: #333; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; border: 1px solid #ddd; }
+        .nav-btn:hover { background: var(--gold); }
+
+        footer { background: #1a1a1a; color: white; padding: 30px 15px; border-radius: 30px 30px 0 0; }
+        .footer-links { margin: 15px 0; font-size: 12px; }
+        .footer-links a { color: #aaa; text-decoration: none; margin: 0 10px; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 100; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="services.html" class="top-banner">⚡ SPECIAL POPPO OFFER ⚡</a>
+    <a href="services.html" class="top-banner">
+        ⚡ SPECIAL POPPO OFFER ⚡<br>
+        <span style="font-size: 11px; font-weight: normal;">Lowest Coin Rates & Fast Support</span>
+    </a>
 
     <div class="leaderboard" id="winnersList">
-        <h4 style="color: #ef6c00; margin: 0;"><i class="fas fa-users"></i> Loading Participants...</h4>
+        <h4 style="color: #ef6c00; margin: 0;"><i class="fas fa-sync fa-spin"></i> Loading Data...</h4>
     </div>
 
     <div class="win-card">
@@ -43,15 +54,25 @@
             <input type="text" id="winName" placeholder="Apna Name Likhein">
             <input type="number" id="winWa" placeholder="WhatsApp Number">
             <input type="text" id="winTid" placeholder="Transaction ID (TID)">
-            <button class="btn-submit-win" id="submitBtn" onclick="submitWinEntry()">SUBMIT ENTRY 🚀</button>
+            <button class="btn-submit-win" id="mainSubmitBtn" onclick="submitWinEntry()">SUBMIT ENTRY 🚀</button>
         </div>
     </div>
 
     <div class="card">
         <h4>🔍 Check Your Status</h4>
-        <input type="number" id="phoneInput" placeholder="03023313131">
+        <input type="number" id="phoneInput" placeholder="Enter Phone Number">
         <button onclick="checkDatabaseStatus()" class="btn" style="background:#222; color:white;">CHECK STATUS</button>
         <div id="statusInfo" style="margin-top:10px; font-weight:bold;"></div>
+    </div>
+
+    <div class="sitemap-box">
+        <span class="sitemap-title">SITE MAP / QUICK LINKS</span>
+        <div class="quick-links">
+            <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+            <a href="poppo.html" class="nav-btn"><i class="fas fa-coins"></i> Poppo Coins</a>
+            <a href="services.html" class="nav-btn"><i class="fas fa-concierge-bell"></i> Services</a>
+            <a href="winners.html" class="nav-btn"><i class="fas fa-trophy"></i> All Winners</a>
+        </div>
     </div>
 </div>
 
@@ -60,66 +81,83 @@
 <footer>
     <p>© 2026 GM Agency Official</p>
     <div class="footer-links">
-        <a href="about.html">About Us</a> | 
-        <a href="privacy.html">Privacy Policy</a> | 
+        <a href="about.html">About Us</a>
+        <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms</a>
     </div>
-    <div class="quick-nav">
-        <a href="poppo.html" class="nav-btn">Poppo Coins</a>
-        <a href="index.html" class="nav-btn">Daily Rewards</a>
-        <a href="services.html" class="nav-btn">Lucky Draw</a>
-    </div>
+    <p style="font-size: 10px; color: #666; margin-top: 10px;">Managed by GM Agency Support</p>
 </footer>
 
 <script>
-    // Lazmi apna Naya Web App URL yahan dalein
-    const scriptURL = 'APNA_SCRIPT_URL_YAHAN_DALEIN'; 
+    // ⚠️ APNA NAYA URL YAHAN DALEIN
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwzzT5hdAiCfu6kFGXalFtmaNb3YoXzvDn0wneqw1mLhwOjMRQ9oHSN8YgUXMEukNZOag/exec';
 
+    // 1. Data Auto Load Function
     function loadLeaderboard() {
+        const list = document.getElementById("winnersList");
         fetch(scriptURL + "?action=getRecords")
-        .then(r => r.json()).then(data => {
-            const list = document.getElementById("winnersList");
+        .then(r => r.json())
+        .then(data => {
             const approved = data.records.filter(u => u.status === "Approved");
             let html = `<h4><i class="fas fa-users"></i> Approved Participants: ${approved.length}</h4>`;
-            approved.forEach((u, i) => {
-                const label = u.winner ? `<span style="color:gold;">WINNER 🏆</span>` : `<span style="color:green;">Verified ✅</span>`;
-                html += `<div class="user-row"><span>#${i+1} ${u.name}</span> ${label}</div>`;
-            });
+            
+            if(approved.length === 0) {
+                html += `<p style="font-size:12px; color:#999;">Abhi koi records nahi hain.</p>`;
+            } else {
+                approved.forEach((u, i) => {
+                    const statusText = u.winner ? `<span style="color:gold; font-weight:bold;">WINNER 🏆</span>` : `<span style="color:green;">Verified ✅</span>`;
+                    html += `<div class="user-row"><span>#${i+1} ${u.name}</span> ${statusText}</div>`;
+                });
+            }
             list.innerHTML = html;
-        }).catch(() => {
-            document.getElementById("winnersList").innerHTML = "<h4>Connection Error!</h4>";
+        })
+        .catch(() => {
+            list.innerHTML = "<h4>Database Connection Error</h4>";
         });
     }
 
+    // 2. Form Submit Function
     function submitWinEntry() {
         const name = document.getElementById('winName').value;
         const wa = document.getElementById('winWa').value;
         const tid = document.getElementById('winTid').value;
-        const btn = document.getElementById('submitBtn');
+        const btn = document.getElementById('mainSubmitBtn');
 
-        if(!name || !wa || !tid) return alert("Details bharein!");
+        if(!name || !wa || !tid) return alert("Meharbani karke details bharain!");
         
         btn.innerText = "Processing... ⏳";
         btn.disabled = true;
 
         fetch(`${scriptURL}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(wa)}&tid=${encodeURIComponent(tid)}`, { method: 'POST', mode: 'no-cors' })
-        .then(() => { window.location.href = "success.html"; })
-        .catch(() => { window.location.href = "success.html"; });
-    }
-
-    function checkDatabaseStatus() {
-        const phone = document.getElementById("phoneInput").value;
-        const info = document.getElementById("statusInfo");
-        if(!phone) return alert("Enter Number");
-        info.innerText = "CHECKING...";
-        fetch(scriptURL + "?action=getRecords")
-        .then(r => r.json()).then(data => {
-            const user = data.records.find(u => u.phone == phone);
-            info.innerText = user ? `STATUS: ${user.status.toUpperCase()}` : "NOT REGISTERED";
-            info.style.color = user?.status === 'Approved' ? 'green' : 'red';
+        .then(() => { 
+            window.location.href = "success.html"; 
+        })
+        .catch(() => { 
+            window.location.href = "success.html"; 
         });
     }
 
+    // 3. Status Check Function
+    function checkDatabaseStatus() {
+        const phone = document.getElementById("phoneInput").value;
+        const info = document.getElementById("statusInfo");
+        if(!phone) return alert("Enter Phone Number");
+        
+        info.innerText = "Checking...";
+        fetch(scriptURL + "?action=getRecords")
+        .then(r => r.json()).then(data => {
+            const user = data.records.find(u => u.phone == phone);
+            if(user) {
+                info.innerText = `STATUS: ${user.status.toUpperCase()}`;
+                info.style.color = user.status === 'Approved' ? 'green' : 'orange';
+            } else {
+                info.innerText = "NOT FOUND / PENDING";
+                info.style.color = "red";
+            }
+        });
+    }
+
+    // Page Load hote hi data uthao
     window.onload = loadLeaderboard;
 </script>
 </body>
