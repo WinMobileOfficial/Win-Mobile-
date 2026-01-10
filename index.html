@@ -28,6 +28,10 @@
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .footer-grid a { color: #bbb; text-decoration: none; font-size: 13px; display: block; margin-bottom: 5px; }
         #redeemBtn { display: none; background: #22c55e; color: white; margin-top: 10px; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: bold; }
+        
+        /* Poppo Box Styling */
+        .poppo-box { border: 2px solid #6366f1; background: #f8fafc; border-radius: 20px; padding: 15px; margin-bottom: 20px; }
+        .poppo-btn { background: linear-gradient(90deg, #4f46e5, #ec4899); color: white; text-decoration: none; display: block; margin-top: 10px; padding: 15px; border-radius: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -43,6 +47,12 @@
         <div id="winnerName" style="font-size: 24px; font-weight: 900; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">...</div>
     </div>
 
+    <div class="poppo-box">
+        <h4 style="margin:0; color:#4f46e5;"><i class="fas fa-gem"></i> POPPO LIVE SERVICES</h4>
+        <p style="font-size: 12px; color: #666; margin: 5px 0;">Coins Recharge & ID Level Up Services</p>
+        <a href="poppo.html" class="poppo-btn">OPEN NOW</a>
+    </div>
+
     <div class="card" style="background: #fff3e0;">
         <h4 style="color:#e65100; margin:0;">🏆 TOP EARNERS</h4>
         <div style="font-size: 16px; font-weight: bold; color: #22c55e; margin: 5px 0;">Verified Participants: <span id="totalDisplay">0</span></div>
@@ -54,20 +64,6 @@
         <input type="number" id="checkPhone" placeholder="Enter WhatsApp Number">
         <button onclick="checkUserStatus()" class="btn" style="background:var(--purple); color:white; padding:10px;">VIEW STATUS</button>
         <div id="statusResult" style="margin-top: 10px; font-weight: bold;"></div>
-    </div>
-
-    <div class="reward-card">
-        <h3>HOST REWARDS</h3>
-        <p style="font-size:11px; opacity:0.8;">Agency Code:</p>
-        <div class="glow-code">2753578</div>
-        <div style="background:white; color:var(--poppo); border-radius:15px; padding:10px; margin:10px 0;">
-            <p style="margin:0; font-weight:bold;">🔥 5,000 COINS GIFT (NEW HOST)</p>
-            <a href="https://wa.me/923023313131?text=Joined%20Code%202753578" style="color:white; background:var(--poppo); text-decoration:none; display:inline-block; padding:5px 15px; border-radius:50px; font-size:12px; margin-top:5px;">Claim 5000</a>
-        </div>
-        <div style="background:rgba(255,255,255,0.1); border:1px dashed var(--gold); border-radius:15px; padding:10px;">
-            <p style="margin:0; font-weight:bold; color:var(--gold);">📢 DAILY 3,000 COINS GROUP</p>
-            <a href="https://chat.whatsapp.com/Kxmmzms3t0v7EapD6iySEK" style="color:black; background:var(--gold); text-decoration:none; display:inline-block; padding:5px 15px; border-radius:50px; font-size:12px; margin-top:5px;">Join Group</a>
-        </div>
     </div>
 
     <div class="card">
@@ -86,7 +82,6 @@
         </div>
         <button id="spinBtn" class="btn" style="background:var(--poppo); color:white;" onclick="spinWheel()">SPIN NOW</button>
         <p id="spinTimer" style="display:none; color:red; font-weight:bold; margin-top:10px;"></p>
-        
         <div style="margin-top:10px; font-weight:bold;">Wallet: <span id="userCoins">0</span> 🪙</div>
         <a id="redeemBtn" href="#" onclick="redeemCoins()">REDEEM 200 COINS 🎁</a>
     </div>
@@ -111,27 +106,22 @@
             </div>
             <div>
                 <h5 style="color:var(--poppo); margin:0 0 10px 0;">LEGAL</h5>
-                <a href="#" onclick="alert('Privacy Policy: Your data is safe with GM Agency Official.')">Privacy Policy</a>
-                <a href="#" onclick="alert('Terms: One spin per day. Multiple accounts not allowed.')">Terms & Conditions</a>
+                <a href="#" onclick="alert('Privacy Policy: Your data is safe.')">Privacy Policy</a>
+                <a href="#" onclick="alert('Terms: 1 spin/day.')">Terms</a>
+                <a href="#">Sitemap</a>
             </div>
         </div>
-        <div style="border-top:1px solid #333; padding-top:10px; margin-top:15px; font-size:11px;">
-            <p>Support: poppoliveofficial123@gmail.com</p>
-            <p>© 2026 GM Agency Official.</p>
-        </div>
+        <p style="font-size:10px; color:#666; margin-top:15px;">Support: poppoliveofficial123@gmail.com</p>
     </footer>
 </div>
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVUTpNlFRjnvCt4lC3un6B2WoVqUe2yCy7p-YOgAe3LLJuHQHGrKwhr5ReQGrpPq6--g/exec';
 
-    // Timer & Spin
     function updateTimer() {
         const last = localStorage.getItem("last_spin_time");
         const coins = parseInt(localStorage.getItem("gm_coins") || 0);
         document.getElementById("userCoins").innerText = coins;
-        
-        // Redeem button logic
         if(coins >= 200) { document.getElementById("redeemBtn").style.display = "block"; }
         else { document.getElementById("redeemBtn").style.display = "none"; }
 
@@ -163,10 +153,9 @@
 
     function redeemCoins() {
         localStorage.setItem("gm_coins", 0);
-        window.location.href = "https://wa.me/923023313131?text=Hello%20GM%20Agency,%20I%20want%20to%20redeem%20my%20200%20coins.";
+        window.location.href = "https://wa.me/923023313131?text=Redeem%20200%20Coins";
     }
 
-    // Load Records (Single Function Fix)
     function loadData() {
         fetch(`${SCRIPT_URL}?action=getRecords`)
         .then(res => res.json())
@@ -174,7 +163,6 @@
             const approved = data.records.filter(u => u.status === "Approved");
             document.getElementById('totalDisplay').innerText = approved.length;
             document.getElementById('topEarnersList').innerHTML = approved.slice(0,5).map(u => `<div>${u.name} - Verified ✅</div>`).join('');
-
             const winner = data.records.find(u => u.winner && u.winner.includes("WINNER"));
             if(winner) {
                 document.getElementById('winnerBox').style.display = "block";
@@ -202,10 +190,7 @@
     function submitWinEntry() {
         const btn = document.getElementById("subBtn");
         btn.innerText = "Submitting...";
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const tid = document.getElementById('tid').value;
-        fetch(`${SCRIPT_URL}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&tid=${encodeURIComponent(tid)}`, { method: 'POST', mode: 'no-cors' })
+        fetch(`${SCRIPT_URL}?name=${encodeURIComponent(document.getElementById('name').value)}&phone=${encodeURIComponent(document.getElementById('phone').value)}&tid=${encodeURIComponent(document.getElementById('tid').value)}`, { method: 'POST', mode: 'no-cors' })
         .then(() => { window.location.href = "success.html"; });
     }
 
