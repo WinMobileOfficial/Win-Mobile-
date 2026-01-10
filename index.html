@@ -182,21 +182,33 @@
     }
 
     function loadData() {
-        fetch(`${SCRIPT_URL}?action=getRecords`)
-        .then(res => res.json())
-        .then(data => {
-            const approved = data.records.filter(u => u.status === "Approved");
-            document.getElementById('totalDisplay').innerText = approved.length;
-            document.getElementById('topEarnersList').innerHTML = approved.slice(0,5).map(u => `<div>${u.name} - Verified ✅</div>`).join('');
-            const winner = data.records.find(u => u.winner && u.winner.includes("WINNER"));
-            if(winner) {
-                document.getElementById('winnerBox').style.display = "block";
-                document.getElementById('winnerName').innerText = winner.name;
-            } else {
-                document.getElementById('winnerBox').style.display = "none";
-            }
+    fetch(`${SCRIPT_URL}?action=getRecords`)
+    .then(res => res.json())
+    .then(data => {
+        // 1. Approved Users Count update karna
+        const approved = data.records.filter(u => u.status && u.status.toLowerCase() === "approved");
+        document.getElementById('totalDisplay').innerText = approved.length;
+        document.getElementById('topEarnersList').innerHTML = approved.slice(0,5).map(u => `<div>${u.name} - Verified ✅</div>`).join('');
+
+        // 2. WINNER LOGIC (Isay update kiya gaya hai)
+        // Hum check kar rahe hain ke kisi bhi column mein "WINNER" ka lafz hai ya nahi
+        const winner = data.records.find(u => {
+            // Hum saari properties check kar rahe hain (specially Column H jo aksar 'winner' ya 'win' ke naam se ati hai)
+            return Object.values(u).some(val => val && val.toString().includes("WINNER"));
         });
+
+        const winnerBox = document.getElementById('winnerBox');
+        const winnerName = document.getElementById('winnerName');
+
+        if (winner && winnerBox && winnerName) {
+            winnerBox.style.display = "block";
+            winnerName.innerText = winner.name;
+        } else if (winnerBox) {
+            winnerBox.style.display = "none";
+        }
+    });
     }
+    
 
     function checkUserStatus() {
         const phone = document.getElementById('checkPhone').value;
