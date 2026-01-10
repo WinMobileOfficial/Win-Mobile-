@@ -211,18 +211,40 @@
     
 
     function checkUserStatus() {
-        const phone = document.getElementById('checkPhone').value;
-        const res = document.getElementById('statusResult');
-        if(!phone) return alert("Number likhein!");
-        res.innerText = "Searching...";
-        fetch(`${SCRIPT_URL}?action=getRecords`).then(r => r.json()).then(data => {
-            const user = data.records.find(u => u.phone.toString().includes(phone.slice(-10)));
-            if(user) {
-                res.innerText = "Status: " + user.status;
-                res.style.color = user.status === "Approved" ? "green" : "orange";
-            } else { res.innerText = "Not Found!"; res.style.color = "red"; }
-        });
-    }
+    const phone = document.getElementById('checkPhone').value;
+    const res = document.getElementById('statusResult');
+    if(!phone) return alert("WhatsApp Number likhein!");
+    
+    res.innerText = "Searching...🔍";
+    res.style.color = "#333";
+
+    fetch(`${SCRIPT_URL}?action=getRecords`)
+    .then(r => r.json())
+    .then(data => {
+        // Last 10 digits match logic (taake 0 ka masla na ho)
+        const user = data.records.find(u => u.phone.toString().includes(phone.slice(-10)));
+        
+        if(user) {
+            // Status ko check karne ka sahi tariqa
+            let s = user.status ? user.status.toUpperCase().trim() : "PENDING";
+            
+            if(s === "APPROVED") {
+                res.innerHTML = `Status: <span style="color: #2ecc71;">APPROVED ✅</span>`;
+            } else if(s === "REJECTED") {
+                res.innerHTML = `Status: <span style="color: #e74c3c;">REJECTED ❌</span>`;
+            } else {
+                // Agar status khali hai ya kuch aur likha hai toh PENDING dikhao
+                res.innerHTML = `Status: <span style="color: #f39c12;">PENDING ⏳</span>`;
+            }
+        } else {
+            res.innerHTML = `<span style="color: red;">Not Found! 🚫</span><br><small style="font-weight:normal;">Pehle register karein.</small>`;
+        }
+    })
+    .catch(err => {
+        res.innerText = "Connection Error!";
+    });
+}
+
 
     function submitWinEntry() {
         const btn = document.getElementById("subBtn");
