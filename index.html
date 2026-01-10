@@ -42,10 +42,11 @@
         <span style="font-size:12px;">Verified Poppo Center - Click for Services</span>
     </a>
 
-    <div id="winnerBox" style="display:none; background: linear-gradient(45deg, #ffd700, #ffae00); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 0 15px rgba(255,215,0,0.5); animation: pulse 1.5s infinite;">
-        <h3 style="margin:0; color: #000;">🎊 LATEST WINNER 🎊</h3>
-        <div id="winnerName" style="font-size: 24px; font-weight: 900; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">...</div>
+    <div id="winnerBox" style="display:none; background: linear-gradient(45deg, #ffd700, #ffae00); padding: 15px; border-radius: 15px; margin: 15px auto; width: 90%; border: 2px solid white; box-shadow: 0 0 15px rgba(255,215,0,0.5); text-align: center;">
+    <h3 style="margin:0; color: #000; font-size: 16px;">🎊 LATEST WINNER 🎊</h3>
+    <div id="winnerName" style="font-size: 22px; font-weight: 900; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-top: 5px;">...</div>
     </div>
+    
 
     <div class="poppo-box">
         <h4 style="margin:0; color:#4f46e5;"><i class="fas fa-gem"></i> POPPO LIVE SERVICES</h4>
@@ -181,33 +182,32 @@
         window.location.href = "https://wa.me/923023313131?text=Redeem%20200%20Coins";
     }
 
-    function loadData() {
+ function loadData() {
     fetch(`${SCRIPT_URL}?action=getRecords`)
     .then(res => res.json())
     .then(data => {
-        // 1. Approved Users Count update karna
+        // 1. Top Earners update
         const approved = data.records.filter(u => u.status && u.status.toLowerCase() === "approved");
         document.getElementById('totalDisplay').innerText = approved.length;
         document.getElementById('topEarnersList').innerHTML = approved.slice(0,5).map(u => `<div>${u.name} - Verified ✅</div>`).join('');
 
-        // 2. WINNER LOGIC (Isay update kiya gaya hai)
-        // Hum check kar rahe hain ke kisi bhi column mein "WINNER" ka lafz hai ya nahi
+        // 2. Winner Logic (Checking Column H specifically)
         const winner = data.records.find(u => {
-            // Hum saari properties check kar rahe hain (specially Column H jo aksar 'winner' ya 'win' ke naam se ati hai)
-            return Object.values(u).some(val => val && val.toString().includes("WINNER"));
+            // Hum row ki har value check karte hain, agar "WINNER" likha ho
+            return Object.values(u).some(v => v && v.toString().toUpperCase().includes("WINNER"));
         });
 
-        const winnerBox = document.getElementById('winnerBox');
-        const winnerName = document.getElementById('winnerName');
+        const wBox = document.getElementById('winnerBox');
+        const wName = document.getElementById('winnerName');
 
-        if (winner && winnerBox && winnerName) {
-            winnerBox.style.display = "block";
-            winnerName.innerText = winner.name;
-        } else if (winnerBox) {
-            winnerBox.style.display = "none";
+        if (winner) {
+            wBox.style.display = "block";
+            wName.innerText = winner.name;
+        } else {
+            wBox.style.display = "none";
         }
     });
-    }
+ }
     
 
     function checkUserStatus() {
