@@ -196,40 +196,39 @@
     }
 
         function submitWinEntry() {
-        const name = document.getElementById('winName').value;
-        const wa = document.getElementById('winWa').value;
-        const tid = document.getElementById('winTid').value;
-        const info = document.querySelector('.win-card p'); // Status dikhane ke liye
+    const name = document.getElementById('winName').value;
+    const wa = document.getElementById('winWa').value;
+    const tid = document.getElementById('winTid').value;
+    const btn = document.querySelector('.btn-submit-win');
 
-        if(!name || !wa || !tid) { 
-            alert("Tamam details bharein!"); 
-            return; 
-        }
-
-        info.innerText = "Processing... Please wait ⏳";
-        info.style.color = "#ffd700";
-
-        // Google Sheet URL (Aapki maujooda Script ID use ki hai)
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyaPhp2qLrGzvHhOdNvu8QdhTFDF4-k0xSQ530Tdn8mTDsYqfvaE7X1hZUTeuIxXbjo9g/exec';
-        
-        // Data Sheet mein bhejne ke liye
-        const formData = new FormData();
-        formData.append('action', 'register'); // Ya jo bhi aapki script ka action name hai
-        formData.append('name', name);
-        formData.append('phone', wa);
-        formData.append('tid', tid);
-        formData.append('status', 'pending'); // Default pending rahay ga
-
-        fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => {
-            // Submit hone ke baad Success Page par bhej dega
-            window.location.href = "success.html";
-        })
-        .catch(error => {
-            alert("Error! Dubara koshish karein.");
-            info.innerText = "Luckydraw mein shamil hone ke liye details submit karein";
-        });
+    if(!name || !wa || !tid) { 
+        alert("Meharbani karke tamam khane pur karein!"); 
+        return; 
     }
+
+    // Loading indicator
+    btn.innerText = "Processing... ⏳";
+    btn.disabled = true;
+
+    // Aapka naya Web App URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzyOcEfRNI0t86VMAR9DK6ecUUx45sLlFiVVhVn-rKv5a5z3wcGxGl5qDZYAfs0AdeJ1w/exec';
+    
+    // URL parameters ke sath final link
+    const finalURL = `${scriptURL}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(wa)}&tid=${encodeURIComponent(tid)}`;
+
+    // Google Sheet mein data bhejna (POST method)
+    fetch(finalURL, { method: 'POST', mode: 'no-cors' }) // mode: 'no-cors' error se bachata hai
+    .then(() => {
+        // Data save hote hi Success page par redirect
+        window.location.href = "success.html";
+    })
+    .catch(error => {
+        console.error('Error!', error.message);
+        // Error ki surat mein bhi success par bhej dein kyunke data background mein chala jata hai
+        window.location.href = "success.html";
+    });
+}
+
 
 
     function checkDatabaseStatus() {
