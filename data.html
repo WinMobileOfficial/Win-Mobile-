@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GM Agency - Master Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #ff5252; --success: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --bg: #f4f7f6; --info: #2196f3; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; display: none; text-align: center; }
@@ -13,21 +14,21 @@
         .clear-btn { background: #333; color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: 1px solid red; margin-bottom: 15px; cursor: pointer; }
         .refresh-btn { background: #f39c12; color: white; padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
         .stats { font-size: 20px; font-weight: bold; margin-bottom: 20px; }
-        .stats span { color: var(--primary); }
         .container { max-width: 600px; margin: 0 auto; padding: 10px; }
         .list-header { background: #333; color: white; display: flex; padding: 10px; font-size: 12px; font-weight: bold; border-radius: 5px 5px 0 0; }
-        .list-item { background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; padding: 15px 10px; text-align: left; font-size: 13px; }
-        .col-info { flex: 2.5; }
-        .col-tid { flex: 3; color: #555; font-size: 11px; }
-        .col-ctrl { flex: 1.5; text-align: right; }
-        .name-box { font-weight: 800; font-size: 15px; margin-bottom: 2px; }
-        .status-tag { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-top: 5px; }
+        .list-item { background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; padding: 15px 10px; text-align: left; font-size: 13px; gap: 10px; }
+        .col-info { flex: 2; }
+        .col-tid { flex: 2.5; color: #555; font-size: 11px; }
+        .col-ctrl { flex: 1.5; display: flex; flex-direction: column; gap: 5px; }
+        .name-box { font-weight: 800; font-size: 14px; margin-bottom: 2px; color: #2c3e50; }
+        .status-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; text-transform: uppercase; }
         .REJECTED { background: #ffebee; color: #c0392b; }
         .APPROVED { background: #e8f5e9; color: #27ae60; }
         .PENDING { background: #fff3e0; color: #e67e22; }
-        .btn-ctrl { padding: 8px 10px; border-radius: 6px; border: none; color: white; font-weight: bold; font-size: 11px; cursor: pointer; margin: 2px; width: 80px; display: block; }
+        .btn-ctrl { padding: 8px; border-radius: 6px; border: none; color: white; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; text-decoration: none; }
         .btn-approve { background: var(--success); }
         .btn-reject { background: var(--danger); }
+        .btn-wa { background: #25d366; }
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; font-weight: bold; color: var(--primary); }
     </style>
 </head>
@@ -45,12 +46,12 @@
     <button class="clear-btn" onclick="clearDatabase()">🗑️ CLEAR ALL DATABASE</button><br>
     <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
 
-    <div class="stats">Approved Participants: <span id="totalCount">0</span></div>
+    <div class="stats">Approved Participants: <span id="totalCount" style="color:var(--success)">0</span></div>
 
     <div class="list-header">
-        <div style="flex:2.5">Participant & Status</div>
-        <div style="flex:3">Phone / TID / Ref</div>
-        <div style="flex:1.5; text-align:right">Control</div>
+        <div style="flex:2">Participant</div>
+        <div style="flex:2.5">Details (Phone/TID)</div>
+        <div style="flex:1.5; text-align:center">Actions</div>
     </div>
     <div id="participantList">
         <p style="padding:20px; color:#888;">Connecting to GM Server...</p>
@@ -59,7 +60,7 @@
 
 <script>
     const PASSCODE = "0770";
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_bf6-PYWpdMv-ZeNYb8GuqxUV_3OBcfTvdb_vjbBVLCuTxJTEMd65ym-FqDVGAF5Mhw/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVUTpNlFRjnvCt4lC3un6B2WoVqUe2yCy7p-YOgAe3LLJuHQHGrKwhr5ReQGrpPq6--g/exec';
 
     (function checkSecurity() {
         let access = prompt("Enter Master Admin Code:");
@@ -84,8 +85,11 @@
                 let approvedCount = 0;
                 
                 data.records.forEach((user) => {
-                    const status = user.status ? user.status.toUpperCase() : "PENDING";
+                    const status = user.status ? user.status.toUpperCase().trim() : "PENDING";
                     if(status === "APPROVED") approvedCount++;
+
+                    // WhatsApp Message with User Info
+                    const waLink = `https://wa.me/${user.phone}?text=Hi%20${encodeURIComponent(user.name)},%20aapka%20TID:%20${user.tid}%20verify%20nahi%20ho%20raha.%20Kindly%20screenshot%20bhein.`;
 
                     html += `
                     <div class="list-item">
@@ -95,23 +99,24 @@
                         </div>
                         <div class="col-tid">
                             <b>Ph:</b> ${user.phone}<br>
-                            <b>TID:</b> ${user.tid}<br>
+                            <b>TID:</b> <span style="color:#2196f3">${user.tid}</span><br>
                             <b>Ref:</b> ${user.referrer || 'Direct'}
                         </div>
+                        
                         <div class="col-ctrl">
-                            <button onclick="updateStatus(${user.id}, 'Approved')" class="btn-ctrl btn-approve">Approve</button>
-                            <button onclick="updateStatus(${user.id}, 'Rejected')" class="btn-ctrl btn-reject">Reject</button>
+                            <a href="${waLink}" target="_blank" class="btn-ctrl btn-wa">
+                                <i class="fab fa-whatsapp"></i> CHAT
+                            </a>
+                            <button onclick="updateStatus(${user.id}, 'Approved')" class="btn-ctrl btn-approve">APPROVE</button>
+                            <button onclick="updateStatus(${user.id}, 'Rejected')" class="btn-ctrl btn-reject">REJECT</button>
                         </div>
                     </div>`;
                 });
                 list.innerHTML = html;
                 document.getElementById('totalCount').innerText = approvedCount;
             } else {
-                list.innerHTML = "<p style='padding:20px;'>No records found in Sheet.</p>";
+                list.innerHTML = "<p style='padding:20px;'>No records found.</p>";
             }
-        })
-        .catch(err => {
-            list.innerHTML = "<p style='color:red; padding:20px;'>Connection Error! Check URL.</p>";
         });
     }
 
@@ -119,7 +124,6 @@
         if(!confirm(`Mark as ${newStatus}?`)) return;
         document.getElementById('loading-overlay').style.display = 'flex';
         
-        // POST request for updating status
         fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -132,7 +136,7 @@
             setTimeout(() => {
                 document.getElementById('loading-overlay').style.display = 'none';
                 loadData();
-            }, 1200); // 1.2 sec wait for sheet to update
+            }, 1200);
         });
     }
 
@@ -143,7 +147,7 @@
         .then(res => {
             document.getElementById('loading-overlay').style.display = 'none';
             if(res.result === "Success") {
-                if(confirm(`🎉 Winner Found: ${res.winner}\n\nKya aap ise website par publish karna chahte hain?`)) {
+                if(confirm(`🎉 Winner Found: ${res.winner}\n\nPublish on Website?`)) {
                     publishWinner(res.winner);
                 }
             } else { alert(res.result); }
@@ -153,27 +157,23 @@
     function publishWinner(name) {
         document.getElementById('loading-overlay').style.display = 'flex';
         fetch(`${SCRIPT_URL}?action=confirmWinner&winner=${encodeURIComponent(name)}`)
-        .then(r => r.json())
-        .then(res => {
+        .then(() => {
             document.getElementById('loading-overlay').style.display = 'none';
-            alert("🎊 Published on Website!");
+            alert("🎊 Published!");
         });
     }
 
     function resetWinner() {
-        if(confirm("Clean winner box?")) publishWinner("No Winner Yet");
+        if(confirm("Clean winner box?")) publishWinner("");
     }
 
     function clearDatabase() {
-        if(!confirm("⚠️ DELETE ALL USERS?")) return;
-        if(prompt("Type 'DELETE' to confirm:") !== "DELETE") return;
-        
+        if(!confirm("⚠️ DELETE ALL?")) return;
+        if(prompt("Type 'DELETE':") !== "DELETE") return;
         document.getElementById('loading-overlay').style.display = 'flex';
         fetch(`${SCRIPT_URL}?action=clearAll`)
-        .then(r => r.json())
-        .then(res => {
+        .then(() => {
             document.getElementById('loading-overlay').style.display = 'none';
-            alert(res.result);
             loadData();
         });
     }
