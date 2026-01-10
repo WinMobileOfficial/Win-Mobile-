@@ -132,6 +132,28 @@
         <div style="background:#f1f1f1; padding:10px; border-radius:10px; margin-top:10px; font-weight:bold;">🪙 My Coins: <span id="coinBalance">0</span></div>
         <button class="btn" style="background:#1eb41e; color:white;" onclick="window.open('https://wa.me/923023313131')">REDEEM (Min 200)</button>
     </div>
+    <div class="card">
+    <h4>🎡 Daily Reward Spin</h4>
+    <p id="spinTimer" style="color:red; font-size:12px; font-weight:bold; display:none;"></p>
+    <button id="spinBtn" class="btn" style="background:#ff5252; color:white;" onclick="collectDailyCoins()">SPIN NOW</button>
+    
+    <div class="redeem-section" style="margin-top:15px; border-top: 1px solid #eee; padding-top: 15px;">
+        <div class="coin-display" style="background: #f8f9fa; padding: 10px; border-radius: 12px; border: 2px dashed #ffc107;">
+            <span style="font-size: 12px; color: #555;">Remaining Coins</span><br>
+            <strong style="font-size: 24px; color: #333;">🪙 <span id="currentCoins">0</span></strong>
+        </div>
+
+        <button id="redeemBtn" class="btn-redeem btn-disabled" onclick="processRedeem()" disabled style="margin-top:10px;">
+            REDEEM (Min 200)
+        </button>
+        <p id="redeemMsg" style="font-size: 10px; margin-top: 5px; color: #888;">Min 200 coins required.</p>
+    </div>
+</div>
+<div class="card">
+    <h4>🔍 Check Your Status</h4>
+    ...
+</div>
+    
 
     <div class="card">
         <h4>🔍 Check Your Status</h4>
