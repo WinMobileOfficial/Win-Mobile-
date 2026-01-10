@@ -3,174 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM Agency Official Portal</title>
+    <title>GM Agency Official</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --poppo-pink: #ff007f; --poppo-purple: #7000ff; --gold: #ffd700; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 50px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; }
         .container { max-width: 480px; margin: 0 auto; background: white; min-height: 100vh; padding: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
         
-        /* Glowing Banner */
-        .top-banner { background: linear-gradient(135deg, var(--poppo-purple), var(--poppo-pink)); color: white; padding: 25px 15px; border-radius: 25px; margin-bottom: 20px; text-decoration: none; display: block; animation: float 3s infinite; border: 2px solid var(--gold); position: relative; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        /* 1. TOP BANNER */
+        .top-banner { background: linear-gradient(135deg, var(--poppo-purple), var(--poppo-pink)); color: white; padding: 25px 15px; border-radius: 25px; margin-bottom: 20px; text-align: center; border: 2px solid var(--gold); display: block; text-decoration: none; }
+        .top-banner h1 { margin: 0; font-size: 22px; letter-spacing: 1px; }
 
-        /* General Card */
-        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        /* 2. CARD STYLE */
+        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center; }
+
+        /* 3. REWARD NEON BOX (5000/3000) */
+        .reward-box-neon { background: #1a1a1a; border: 3px solid var(--poppo-pink); border-radius: 25px; padding: 25px 15px; margin-bottom: 20px; color: white; position: relative; }
+        .glow-code { color: var(--gold); font-size: 28px; font-weight: 900; margin: 10px 0; text-shadow: 0 0 10px var(--gold); }
+        .btn-reward { background: var(--poppo-pink); color: white; text-decoration: none; display: block; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; }
         
-        /* Spin Wheel */
-        .wheel-container { position: relative; width: 180px; height: 180px; margin: 15px auto; }
-        .wheel { width: 100%; height: 100%; border-radius: 50%; border: 5px solid #333; position: relative; overflow: hidden; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
-        .segment { position: absolute; width: 50%; height: 50%; transform-origin: 100% 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px; }
-        .pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 20px; height: 25px; background: var(--gold); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; }
+        /* 4. LUCKY DRAW BOX (RS 1000) */
+        .lucky-card { background: #0f0c29; border: 2px solid var(--gold); color: white; border-radius: 25px; padding: 20px; margin-bottom: 20px; }
+        .win-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: none; box-sizing: border-box; }
 
-        /* Inputs & Buttons */
-        .win-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; outline: none; }
-        .win-input:focus { border-color: var(--poppo-pink); box-shadow: 0 0 8px rgba(255, 0, 127, 0.2); }
-        .btn-main { background: linear-gradient(to right, var(--poppo-pink), var(--poppo-purple)); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-main:active { transform: scale(0.98); }
-
-        /* Leaderboard Rows */
-        .user-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-        .status-winner { color: var(--gold); font-weight: bold; text-shadow: 0 0 5px orange; }
-
-        /* Footer */
-        footer { margin-top: 30px; padding: 20px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
+        /* 5. FOOTER & SITEMAP */
+        .final-footer { margin-top: 30px; padding: 20px; background: #f9f9f9; border-top: 2px solid #eee; text-align: left; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 12px; margin-bottom: 20px; }
+        .footer-grid a { color: #666; text-decoration: none; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="top-banner">
-        <span style="font-size: 20px; font-weight: 900;">GM AGENCY OFFICIAL</span><br>
-        <span style="font-size: 11px; opacity: 0.9;">POPPO LIVE VERIFIED CENTER</span>
+        <h1>GM AGENCY OFFICIAL</h1>
+        <small>Verified Poppo Live Center</small>
     </div>
 
     <div class="card">
-        <h4 style="color:var(--poppo-pink); margin-top:0;"><i class="fas fa-trophy"></i> LIVE LEADERBOARD</h4>
-        <div id="winnersList" style="min-height: 50px;">
-            <p style="color:#999; font-size:12px;">Fetching approved users...</p>
+        <h4 style="color:var(--poppo-pink); margin:0;">🏆 LIVE LEADERBOARD</h4>
+        <div id="winnersList" style="margin-top:10px; font-size:13px; color:#666;">Loading...</div>
+    </div>
+
+    <div class="reward-box-neon">
+        <div style="font-size:10px; background:var(--poppo-pink); display:inline-block; padding:2px 10px; border-radius:50px; margin-bottom:10px;">AGENCY OFFER</div>
+        <h3>HOST REWARDS</h3>
+        <p style="font-size:12px;">Agency Code:</p>
+        <div class="glow-code">2753578</div>
+        <div style="border-top:1px dashed #444; margin:15px 0; padding-top:15px;">
+            <p style="color:var(--gold); font-weight:bold; margin:0;">5,000 COINS</p>
+            <a href="https://wa.me/923023313131?text=Joined%20Code%202753578" class="btn-reward">CLAIM 5000 (NEW HOST)</a>
+        </div>
+        <div style="margin-top:20px;">
+            <p style="color:#00e5ff; font-weight:bold; margin:0;">3,000 COINS</p>
+            <a href="https://chat.whatsapp.com/Kxmmzms3t0v7EapD6iySEK" class="btn-reward" style="background:#00c853;">JOIN DAILY GROUP (3000)</a>
         </div>
     </div>
 
-    <div class="card">
-        <h4>🎡 DAILY LUCKY SPIN</h4>
-        <div class="wheel-container">
-            <div id="wheel" class="wheel">
-                <div class="segment" style="transform: rotate(0deg); background: #ff007f;"><span>4 🪙</span></div>
-                <div class="segment" style="transform: rotate(72deg); background: #7000ff;"><span>1 🪙</span></div>
-                <div class="segment" style="transform: rotate(144deg); background: #ff007f;"><span>3 🪙</span></div>
-                <div class="segment" style="transform: rotate(216deg); background: #7000ff;"><span>2 🪙</span></div>
-                <div class="segment" style="transform: rotate(288deg); background: #333;"><span>0 ❌</span></div>
-            </div>
-            <div class="pointer"></div>
-        </div>
-        <button class="btn-main" id="spinBtn" onclick="startSpin()">SPIN NOW</button>
-        <p style="margin-top:15px; font-weight:bold;">Your Wallet: <span id="balanceText">🪙 0</span></p>
-    </div>
-
-    <div class="card" style="background: #1a1a1a; color: white; border: 2px solid var(--gold);">
+    <div class="lucky-card">
         <h3 style="color:var(--gold); margin-top:0;">LUCKY MOBILE WIN 🎁</h3>
-        <p style="font-size:12px; color:#ddd;">Easypaisa Name: <b>Tasleem Akhtar</b><br>Number: <b>03196557491</b></p>
-        <input type="text" id="winName" class="win-input" placeholder="Apna Naam Likhein">
+        <p>Entry Fee: <b style="font-size:18px; color:var(--gold);">RS 1000</b></p>
+        <p style="font-size:11px; opacity:0.8;">Easypaisa: Tasleem Akhtar (03196557491)</p>
+        <input type="text" id="winName" class="win-input" placeholder="Your Name">
         <input type="number" id="winWa" class="win-input" placeholder="WhatsApp Number">
         <input type="text" id="winTid" class="win-input" placeholder="Transaction ID (TID)">
-        <button class="btn-main" id="drawBtn" onclick="submitWinEntry()" style="background:var(--gold); color:black;">SUBMIT ENTRY 🚀</button>
+        <button onclick="submitWinEntry()" style="width:100%; padding:15px; border-radius:12px; background:var(--gold); border:none; font-weight:bold; cursor:pointer;">SUBMIT RS 1000 ENTRY</button>
     </div>
 
-    <div class="card">
-        <h4>🔍 CHECK ENTRY STATUS</h4>
-        <input type="number" id="statusPhone" class="win-input" placeholder="Enter Phone Number">
-        <button class="btn-main" onclick="checkMyStatus()" style="background:var(--poppo-purple)">CHECK STATUS</button>
-        <div id="statusResult" style="margin-top:15px; font-size:14px; font-weight:bold;"></div>
-    </div>
-
-    <div class="card" style="background:#f9f9f9;">
-        <a href="https://chat.whatsapp.com/Dd1rtjmg1oz4iMgDkiRAce" style="text-decoration:none; color:#25d366; font-weight:bold; display:block; margin-bottom:15px;">
-            <i class="fab fa-whatsapp"></i> JOIN GM COMMUNITY
-        </a>
-        <button class="btn-main" onclick="alert('Withdraw Link: https://gm-agency-withdraw.com (Copied!)')">COPY WITHDRAW LINK</button>
-    </div>
-
-    <footer>
-        <p><b>Contact:</b> poppoliveofficial123@gmail.com</p>
-        <p><b>Agency Code:</b> 2753578</p>
-        <p>&copy; 2026 GM Agency Official. All Rights Reserved.</p>
+    <footer class="final-footer">
+        <div class="footer-grid">
+            <div>
+                <b style="color:var(--poppo-pink);">SERVICE</b>
+                <a href="#">Coin Exchange</a>
+                <a href="#">Hosting</a>
+            </div>
+            <div>
+                <b style="color:var(--poppo-pink);">PAGES</b>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Sitemap</a>
+            </div>
+        </div>
+        <div style="font-size:11px; color:#888; border-top:1px solid #ddd; padding-top:10px;">
+            <b>Support:</b> poppoliveofficial123@gmail.com <br>
+            &copy; 2026 GM Agency Official.
+        </div>
     </footer>
 </div>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwbDICcT9TQqyXHb4XOsVxj-rb-uT-bRrbNjoC02ZBv_ycFdGOMYDG-F20tvVHv6TH1fg/exec';
 
-    // Leaderboard
     function loadLeaderboard() {
         fetch(scriptURL + "?action=getRecords").then(res => res.json()).then(data => {
             let html = "";
-            const approved = data.records.filter(u => u.status === "Approved");
-            approved.forEach(user => {
-                html += `<div class="user-row"><span>${user.name}</span> <span class="${user.winner ? 'status-winner' : ''}">${user.winner || 'Verified ✓'}</span></div>`;
+            data.records.filter(u => u.status === "Approved").forEach(user => {
+                html += `<div style="padding:5px; border-bottom:1px solid #eee;">${user.name} - ${user.winner || 'Verified'}</div>`;
             });
-            document.getElementById("winnersList").innerHTML = html || "No entries yet.";
-        }).catch(() => { document.getElementById("winnersList").innerText = "Connection Error!"; });
+            document.getElementById("winnersList").innerHTML = html || "No records.";
+        });
     }
 
-    // Spin Logic
-    let coins = parseInt(localStorage.getItem("gm_balance")) || 0;
-    document.getElementById("balanceText").innerText = "🪙 " + coins;
-
-    function startSpin() {
-        const lastSpin = localStorage.getItem("last_spin_date");
-        if (lastSpin === new Date().toDateString()) return alert("Yar, aaj ka spin ho gaya! Kal aana.");
-        
-        const btn = document.getElementById("spinBtn");
-        btn.disabled = true;
-        document.getElementById("wheel").style.transform = "rotate(1980deg)"; // Magnet to 2
-        
-        setTimeout(() => {
-            coins += 2;
-            localStorage.setItem("gm_balance", coins);
-            localStorage.setItem("last_spin_date", new Date().toDateString());
-            document.getElementById("balanceText").innerText = "🪙 " + coins;
-            alert("Mubarak! 2 Coins wallet mein add ho gaye.");
-            btn.disabled = false;
-        }, 4000);
-    }
-
-    // Submit Entry
     function submitWinEntry() {
         const name = document.getElementById("winName").value;
         const wa = document.getElementById("winWa").value;
         const tid = document.getElementById("winTid").value;
-        const btn = document.getElementById("drawBtn");
-
-        if(!name || !wa || !tid) return alert("Sari details bharein!");
+        if(!name || !wa || !tid) return alert("Fill all fields!");
         
-        btn.innerText = "Processing... ⏳";
-        btn.disabled = true;
-
         fetch(`${scriptURL}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(wa)}&tid=${encodeURIComponent(tid)}`, { method: 'POST', mode: 'no-cors' })
-        .then(() => { 
-            alert("Entry Successful!");
-            window.location.reload(); 
-        })
-        .catch(() => { alert("Error! Try again."); btn.disabled = false; btn.innerText = "SUBMIT ENTRY 🚀"; });
-    }
-
-    // Status Check
-    function checkMyStatus() {
-        const phone = document.getElementById("statusPhone").value;
-        if(!phone) return alert("Number likhein!");
-        const resDiv = document.getElementById("statusResult");
-        resDiv.innerText = "Searching... 🔍";
-        
-        fetch(scriptURL + "?action=getRecords").then(r => r.json()).then(data => {
-            const user = data.records.find(u => u.phone.toString().includes(phone.slice(-10)));
-            resDiv.innerText = user ? `Hello ${user.name}! Your Status: ${user.status}` : "No Record Found.";
-            resDiv.style.color = user ? (user.status === "Approved" ? "green" : "orange") : "red";
-        });
+        .then(() => { alert("Success!"); window.location.reload(); });
     }
 
     window.onload = loadLeaderboard;
 </script>
-
 </body>
 </html>
