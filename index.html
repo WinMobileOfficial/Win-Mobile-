@@ -121,7 +121,12 @@
         <input type="text" id="tid" placeholder="TID">
         <button onclick="submitWinEntry()" id="subBtn" class="btn" style="background:var(--gold); color:black;">Confirm Registration</button>
     </div>
-
+<div class="input-group">
+    <label style="color: white; display: block; margin-top: 10px;">Payment Screenshot (Required)</label>
+    <input type="file" id="ssInput" accept="image/*" required style="width:100%; padding:10px; margin-top:5px; background: white; border-radius: 5px;">
+</div>
+    
+    
     <footer>
         <div class="footer-grid">
             <div>
@@ -142,29 +147,87 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxrMmw_vFNwsHm7oswEELdN_r12I_J8bY5NIJbM6PHsc7YRV7sCwTqMP_6QsK3fZg1FhA/exec';
+// 1. SETTINGS
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCNd10bSbbY1aaZx1zrfMvO7HLc-iU9U7jJHZ_PPsXnrCWIAEhQwkno6rC5zhCcCzxjw/exec'; 
+const IMGBB_KEY = 'ac9e20cc7634087a31f0cc92096c23f4'; 
 
-    function updateTimer() {
-        const last = localStorage.getItem("last_spin_time");
-        const coins = parseInt(localStorage.getItem("gm_coins") || 0);
-        document.getElementById("userCoins").innerText = coins;
-        if(coins >= 200) { document.getElementById("redeemBtn").style.display = "block"; }
-        else { document.getElementById("redeemBtn").style.display = "none"; }
+// 2. REGISTRATION WITH SCREENSHOT
+async function submitWinEntry() {
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const tid = document.getElementById('tid').value;
+    const fileInput = document.getElementById('ssInput'); // Screenshot field
+    const btn = document.getElementById('subBtn');
 
-        if(!last) return;
-        const diff = (parseInt(last) + 86400000) - Date.now();
-        if(diff > 0) {
-            const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
-            document.getElementById("spinTimer").style.display = "block";
-            document.getElementById("spinTimer").innerText = `Next Spin: ${h}h ${m}m ${s}s`;
-            document.getElementById("spinBtn").disabled = true;
-            document.getElementById("spinBtn").style.opacity = "0.5";
-        } else {
-            document.getElementById("spinTimer").style.display = "none";
-            document.getElementById("spinBtn").disabled = false;
-            document.getElementById("spinBtn").style.opacity = "1";
-        }
+    if (!name || !phone || !tid || !fileInput.files[0]) {
+        alert("Tamam details aur payment screenshot lazmi hain!");
+        return;
     }
+
+    btn.innerText = "Proof Uploading... ⏳";
+    btn.disabled = true;
+
+    try {
+        // Step A: ImgBB par image upload
+        const formData = new FormData();
+        formData.append('image', fileInput.files[0]);
+        const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+            method: 'POST',
+            body: formData
+        });
+        const imgJson = await imgRes.json();
+        const screenshotUrl = imgJson.data.url; // Image link ready!
+
+        // Step B: Google Sheet mein data bhejna
+        const finalUrl = `${SCRIPT_URL}?action=register&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&tid=${encodeURIComponent(tid)}&screenshotUrl=${encodeURIComponent(screenshotUrl)}`;
+        await fetch(finalUrl, { method: 'POST' });
+
+        alert("Success! Entry screenshot ke saath jama ho gayi hai.");
+        location.reload();
+    } catch (e) {
+        alert("Error! Network check karein aur dobara koshish karein.");
+        btn.disabled = false;
+        btn.innerText = "Submit Entry";
+    }
+}
+
+// 3. SPIN WHEEL & OTHER FUNCTIONS
+function spinWheel() {
+    const wheel = document.getElementById("wheel");
+    wheel.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)";
+    wheel.style.transform = "rotate(792deg)"; // Always stops on 2 coins
+    
+    setTimeout(() => {
+        let currentCoins = parseInt(localStorage.getItem("gm_coins") || 0);
+        localStorage.setItem("gm_coins", currentCoins + 2);
+        document.getElementById("userCoins").innerText = currentCoins + 2;
+        localStorage.setItem("last_spin_time", Date.now());
+        updateTimer();
+        alert("Mubarak! 2 Coins mil gaye.");
+    }, 4000);
+}
+
+// Timer aur baaki code yahan niche continue hoga...
+function updateTimer() {
+    const last = localStorage.getItem("last_spin_time");
+    if(!last) return;
+    const diff = (parseInt(last) + 86400000) - Date.now();
+    if(diff > 0) {
+        document.getElementById("spinTimer").style.display = "block";
+        document.getElementById("spinBtn").disabled = true;
+        document.getElementById("spinBtn").style.opacity = "0.5";
+    } else {
+        document.getElementById("spinTimer").style.display = "none";
+        document.getElementById("spinBtn").disabled = false;
+        document.getElementById("spinBtn").style.opacity = "1";
+    }
+}
+window.onload = () => {
+    updateTimer();
+    document.getElementById("userCoins").innerText = localStorage.getItem("gm_coins") || 0;
+};
+</script>
+    
 
     function spinWheel() {
     // 1. Check karein ke user dobara spin to nahi kar raha jaldi
