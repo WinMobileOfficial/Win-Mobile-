@@ -171,7 +171,8 @@ async function submitWinEntry() {
         await fetch(finalUrl, { method: 'POST', mode: 'no-cors' });
 
         alert("Success! Entry jama ho gayi hai.");
-        location.reload();
+window.location.href = "success.html"; 
+        
     } catch (e) {
         alert("Error! Dobara koshish karein.");
         btn.disabled = false;
