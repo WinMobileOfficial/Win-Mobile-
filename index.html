@@ -142,8 +142,8 @@
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCNd10bSbbY1aaZx1zrfMvO7HLc-iU9U7jJHZ_PPsXnrCWIAEhQwkno6rC5zhCcCzxjw/exec'; 
-const IMGBB_KEY = 'ac9e20cc7634087a31f0cc92096c23f4'; 
+Const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaFUz8LRreZNEKdp4JyLUJoWKRxIcOICwtldp7Xb0eddGyaSxkH6mtHfVxf56YRhsL-g/exec';
+const IMGBB_KEY = 'ae9e20cc7634087a3f0cc92096c23f4f';
 
 async function submitWinEntry() {
     const name = document.getElementById('name').value;
@@ -161,20 +161,28 @@ async function submitWinEntry() {
     btn.disabled = true;
 
     try {
+        // 1. ImgBB Upload (Link bananay ke liye)
         const formData = new FormData();
         formData.append('image', fileInput.files[0]);
         const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, { method: 'POST', body: formData });
         const imgJson = await imgRes.json();
-        const screenshotUrl = imgJson.data.url;
+        
+        if (!imgJson.success) throw new Error("Image Upload Failed");
+        const screenshotURL = imgJson.data.url;
 
-        const finalUrl = `${SCRIPT_URL}?action=register&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&tid=${encodeURIComponent(tid)}&screenshotUrl=${encodeURIComponent(screenshotUrl)}`;
+        // 2. Google Sheet Save (Sab data bhej raha hai)
+        // Order: Name, Phone, TID, Screenshot
+        const finalUrl = `${SCRIPT_URL}?action=register&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&tid=${encodeURIComponent(tid)}&screenshot=${encodeURIComponent(screenshotURL)}`;
+        
         await fetch(finalUrl, { method: 'POST', mode: 'no-cors' });
 
         alert("Success! Entry jama ho gayi hai.");
 window.location.href = "success.html"; 
         
+
     } catch (e) {
-        alert("Error! Dobara koshish karein.");
+        console.error(e);
+        alert("Error! Network ya Image ka masla hai.");
         btn.disabled = false;
         btn.innerText = "Confirm Registration";
     }
