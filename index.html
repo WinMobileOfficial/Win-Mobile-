@@ -25,6 +25,38 @@
         #redeemBtn { display: none; background: #22c55e; color: white; margin-top: 10px; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: bold; }
         .poppo-box { border: 2px solid #6366f1; background: #f8fafc; border-radius: 20px; padding: 15px; margin-bottom: 20px; }
         .poppo-btn { background: linear-gradient(90deg, #4f46e5, #ec4899); color: white; text-decoration: none; display: block; margin-top: 10px; padding: 15px; border-radius: 12px; font-weight: bold; }
+   
+.gm-glow-card {
+    background: #000; border-radius: 20px; padding: 3px;
+    position: relative; overflow: hidden; margin: 25px 0;
+}
+.gm-glow-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(from 0deg, transparent, #3b82f6, #22c55e, #f59e0b, #3b82f6);
+    animation: rotateBorder 4s linear infinite;
+}
+.inner-content {
+    background: #0f172a; border-radius: 18px; padding: 25px;
+    text-align: center; position: relative;
+}
+.neon-title {
+    color: #fff; font-size: 22px; font-weight: 900;
+    text-shadow: 0 0 10px #3b82f6; margin: 10px 0;
+}
+.glow-btn {
+    background: #22c55e; color: white; text-decoration: none;
+    padding: 15px 30px; border-radius: 50px; font-weight: 800;
+    display: inline-block; margin-top: 20px; box-shadow: 0 0 15px #22c55e;
+    animation: buttonPulse 1.5s infinite;
+}
+@keyframes rotateBorder { 100% { transform: rotate(360deg); } }
+@keyframes buttonPulse {
+    0% { transform: scale(1); }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
     </style>
 </head>
 <body>
@@ -34,7 +66,20 @@
         <h2 style="margin:0;">GM AGENCY OFFICIAL</h2>
         <span style="font-size:12px;">Verified Poppo Center - Click for Services</span>
     </a>
-
+<div class="gm-glow-card">
+    <div class="inner-content">
+        <div style="color: #22c55e; font-size: 11px; font-weight: bold;">
+            <i class="fas fa-shield-alt"></i> GM AGENCY SECURE SYSTEM
+        </div>
+        <div class="neon-title">🛡️ SAFE DEAL PORTAL</div>
+        <p style="color: #94a3b8; font-size: 13px;">Scam se bachein aur apni deal ko Admin ki nigrani mein safe banayein.</p>
+        
+        <a href="deal.html" class="glow-btn">
+            🤝 START ESCROW DEAL
+        </a>
+    </div>
+</div>
+    
     <div id="winnerBox" style="display:none; background: linear-gradient(45deg, #ffd700, #ffae00); padding: 15px; border-radius: 15px; margin: 15px auto; width: 90%; border: 2px solid white; box-shadow: 0 0 15px rgba(255,215,0,0.5); text-align: center;">
         <h3 style="margin:0; color: #000; font-size: 16px;">🎊 LATEST WINNER 🎊</h3>
         <div id="winnerName" style="font-size: 22px; font-weight: 900; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-top: 5px;">...</div>
