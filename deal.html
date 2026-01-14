@@ -30,6 +30,7 @@
         .btn-success { background: var(--success); color: white; margin-top: 15px; }
         #receipt { display: none; border: 2px solid var(--success); padding: 20px; border-radius: 15px; position: relative; }
         .review-item { border-bottom: 1px solid #f1f5f9; padding: 10px 0; }
+        .rev-input { background: #f8fafc; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -88,29 +89,23 @@
         </div>
     </div>
 
-    <div class="card" style="padding: 15px;">
-        <label>🔍 Track Your Deal Status</label>
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <input type="text" id="trackId" placeholder="Enter Deal ID (#GM-1234)">
-            <button onclick="checkStatus()" style="background:var(--primary); color:white; border:none; border-radius:8px; padding:0 15px;">Check</button>
-        </div>
-        <div id="statusResult" style="margin-top:10px;"></div>
+    <div class="card">
+        <h3 style="margin-top:0; font-size:18px;"><i class="fas fa-edit"></i> WRITE A REVIEW</h3>
+        <input type="text" id="revName" class="rev-input" placeholder="Your Name">
+        <textarea id="revMsg" class="rev-input" placeholder="Write your experience..."></textarea>
+        <button class="btn btn-primary" style="padding: 10px;" onclick="addReview()">POST REVIEW</button>
     </div>
 
     <div class="card">
         <h3 style="margin-top:0; font-size:18px;"><i class="fas fa-star" style="color:var(--gold)"></i> CUSTOMER FEEDBACK</h3>
         <div id="reviewsList">
-            <div class="review-item">
-                <div style="color:var(--gold); font-size:12px;">⭐⭐⭐⭐⭐</div>
-                <strong style="font-size:13px;">Gulam Abbas</strong>
-                <p style="font-size:12px; margin:5px 0; color:#64748b;">Deal 100% safe rahi. Agency trusted hai!</p>
             </div>
-        </div>
     </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxCNd10bSbbY1aaZx1zrfMvO7HLc-iU9U7jJHZ_PPsXnrCWIAEhQwkno6rC5zhCcCzxjw/exec';
+    // Apka Master Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxaFUz8LRreZNEKdp4JyLUJoWKRxIcOICwtldp7Xb0eddGyaSxkH6mtHfVxf56YRhsL-g/exec';
 
     function doMath() {
         const val = parseFloat(document.getElementById('dAmount').value) || 0;
@@ -136,10 +131,8 @@
         btn.disabled = true;
 
         try {
-            // Google Sheet mein data bhej raha hai
             await fetch(`${scriptURL}?action=createDeal&dealId=${dId}&buyer=${b}&seller=${s}&amount=${a}&desc=${encodeURIComponent(d)}`, { method: 'POST', mode: 'no-cors' });
             
-            // UI Update
             document.getElementById('rId').innerText = "#" + dId;
             document.getElementById('rBuyer').innerText = b;
             document.getElementById('rItem').innerText = d;
@@ -162,13 +155,60 @@
         window.location.href = `https://wa.me/923023313131?text=${msg}`;
     }
 
-    function checkStatus() {
-        const id = document.getElementById('trackId').value;
-        if(!id) return alert("Deal ID likhein!");
-        document.getElementById('statusResult').innerHTML = `<div style="background:#fef9c3; color:#854d0e; padding:10px; border-radius:8px; font-size:12px; font-weight:bold;">🕒 STATUS: VERIFYING PAYMENT...</div>`;
+    // --- Review System Function ---
+    async function addReview() {
+        const n = document.getElementById('revName').value;
+        const m = document.getElementById('revMsg').value;
+        
+        if(!n || !m) return alert("Naam aur review likhein!");
+
+        const btn = document.querySelector('button[onclick="addReview()"]');
+        btn.innerText = "Posting... ⏳";
+        btn.disabled = true;
+
+        try {
+            await fetch(`${scriptURL}?action=postReview&name=${encodeURIComponent(n)}&msg=${encodeURIComponent(m)}`, { 
+                method: 'POST', 
+                mode: 'no-cors' 
+            });
+            
+            const item = `<div class="review-item">
+                            <div class="stars" style="color:var(--gold)">⭐⭐⭐⭐⭐</div>
+                            <strong style="font-size:13px;">${n}</strong>
+                            <p style="font-size:12px; margin:5px 0; color:#64748b;">${m}</p>
+                          </div>`;
+            document.getElementById('reviewsList').innerHTML = item + document.getElementById('reviewsList').innerHTML;
+            
+            document.getElementById('revName').value = "";
+            document.getElementById('revMsg').value = "";
+            btn.innerText = "POST REVIEW";
+            btn.disabled = false;
+            alert("Shukriya! Review Sheet mein save ho gaya.");
+            
+        } catch (e) {
+            alert("Error! Check internet.");
+            btn.innerText = "POST REVIEW";
+            btn.disabled = false;
+        }
+    }
+
+    // Page load par purane reviews load karne ke liye (Optional)
+    window.onload = async () => {
+        try {
+            const res = await fetch(`${scriptURL}?action=getReviews`);
+            const data = await res.json();
+            let html = '';
+            data.forEach(r => {
+                html += `<div class="review-item">
+                            <div class="stars" style="color:var(--gold)">⭐⭐⭐⭐⭐</div>
+                            <strong style="font-size:13px;">${r.name}</strong>
+                            <p style="font-size:12px; margin:5px 0; color:#64748b;">${r.msg}</p>
+                          </div>`;
+            });
+            document.getElementById('reviewsList').innerHTML = html;
+        } catch(e) {}
     }
 </script>
 
 </body>
 </html>
-
