@@ -6,29 +6,35 @@
     <title>GM Agency - Master Admin Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #ff5252; --success: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --bg: #f4f7f6; --info: #2196f3; }
+        :root { --primary: #ff5252; --success: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --bg: #f4f7f6; --info: #2196f3; --accent: #3b82f6; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 0; display: none; text-align: center; }
         .header-btn { background: var(--primary); color: white; padding: 15px; border-radius: 12px; margin: 20px auto; width: 90%; max-width: 400px; font-weight: bold; font-size: 18px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; }
         .spin-btn { background: var(--success); color: white; padding: 15px; border-radius: 12px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
-        .reset-btn { background: var(--info); color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: none; margin-bottom: 10px; cursor: pointer; }
-        .clear-btn { background: #333; color: white; padding: 12px; border-radius: 10px; width: 90%; max-width: 400px; font-weight: bold; border: 1px solid red; margin-bottom: 15px; cursor: pointer; }
         .refresh-btn { background: #f39c12; color: white; padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
-        .stats { font-size: 20px; font-weight: bold; margin-bottom: 20px; }
         .container { max-width: 600px; margin: 0 auto; padding: 10px; }
+        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: left; }
+        
+        /* List & Table Styles */
         .list-header { background: #333; color: white; display: flex; padding: 10px; font-size: 12px; font-weight: bold; border-radius: 5px 5px 0 0; }
         .list-item { background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; padding: 15px 10px; text-align: left; font-size: 13px; gap: 10px; }
         .col-info { flex: 2; }
         .col-tid { flex: 2.5; color: #555; font-size: 11px; }
         .col-ctrl { flex: 1.5; display: flex; flex-direction: column; gap: 5px; }
-        .name-box { font-weight: 800; font-size: 14px; margin-bottom: 2px; color: #2c3e50; }
+        
         .status-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; text-transform: uppercase; }
         .REJECTED { background: #ffebee; color: #c0392b; }
         .APPROVED { background: #e8f5e9; color: #27ae60; }
         .PENDING { background: #fff3e0; color: #e67e22; }
+        
         .btn-ctrl { padding: 8px; border-radius: 6px; border: none; color: white; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; text-decoration: none; }
         .btn-approve { background: var(--success); }
         .btn-reject { background: var(--danger); }
         .btn-wa { background: #25d366; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #f8fafc; padding: 10px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
+
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; font-weight: bold; color: var(--primary); }
     </style>
 </head>
@@ -41,20 +47,40 @@
 
 <div class="container">
     <button class="header-btn">GM Agency Master Admin Panel</button>
-    <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK & CONFIRM WINNER</button><br>
-    <button class="reset-btn" onclick="resetWinner()">🔄 RESET / CLEAN WINNER</button><br>
-    <button class="clear-btn" onclick="clearDatabase()">🗑️ CLEAR ALL DATABASE</button><br>
-    <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
+    
+    <div class="card" style="border-top: 4px solid var(--success);">
+        <h3 style="margin-top:0;"><i class="fas fa-trophy"></i> LUCKY DRAW CONTROL</h3>
+        <button class="spin-btn" onclick="pickRandomWinner()">🎡 PICK & CONFIRM WINNER</button>
+        <div style="font-weight: bold; margin: 10px 0;">Approved Participants: <span id="totalCount" style="color:var(--success)">0</span></div>
+        <button class="refresh-btn" onclick="loadAllData()">🔄 Refresh All Data</button>
 
-    <div class="stats">Approved Participants: <span id="totalCount" style="color:var(--success)">0</span></div>
-
-    <div class="list-header">
-        <div style="flex:2">Participant</div>
-        <div style="flex:2.5">Details (Phone/TID)</div>
-        <div style="flex:1.5; text-align:center">Actions</div>
+        <div class="list-header">
+            <div style="flex:2">Participant</div>
+            <div style="flex:2.5">Details (Phone/TID)</div>
+            <div style="flex:1.5; text-align:center">Actions</div>
+        </div>
+        <div id="participantList">
+            <p style="padding:20px; color:#888;">Loading participants...</p>
+        </div>
     </div>
-    <div id="participantList">
-        <p style="padding:20px; color:#888;">Connecting to GM Server...</p>
+
+    <div class="card" style="border-top: 4px solid var(--accent);">
+        <h3 style="color:#1e293b;"><i class="fas fa-handshake"></i> ACTIVE SAFE DEALS</h3>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Deal ID</th>
+                        <th>Buyer/Seller</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="dealsTableBody">
+                    <tr><td colspan="4" style="text-align:center;">Loading deals...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -62,138 +88,103 @@
     const PASSCODE = "0770";
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxX-yr8AecX_-zmoIHLFLH25cYfttZtPcOAYRKOotHXbVRMubav0PwNMM033TTtCTHAnw/exec';
 
-    (function checkSecurity() {
-        let access = prompt("Enter Master Admin Code:");
-        if (access === PASSCODE) {
+    // Security Check
+    (function() {
+        if (prompt("Enter Master Admin Code:") === PASSCODE) {
             document.body.style.display = "block";
-            loadData();
+            loadAllData();
         } else {
             alert("Unauthorized!");
             window.location.href = "index.html";
         }
     })();
 
-    function loadData() {
+    function loadAllData() {
+        loadParticipants();
+        loadDeals();
+    }
+
+    // 1. Load Lucky Draw Participants
+    async function loadParticipants() {
         const list = document.getElementById('participantList');
-        list.innerHTML = '<p style="padding:20px; color:#888;">Fetching latest data...</p>';
+        try {
+            const r = await fetch(`${SCRIPT_URL}?action=getRecords`);
+            const data = await r.json();
+            let html = "";
+            let approvedCount = 0;
+            
+            data.records.forEach((user) => {
+                const status = user.status ? user.status.toUpperCase().trim() : "PENDING";
+                if(status === "APPROVED") approvedCount++;
+                html += `
+                <div class="list-item">
+                    <div class="col-info">
+                        <div style="font-weight:800;">${user.name}</div>
+                        <span class="status-tag ${status}">${status}</span>
+                    </div>
+                    <div class="col-tid">Ph: ${user.phone}<br>TID: ${user.tid}</div>
+                    <div class="col-ctrl">
+                        <button onclick="updateDrawStatus(${user.id}, 'Approved')" class="btn-ctrl btn-approve">APPROVE</button>
+                        <button onclick="updateDrawStatus(${user.id}, 'Rejected')" class="btn-ctrl btn-reject">REJECT</button>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html || "<p>No participants found.</p>";
+            document.getElementById('totalCount').innerText = approvedCount;
+        } catch(e) { list.innerHTML = "Error loading participants."; }
+    }
 
-        fetch(`${SCRIPT_URL}?action=getRecords`)
-        .then(r => r.json())
-        .then(data => {
-            if (data.records && data.records.length > 0) {
-                let html = "";
-                let approvedCount = 0;
-                
-                data.records.forEach((user) => {
-                    const status = user.status ? user.status.toUpperCase().trim() : "PENDING";
-                    if(status === "APPROVED") approvedCount++;
+    // 2. Load Safe Deals
+    async function loadDeals() {
+        const tableBody = document.getElementById('dealsTableBody');
+        try {
+            const r = await fetch(`${SCRIPT_URL}?action=getDeals`); // App script must handle this
+            const data = await r.json();
+            let html = "";
+            data.forEach(deal => {
+                html += `
+                <tr>
+                    <td><b>${deal.dealId}</b></td>
+                    <td>B: ${deal.buyer}<br>S: ${deal.seller}</td>
+                    <td><span class="status-tag">${deal.status}</span></td>
+                    <td>
+                        <button onclick="updateDealStatus(${deal.id}, 'Payment Hold')" style="background:#f39c12; color:white; border:none; padding:5px; border-radius:4px; font-size:10px; cursor:pointer;">HOLD</button>
+                        <button onclick="updateDealStatus(${deal.id}, 'Released')" style="background:#2ecc71; color:white; border:none; padding:5px; border-radius:4px; font-size:10px; cursor:pointer; margin-top:2px;">RELEASE</button>
+                    </td>
+                </tr>`;
+            });
+            tableBody.innerHTML = html || "<tr><td colspan='4'>No active deals.</td></tr>";
+        } catch(e) { tableBody.innerHTML = "<tr><td colspan='4'>Error loading deals.</td></tr>"; }
+    }
 
-                    const waLink = `https://wa.me/${user.phone}?text=Hi%20${encodeURIComponent(user.name)},%20aapka%20payment%20proof%20check%20kar%20liya%20hai.`;
+    // Status Updates
+    async function updateDrawStatus(id, status) {
+        showLoading(true);
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({'action':'updateStatus', 'type':'draw', 'id':id, 'status':status}) });
+        setTimeout(() => { showLoading(false); loadParticipants(); }, 1000);
+    }
 
-                    html += `
-                    <div class="list-item">
-                        <div class="col-info">
-                            <div class="name-box">${user.name}</div>
-                            <span class="status-tag ${status}">${status}</span>
-                        </div>
-                        <div class="col-tid">
-                            <b>Ph:</b> ${user.phone}<br>
-                            <b>TID:</b> <span style="color:#2196f3">${user.tid}</span>
-                        </div>
-                        <div class="col-ctrl">
-                            <a href="${waLink}" target="_blank" class="btn-ctrl btn-wa">CHAT</a>
-                            <button onclick="window.open('${user.screenshot}', '_blank')" class="btn-ctrl" style="background:#008CBA;">VIEW PROOF 🖼️</button>
-                            <button onclick="updateStatus(${user.id}, 'Approved')" class="btn-ctrl btn-approve">APPROVE</button>
-                            <button onclick="updateStatus(${user.id}, 'Rejected')" class="btn-ctrl btn-reject">REJECT</button>
-                        </div>
-                    </div>`;
-                });
-                list.innerHTML = html;
-                document.getElementById('totalCount').innerText = approvedCount;
-            } else {
-                list.innerHTML = "<p style='padding:20px;'>No records found.</p>";
-                document.getElementById('totalCount').innerText = "0";
+    async function updateDealStatus(id, status) {
+        if(!confirm(`Change Deal Status to ${status}?`)) return;
+        showLoading(true);
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({'action':'updateStatus', 'type':'deal', 'id':id, 'status':status}) });
+        setTimeout(() => { showLoading(false); loadDeals(); }, 1000);
+    }
+
+    function showLoading(show) { document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none'; }
+
+    // Winner Logic
+    async function pickRandomWinner() {
+        showLoading(true);
+        const r = await fetch(`${SCRIPT_URL}?action=pickWinner`);
+        const res = await r.json();
+        showLoading(false);
+        if(res.winner && res.winner !== "No Approved Users") {
+            if(confirm(`Winner: ${res.winner}\nPublish to website?`)) {
+                await fetch(`${SCRIPT_URL}?action=confirmWinner&winner=${encodeURIComponent(res.winner)}`);
+                alert("Published!");
             }
-        });
-    }
-
-    function updateStatus(id, newStatus) {
-        if(!confirm(`Mark as ${newStatus}?`)) return;
-        document.getElementById('loading-overlay').style.display = 'flex';
-        
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: new URLSearchParams({
-                'action': 'updateStatus',
-                'id': id,
-                'status': newStatus
-            })
-        }).then(() => {
-            setTimeout(() => {
-                document.getElementById('loading-overlay').style.display = 'none';
-                loadData();
-            }, 1200);
-        });
-    }
-
-    // Auto Winner Logic
-    function pickRandomWinner() {
-        document.getElementById('loading-overlay').style.display = 'flex';
-        fetch(`${SCRIPT_URL}?action=pickWinner`)
-        .then(r => r.json())
-        .then(res => {
-            document.getElementById('loading-overlay').style.display = 'none';
-            if(res.result === "Success" && res.winner !== "No Approved Users") {
-                if(confirm(`🎉 Winner Found: ${res.winner}\n\nPublish on Website?`)) {
-                    publishWinner(res.winner);
-                }
-            } else { 
-                alert("Koi Approved participants nahi hain!"); 
-            }
-        }).catch(err => {
-            document.getElementById('loading-overlay').style.display = 'none';
-            alert("Error: Connection Failed.");
-        });
-    }
-
-    function publishWinner(name) {
-        document.getElementById('loading-overlay').style.display = 'flex';
-        fetch(`${SCRIPT_URL}?action=confirmWinner&winner=${encodeURIComponent(name)}`)
-        .then(() => {
-            document.getElementById('loading-overlay').style.display = 'none';
-            alert("🎊 Winner Published on Website!");
-        });
-    }
-
-    // Auto Winner Clean (Website)
-    function resetWinner() {
-        if(!confirm("Clean website winner box?")) return;
-        document.getElementById('loading-overlay').style.display = 'flex';
-        fetch(`${SCRIPT_URL}?action=resetWinner`)
-        .then(() => {
-            document.getElementById('loading-overlay').style.display = 'none';
-            alert("✅ Winner Box Reset Done!");
-        });
-    }
-
-    // Auto Database Clean (Sheet)
-    function clearDatabase() {
-        if(!confirm("⚠️ WARNING: Kya aap saara data delete karna chahte hain?")) return;
-        if(prompt("Type 'DELETE' to confirm:") !== "DELETE") return;
-        
-        document.getElementById('loading-overlay').style.display = 'flex';
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: new URLSearchParams({ 'action': 'clearAll' })
-        }).then(() => {
-            setTimeout(() => {
-                document.getElementById('loading-overlay').style.display = 'none';
-                alert("🗑️ Database Cleared Successfully!");
-                loadData();
-            }, 1500);
-        });
+        } else { alert("No approved users!"); }
     }
 </script>
 </body>
