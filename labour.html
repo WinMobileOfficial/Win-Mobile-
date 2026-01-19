@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabourLink Dubai | Professional Services</title>
+    <style>
+        :root {
+            --glow-color: #00d4ff;
+            --bg-color: #050a18;
+            --card-bg: #111827;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Hero Header */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #1e293b 0%, var(--bg-color) 100%);
+            border-bottom: 2px solid var(--glow-color);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .license-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffd700, #ffae00);
+            color: black;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        /* Services Grid */
+        .container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            transition: 0.4s ease;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .service-card:hover {
+            border-color: var(--glow-color);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+            transform: scale(1.02);
+        }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 30px;
+            border: 1px solid var(--glow-color);
+        }
+
+        .hire-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(90deg, #00d4ff, #0055ff);
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.4);
+        }
+
+        /* Form Styling */
+        .booking-form {
+            background: #1e293b;
+            margin: 20px;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+        }
+
+        /* Floating WhatsApp */
+        .whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #25d366;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+            z-index: 1000;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="license-badge">🛡️ Verified UAE Manpower Agency</div>
+        <h1 style="margin: 0; font-size: 28px;">LabourLink <span style="color: var(--glow-color);">Dubai</span></h1>
+        <p style="color: #94a3b8; font-size: 14px;">Providing High-Quality Staff Since 2024</p>
+    </div>
+
+    <div class="container">
+        <div class="service-card">
+            <div class="icon-circle">👷</div>
+            <h3 style="margin: 5px 0;">Construction Crew</h3>
+            <p style="color: #cbd5e1; font-size: 14px;">Masons, Shuttering Carpenters, and General Helpers for Site Work.</p>
+            <a href="https://wa.me/YOUR_NUMBER" class="hire-btn">Hire Now</a>
+        </div>
+
+        <div class="service-card" style="animation-delay: 0.2s;">
+            <div class="icon-circle">🧹</div>
+            <h3 style="margin: 5px 0;">Cleaning Experts</h3>
+            <p style="color: #cbd5e1; font-size: 14px;">Deep Cleaning for Villas, Offices, and Commercial Buildings.</p>
+            <a href="https://wa.me/YOUR_NUMBER" class="hire-btn" style="background: linear-gradient(90deg, #00ff88, #00b35f);">Hire Now</a>
+        </div>
+
+        <div class="service-card" style="animation-delay: 0.4s;">
+            <div class="icon-circle">⚡</div>
+            <h3 style="margin: 5px 0;">Technical Staff</h3>
+            <p style="color: #cbd5e1; font-size: 14px;">Certified Electricians, Plumbers, and AC Technicians.</p>
+            <a href="https://wa.me/YOUR_NUMBER" class="hire-btn">Hire Now</a>
+        </div>
+    </div>
+
+    <div class="booking-form">
+        <h2 style="text-align: center; margin-top: 0; color: var(--glow-color);">Quick Inquiry</h2>
+        <input type="text" placeholder="Full Name">
+        <input type="tel" placeholder="Mobile Number">
+        <select>
+            <option>Choose Service</option>
+            <option>Construction</option>
+            <option>Cleaning</option>
+            <option>Technical</option>
+        </select>
+        <button class="hire-btn" style="border:none; cursor:pointer;">Submit Request</button>
+    </div>
+
+    <footer style="text-align: center; padding: 20px; color: #64748b; font-size: 12px;">
+        &copy; 2026 GM Agency - LabourLink Division. All Rights Reserved.
+    </footer>
+
+    <a href="https://wa.me/923023313131" class="whatsapp">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
+    </a>
+
+</body>
+</html>
+
