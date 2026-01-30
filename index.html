@@ -279,23 +279,7 @@ window.location.href = "success.html";
     }
 }
 
-
-    
-
-function updateTimer() {
-    const last = localStorage.getItem("last_spin_time");
-    const btn = document.getElementById("spinBtn");
-    const timer = document.getElementById("spinTimer");
-    
-    if(last) {
-        const diff = 86400000 - (Date.now() - last);
-        if(diff > 0) {
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-            timer.style.display = "block";
-            const h = Math.floor(diff/3600000);
-            const m = Math.floor((diff%3600000)/60000);
-            timer.innerText = `Next function spinWheel() {
+function spinWheel() {
     const last = localStorage.getItem("last_spin_time");
     if (last && (Date.now() - last < 86400000)) {
         return alert("Agla spin 24 ghante baad milega!");
@@ -331,6 +315,23 @@ function updateTimer() {
         }, 4500);
     }, 100);
 }
+    
+    
+
+function updateTimer() {
+    const last = localStorage.getItem("last_spin_time");
+    const btn = document.getElementById("spinBtn");
+    const timer = document.getElementById("spinTimer");
+    
+    if(last) {
+        const diff = 86400000 - (Date.now() - last);
+        if(diff > 0) {
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+            timer.style.display = "block";
+            const h = Math.floor(diff/3600000);
+            const m = Math.floor((diff%3600000)/60000);
+            timer.innerText = `Next function spinWheel() {
 
 Spin in: ${h}h ${m}m`;
         } else {
