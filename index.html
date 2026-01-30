@@ -288,38 +288,30 @@ function spinWheel() {
     const wheel = document.getElementById('wheel');
     const btn = document.getElementById('spinBtn');
 
-    // 1. Reset position for clean start
+    // 1. Reset position
     wheel.style.transition = "none";
     wheel.style.transform = "rotate(0deg)";
 
-    // Small delay taake browser reset ko process kar le
     setTimeout(() => {
-        /* LOGIC:
-           10 Rounds = 3600deg
-           Yellow (2 Coins) Center = 216deg
-           Total = 3816deg
-        */
+        // Yellow (2 Coins) Target = 3816deg
         const targetRotation = 3816; 
 
-        // Spin animation start
         wheel.style.transition = "transform 5s cubic-bezier(0.15, 0, 0.15, 1)";
         wheel.style.transform = `rotate(${targetRotation}deg)`;
 
-        // Spin khatam hone ka wait karein (5 seconds)
         setTimeout(() => {
             let coins = parseInt(localStorage.getItem("gn_coins") || 0);
-            coins += 2; // Adding 2 coins
+            coins += 2; 
             
             localStorage.setItem("gn_coins", coins);
             localStorage.setItem("last_spin_time", Date.now());
             
-            // UI Update
             if(document.getElementById('userCoins')) {
                 document.getElementById('userCoins').innerText = coins;
             }
             
             alert("🎉 Mubarak! Aapne 2 Coins jeet liye hain.");
-            updateTimer();
+            updateTimer(); 
         }, 5200);
     }, 100);
 }
@@ -339,13 +331,21 @@ function updateTimer() {
             }
             if(timer) {
                 timer.style.display = "block";
+                
+                // H, M, S Calculation
                 const h = Math.floor(diff / 3600000);
                 const m = Math.floor((diff % 3600000) / 60000);
-                timer.innerText = `Next Spin in: ${h}h ${m}m`;
+                const s = Math.floor((diff % 60000) / 1000);
+                
+                // Formatting (00:00:00 style)
+                const displayH = h < 10 ? "0" + h : h;
+                const displayM = m < 10 ? "0" + m : m;
+                const displayS = s < 10 ? "0" + s : s;
+
+                timer.innerHTML = `<i class="fas fa-clock"></i> Next Spin in: <b>${displayH}h ${displayM}m ${displayS}s</b>`;
             }
-            
-            // Har minute timer update karne ke liye
-            setTimeout(updateTimer, 60000);
+            // Seconds chalane ke liye 1000ms (1 second) par update hoga
+            setTimeout(updateTimer, 1000);
         } else {
             if(btn) {
                 btn.disabled = false;
@@ -357,39 +357,16 @@ function updateTimer() {
     }
 }
 
-// Page load par timer check karne ke liye
 window.onload = () => {
     updateTimer();
     const savedCoins = localStorage.getItem("gn_coins") || 0;
-    if(document.getElementById('userCoins')) {
-        document.getElementById('userCoins').innerText = savedCoins;
+    const coinDisplay = document.getElementById('userCoins');
+    if(coinDisplay) {
+        coinDisplay.innerText = savedCoins;
     }
 };
     
 
-function updateTimer() {
-    const last = localStorage.getItem("last_spin_time");
-    const btn = document.getElementById("spinBtn");
-    const timer = document.getElementById("spinTimer");
-    
-    if(last) {
-        const diff = 86400000 - (Date.now() - last);
-        if(diff > 0) {
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-            timer.style.display = "block";
-            const h = Math.floor(diff/3600000);
-            const m = Math.floor((diff%3600000)/60000);
-            timer.innerText = `Next function spinWheel() {
-
-Spin in: ${h}h ${m}m`;
-        } else {
-            btn.disabled = false;
-            btn.style.opacity = "1";
-            timer.style.display = "none";
-        }
-    }
-}
 
 function loadData() {
     fetch(`${SCRIPT_URL}?action=getRecords`)
