@@ -279,36 +279,7 @@ window.location.href = "success.html";
     }
 }
 
-function spinWheel() {
-    const last = localStorage.getItem("last_spin_time");
-    if(last && (Date.now() - last < 86400000)) {
-        return alert("Agla spin 24 ghante baad milega!");
-    }
 
-    const wheel = document.getElementById('wheel');
-    
-    // Resetting for smooth animation
-    wheel.style.transition = "none";
-    wheel.style.transform = "rotate(0deg)";
-    
-    setTimeout(() => {
-        // 3600deg (10 rounds) + 36deg (Center of Yellow/2 Coins segment)
-        const targetRotation = 3708; 
-        
-        wheel.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
-        wheel.style.transform = `rotate(${targetRotation}deg)`;
-        
-        setTimeout(() => {
-            let coins = parseInt(localStorage.getItem("gm_coins") || 0);
-            coins += 2;
-            localStorage.setItem("gm_coins", coins);
-            localStorage.setItem("last_spin_time", Date.now());
-            document.getElementById("userCoins").innerText = coins;
-            alert("Mubarak! 2 Coins mil gaye.");
-            updateTimer();
-        }, 4500);
-    }, 100);
-}
     
 
 function updateTimer() {
@@ -324,7 +295,44 @@ function updateTimer() {
             timer.style.display = "block";
             const h = Math.floor(diff/3600000);
             const m = Math.floor((diff%3600000)/60000);
-            timer.innerText = `Next Spin in: ${h}h ${m}m`;
+            timer.innerText = `Next function spinWheel() {
+    const last = localStorage.getItem("last_spin_time");
+    if (last && (Date.now() - last < 86400000)) {
+        return alert("Agla spin 24 ghante baad milega!");
+    }
+
+    const wheel = document.getElementById('wheel');
+    
+    // Resetting position
+    wheel.style.transition = "none";
+    wheel.style.transform = 'rotate(0deg)';
+
+    setTimeout(() => {
+        // 1. Randomness ke liye: 10 full rounds (3600deg) 
+        // 2. Yellow (2 Coins) segment 144 to 216 degrees ke darmiyan hota hai.
+        // Hum center point 180deg target karte hain.
+        
+        const baseRounds = 3600; // 100% spin effect
+        const yellowSegment = 180; // Isko badal kar aap kisi bhi color par rok sakte hain
+        const targetRotation = baseRounds + yellowSegment; 
+
+        wheel.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+        wheel.style.transform = `rotate(${targetRotation}deg)`;
+
+        setTimeout(() => {
+            let coins = parseInt(localStorage.getItem("gn_coins") || 0);
+            coins += 2;
+            localStorage.setItem("gn_coins", coins);
+            localStorage.setItem("last_spin_time", Date.now());
+            
+            document.getElementById('userCoins').innerText = coins;
+            alert("Mubarak! 2 Coins mil gaye.");
+            updateTimer();
+        }, 4500);
+    }, 100);
+}
+
+Spin in: ${h}h ${m}m`;
         } else {
             btn.disabled = false;
             btn.style.opacity = "1";
